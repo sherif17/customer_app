@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^4.3.2+3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -71,6 +72,13 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  fonts:
+    - family: MPLUSRounded1c
+      fonts:
+         - asset: assets/fonts/MPLUSRounded1c-Black.ttf
+           weight: 700
+
+
+  #MPLUSRounded1c
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
