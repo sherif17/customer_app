@@ -5,7 +5,7 @@ ThemeData lightTheme() {
     return base.copyWith(
       headline1: base.headline1.copyWith(
         fontSize: 30.0,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
         fontFamily: 'MPLUSRounded1c',
         color: Colors.deepPurple[300],
       ),
