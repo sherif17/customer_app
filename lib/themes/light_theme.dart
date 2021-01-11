@@ -4,10 +4,10 @@ ThemeData lightTheme() {
   TextTheme _basicTextTheme(TextTheme base) {
     return base.copyWith(
       headline1: base.headline1.copyWith(
-        fontSize: 72.0,
+        fontSize: 30.0,
         fontWeight: FontWeight.bold,
         fontFamily: 'MPLUSRounded1c',
-        color: Colors.white,
+        color: Colors.deepPurple[300],
       ),
       headline6: base.headline6.copyWith(
         fontSize: 23.0,
@@ -24,7 +24,7 @@ ThemeData lightTheme() {
         color: Colors.deepPurple[600],
       ),
       headline5: base.headline4.copyWith(
-        fontSize: 18.0,
+        fontSize: 17.0,
         fontFamily: 'MPLUSRounded1c',
         color: Colors.deepPurple[50],
         //buttons
@@ -44,7 +44,8 @@ ThemeData lightTheme() {
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
     primaryColor: Colors.deepPurple[300],
-    accentColor: Colors.deepPurple[300],
+    accentColor: Colors.deepPurple[100],
+    scaffoldBackgroundColor: Colors.white,
     iconTheme: IconThemeData(
       color: Colors.deepPurple[300],
       size: 20.0,
