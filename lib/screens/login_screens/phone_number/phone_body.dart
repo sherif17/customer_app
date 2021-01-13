@@ -45,7 +45,7 @@ class Body extends StatelessWidget {
                   flex: 8,
                   child: PhoneInputField(
                     type: TextInputType.phone,
-                    hint: 'xxx-xxx-xxx-xx',
+                    hint: 'Your Phone Number',
                     radius: 10,
                     borderColor: Theme.of(context).accentColor,
                     width: 30,
@@ -62,7 +62,9 @@ class Body extends StatelessWidget {
               text: "Continue",
               color: Theme.of(context).accentColor,
               textColor: Theme.of(context).primaryColor,
-              press: () {},
+              press: () {
+                Navigator.of(context).pushNamed('/PhoneVerification');
+              },
             ),
           ),
         ],

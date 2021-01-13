@@ -3,6 +3,7 @@ import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
+  final bool islogin = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,18 +20,35 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: size.height * 0.03),
-          Text(
-            "Enter the pin you have received \nVia SMS on+02xx-xxx-xxx-xx. Edit number",
-            style: Theme.of(context).textTheme.bodyText2,
-            textAlign: TextAlign.left,
+          Column(
+            children: [
+              Text(
+                "Enter the pin you have received Via SMS on+02xx-xxx-xxx-xx.",
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.left,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/PhoneNumber');
+                },
+                child: Text(
+                  "Edit number",
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: size.height * 0.03),
           buildTimer(),
           OtpForm(),
           RoundedButton(
-            text: "Continue",
+            text: "Verify",
             color: Theme.of(context).accentColor,
-            press: () {},
+            press: () {
+              islogin
+                  ? Navigator.of(context).pushNamed('/ConfirmThatUser')
+                  : Navigator.of(context).pushNamed('/RegisterNewUser');
+            },
           )
         ],
       ),

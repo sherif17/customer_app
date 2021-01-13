@@ -1,4 +1,4 @@
-import 'package:customer_app/screens/login_screens/confirm_user/body.dart';
+import 'package:customer_app/screens/login_screens/confirm_user/confirm_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

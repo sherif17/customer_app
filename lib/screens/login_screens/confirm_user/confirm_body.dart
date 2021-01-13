@@ -17,11 +17,15 @@ class Body extends StatelessWidget {
           RoundedButton(
               text: 'Yes, its Me',
               color: Theme.of(context).accentColor,
-              press: () {}),
+              press: () {
+                Navigator.of(context).pushNamed('/HomeScreen');
+              }),
           RoundedButton(
               text: 'No, Edit Info',
               color: Theme.of(context).accentColor,
-              press: () {})
+              press: () {
+                Navigator.of(context).pushNamed('/PhoneNumber');
+              })
         ],
       ),
     );
