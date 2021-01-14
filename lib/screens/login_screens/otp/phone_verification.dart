@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class VerifyPhoneNumber extends StatelessWidget {
+  static String routeName = '/PhoneVerification';
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

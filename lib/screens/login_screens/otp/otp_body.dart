@@ -1,4 +1,6 @@
+import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/otp_form.dart';
+import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -46,8 +48,8 @@ class Body extends StatelessWidget {
             color: Theme.of(context).accentColor,
             press: () {
               islogin
-                  ? Navigator.of(context).pushNamed('/ConfirmThatUser')
-                  : Navigator.of(context).pushNamed('/RegisterNewUser');
+                  ? Navigator.pushNamed(context, ConfirmThisUser.routeName)
+                  : Navigator.pushNamed(context, RegisterNewUser.routeName);
             },
           )
         ],

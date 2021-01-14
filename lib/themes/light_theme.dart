@@ -62,6 +62,8 @@ ThemeData lightTheme() {
       overlayColor: Colors.deepPurple[300].withAlpha(32),
       thumbColor: Colors.deepPurple[300],
     ),
+    appBarTheme: AppBarTheme(
+        color: Colors.white, elevation: 0, brightness: Brightness.light),
   );
 }
 ////link url fot this method :https://codeburst.io/managing-multiple-themes-in-flutter-application-37411adeb04c

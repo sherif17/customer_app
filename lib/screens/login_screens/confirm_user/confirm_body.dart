@@ -1,5 +1,7 @@
+import 'package:customer_app/screens/home_screen/home.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/user_avatar.dart';
+import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -18,13 +20,13 @@ class Body extends StatelessWidget {
               text: 'Yes, its Me',
               color: Theme.of(context).accentColor,
               press: () {
-                Navigator.of(context).pushNamed('/HomeScreen');
+                Navigator.pushNamed(context, HomeScreen.routeName);
               }),
           RoundedButton(
               text: 'No, Edit Info',
               color: Theme.of(context).accentColor,
               press: () {
-                Navigator.of(context).pushNamed('/PhoneNumber');
+                Navigator.pushNamed(context, EnterPhoneNumber.routeName);
               })
         ],
       ),

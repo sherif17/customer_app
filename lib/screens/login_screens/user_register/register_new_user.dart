@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class RegisterNewUser extends StatelessWidget {
+  static String routeName = '/RegisterNewUser';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

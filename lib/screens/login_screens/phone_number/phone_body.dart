@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,7 @@ class Body extends StatelessWidget {
               color: Theme.of(context).accentColor,
               textColor: Theme.of(context).primaryColor,
               press: () {
-                Navigator.of(context).pushNamed('/PhoneVerification');
+                Navigator.pushNamed(context, VerifyPhoneNumber.routeName);
               },
             ),
           ),
