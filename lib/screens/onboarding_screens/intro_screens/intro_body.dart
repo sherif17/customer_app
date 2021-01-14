@@ -1,3 +1,4 @@
+import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
@@ -69,7 +70,7 @@ class _IntroBodyState extends State<IntroBody> {
                     text: 'GET STARTED',
                     color: Theme.of(context).accentColor,
                     press: () {
-                      Navigator.of(context).pushNamed('/PhoneNumber');
+                      Navigator.pushNamed(context, EnterPhoneNumber.routeName);
                     },
                   ),
                 ],
