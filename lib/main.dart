@@ -1,4 +1,5 @@
 import 'package:customer_app/screens/home_screen/home.dart';
+import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screens/phone_number/enter_phone_number.dart';
 import 'screens/login_screens/confirm_user/confirm_is_that_user.dart';
@@ -15,8 +16,9 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         theme: lightTheme(),
         //home: EnterPhoneNumber(),
-        initialRoute: '/PhoneNumber',
+        initialRoute: '/intro',
         routes: {
+          '/intro': (context) => Intro(),
           '/PhoneNumber': (context) => EnterPhoneNumber(),
           '/PhoneVerification': (context) => VerifyPhoneNumber(),
           '/ConfirmThatUser': (context) => ConfirmThisUser(),

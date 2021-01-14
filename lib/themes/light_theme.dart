@@ -9,15 +9,8 @@ ThemeData lightTheme() {
         fontFamily: 'MPLUSRounded1c',
         color: Colors.deepPurple[300],
       ),
-      headline6: base.headline6.copyWith(
-        fontSize: 23.0,
-        fontFamily: 'MPLUSRounded1c',
-      ),
-      bodyText2: base.bodyText2.copyWith(
-        fontSize: 16.0,
-        fontFamily: 'MPLUSRounded1c',
-        color: Colors.deepPurple[300],
-      ),
+      headline2: base.headline2.copyWith(),
+      headline3: base.headline3.copyWith(),
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
         fontFamily: 'MPLUSRounded1c',
@@ -29,13 +22,22 @@ ThemeData lightTheme() {
         color: Colors.deepPurple[50],
         //buttons
       ),
-      caption: base.headline5.copyWith(
-        fontSize: 12.0,
+      headline6: base.headline6.copyWith(
+        fontSize: 23.0,
         fontFamily: 'MPLUSRounded1c',
       ),
       bodyText1: base.bodyText1.copyWith(
         color: Colors.deepPurple[300],
         fontSize: 14,
+      ),
+      bodyText2: base.bodyText2.copyWith(
+        fontSize: 16.0,
+        fontFamily: 'MPLUSRounded1c',
+        color: Colors.deepPurple[300],
+      ),
+      caption: base.headline5.copyWith(
+        fontSize: 12.0,
+        fontFamily: 'MPLUSRounded1c',
       ),
     );
   }
