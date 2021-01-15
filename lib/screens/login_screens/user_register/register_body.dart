@@ -53,7 +53,7 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.02),
             RoundedButton(
               text: 'Create Account',
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
               press: () {
                 Navigator.of(context).pushNamed('/HomeScreen');
               },

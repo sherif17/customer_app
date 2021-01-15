@@ -30,7 +30,7 @@ class _IntroBodyState extends State<IntroBody> {
               "Rescue My Car\n",
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(30),
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             Text("Customer APP ,Let's Start",
@@ -69,7 +69,7 @@ class _IntroBodyState extends State<IntroBody> {
                   ),
                   RoundedButton(
                     text: 'GET STARTED',
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).primaryColor,
                     press: () {
                       Navigator.pushNamed(context, EnterPhoneNumber.routeName);
                     },
@@ -91,8 +91,8 @@ class _IntroBodyState extends State<IntroBody> {
       width: currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
           color: currentPage == index
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).accentColor,
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(3)),
     );
   }

@@ -48,7 +48,7 @@ class Body extends StatelessWidget {
                     type: TextInputType.phone,
                     hint: 'Your Phone Number',
                     radius: 10,
-                    borderColor: Theme.of(context).accentColor,
+                    borderColor: Theme.of(context).primaryColor,
                     width: 30,
                   ),
                 ),
@@ -61,8 +61,8 @@ class Body extends StatelessWidget {
             ),
             child: RoundedButton(
               text: "Continue",
-              color: Theme.of(context).accentColor,
-              textColor: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).accentColor,
               press: () {
                 Navigator.pushNamed(context, VerifyPhoneNumber.routeName);
               },

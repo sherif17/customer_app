@@ -45,9 +45,20 @@ ThemeData lightTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
-    primaryColor: Colors.white,
-    accentColor: Color(0xFFBD4242),
+    primaryColor: Color(0xFFBD4242),
+    primaryColorLight: Color(0xFFC45555),
+    primaryColorDark: Color(0xFF470000),
+    accentColor: Colors.white,
+    hintColor: Color(0xFF42BDBD),
     scaffoldBackgroundColor: Colors.white,
+    errorColor: Colors.redAccent[700],
+    backgroundColor: Colors.white,
+    primaryTextTheme: TextTheme(
+      headline2: TextStyle(color: Colors.white, fontFamily: "Lato", fontSize: 16.0,),
+    ),
+    accentTextTheme: TextTheme(
+      headline3: TextStyle(color: Colors.black54, fontFamily: "Lato", fontSize: 16.0,),
+    ),
     iconTheme: IconThemeData(
       color: Color(0xFFBD4242),
       size: 20.0,

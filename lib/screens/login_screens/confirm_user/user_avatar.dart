@@ -18,7 +18,7 @@ class UserAvatar extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.09),
       padding: EdgeInsets.all(30),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).accentColor, width: 3),
+        border: Border.all(color: Theme.of(context).primaryColor, width: 3),
         shape: BoxShape.circle,
       ),
       child: SvgPicture.asset(

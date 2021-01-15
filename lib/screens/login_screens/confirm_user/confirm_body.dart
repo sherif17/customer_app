@@ -18,7 +18,7 @@ class Body extends StatelessWidget {
           Text("First Last"),
           RoundedButton(
               text: 'Yes, its Me',
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
               press: () {
                 Navigator.pushNamed(context, HomeScreen.routeName);
               }),

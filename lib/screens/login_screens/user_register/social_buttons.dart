@@ -25,7 +25,7 @@ class SocialRoundedButton extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.09),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).accentColor, width: 3),
+            border: Border.all(color: Theme.of(context).primaryColor, width: 3),
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(29)),
         child: Row(
@@ -39,7 +39,7 @@ class SocialRoundedButton extends StatelessWidget {
               iconSrc,
               height: size.height * 0.03,
               width: size.width * 0.03,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).hintColor,
             ),
           ],
         ),

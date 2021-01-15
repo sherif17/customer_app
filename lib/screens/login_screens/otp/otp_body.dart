@@ -49,8 +49,8 @@ class Body extends StatelessWidget {
           OtpForm(),
           RoundedButton(
             text: "Verify",
-            color: Theme.of(context).accentColor,
-            textColor: Theme.of(context).primaryColor,
+            color: Theme.of(context).primaryColor,
+            textColor: Theme.of(context).accentColor,
             press: () {
               islogin
                   ? Navigator.pushNamed(context, ConfirmThisUser.routeName)

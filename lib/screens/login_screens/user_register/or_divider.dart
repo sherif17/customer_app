@@ -23,7 +23,7 @@ class OrDivider extends StatelessWidget {
   Expanded buildExpanded(BuildContext context) {
     return Expanded(
       child: Divider(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColor,
         height: 1.5,
         thickness: 2.5,
       ),
