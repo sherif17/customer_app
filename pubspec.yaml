@@ -81,6 +81,14 @@ flutter:
       fonts:
          - asset: assets/fonts/MPLUSRounded1c-Black.ttf
            weight: 700
+    - family: Lato
+      fonts:
+         - asset: assets/fonts/Lato-Black.ttf
+         - asset: assets/fonts/Lato-Bold.ttf
+         - asset: assets/fonts/Lato-BlackItalic.ttf
+         - asset: assets/fonts/Lato-BoldItalic.ttf
+         - asset: assets/fonts/Lato-Regular.ttf
+         - asset: assets/fonts/Lato-Thin.ttf
 
 
   #MPLUSRounded1c

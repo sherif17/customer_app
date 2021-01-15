@@ -30,6 +30,7 @@ class _IntroBodyState extends State<IntroBody> {
               "Rescue My Car\n",
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(30),
+                color: Theme.of(context).accentColor,
               ),
             ),
             Text("Customer APP ,Let's Start",

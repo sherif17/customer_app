@@ -22,7 +22,10 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: size.height * 0.03),
-          Column(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+
+        child: Column(
             children: [
               Text(
                 "Enter the pin you have received Via SMS on+02xx-xxx-xxx-xx.",
@@ -40,12 +43,14 @@ class Body extends StatelessWidget {
               ),
             ],
           ),
+      ),
           SizedBox(height: size.height * 0.03),
           buildTimer(),
           OtpForm(),
           RoundedButton(
             text: "Verify",
             color: Theme.of(context).accentColor,
+            textColor: Theme.of(context).primaryColor,
             press: () {
               islogin
                   ? Navigator.pushNamed(context, ConfirmThisUser.routeName)
