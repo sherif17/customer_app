@@ -54,10 +54,18 @@ ThemeData lightTheme() {
     errorColor: Colors.redAccent[700],
     backgroundColor: Colors.white,
     primaryTextTheme: TextTheme(
-      headline2: TextStyle(color: Colors.white, fontFamily: "Lato", fontSize: 16.0,),
+      headline2: TextStyle(
+        color: Colors.white,
+        fontFamily: "Lato",
+        fontSize: 16.0,
+      ),
     ),
     accentTextTheme: TextTheme(
-      headline3: TextStyle(color: Colors.black54, fontFamily: "Lato", fontSize: 16.0,),
+      headline3: TextStyle(
+        color: Colors.black54,
+        fontFamily: "Lato",
+        fontSize: 16.0,
+      ),
     ),
     iconTheme: IconThemeData(
       color: Color(0xFFBD4242),
@@ -73,8 +81,32 @@ ThemeData lightTheme() {
       overlayColor: Color(0xFFBD4242).withAlpha(32),
       thumbColor: Color(0xFFBD4242),
     ),
+    inputDecorationTheme: inputDecorationTheme(base),
     appBarTheme: AppBarTheme(
-        color: Colors.white, elevation: 0, brightness: Brightness.light),
+      color: Colors.white,
+      elevation: 2,
+      brightness: Brightness.light,
+    ),
+  );
+}
+
+// for register input field
+InputDecorationTheme inputDecorationTheme(ThemeData base) {
+  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(28),
+    borderSide: BorderSide(color: Color(0xFFBD4242)),
+    gapPadding: 10,
+  );
+  return InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(
+      horizontal: 20,
+      vertical: 20,
+    ),
+    enabledBorder: outlineInputBorder,
+    focusedBorder: outlineInputBorder,
+    border: outlineInputBorder,
+    hintStyle: TextStyle(),
+    labelStyle: TextStyle(color: Colors.red),
   );
 }
 ////link url fot this method :https://codeburst.io/managing-multiple-themes-in-flutter-application-37411adeb04c

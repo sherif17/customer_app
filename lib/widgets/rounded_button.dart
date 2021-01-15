@@ -26,7 +26,7 @@ class RoundedButton extends StatelessWidget {
           onPressed: press,
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodyText2,
+            //style: Theme.of(context).textTheme.bodyText2,,
           ),
         ),
       ),

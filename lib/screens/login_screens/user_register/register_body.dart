@@ -1,9 +1,13 @@
-import 'package:customer_app/screens/login_screens/user_register/rounded_input_field.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app/lib/screens/login_screens/user_register/components/rounded_input_field.dart';
+import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../common_widgets/background.dart';
-import 'or_divider.dart';
-import 'social_buttons.dart';
+import 'form_error.dart';
+import 'components/or_divider.dart';
+import 'register_form.dart';
+import 'components/social_buttons.dart';
 
 class Body extends StatelessWidget {
   const Body({Key key}) : super(key: key);
@@ -18,18 +22,12 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.01),
             Text(
               "What's Your Name",
+              style: Theme.of(context).textTheme.headline1,
             ),
             SizedBox(height: size.height * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RoundedInputField(
-                  hintText: 'First Name',
-                  onChanged: (value) {},
-                ),
-                RoundedInputField(hintText: 'Last Name', onChanged: (value) {}),
-              ],
-            ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: RegisterForm()),
             SizedBox(height: size.height * 0.02),
             OrDivider(),
             SizedBox(height: size.height * 0.02),
@@ -51,13 +49,6 @@ class Body extends StatelessWidget {
               press: () {},
             ),
             SizedBox(height: size.height * 0.02),
-            RoundedButton(
-              text: 'Create Account',
-              color: Theme.of(context).primaryColor,
-              press: () {
-                Navigator.of(context).pushNamed('/HomeScreen');
-              },
-            ),
           ],
         ),
       ),

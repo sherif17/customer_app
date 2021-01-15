@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: size.width * 0.05, top: size.height * 0.05),
+                left: size.width * 0.05, top: size.height * 0.02),
             child: Text(
               'Enter your mobile number ,to create an account or to log in to your existing one.',
               style: Theme.of(context).textTheme.bodyText1,

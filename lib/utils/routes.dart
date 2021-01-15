@@ -7,10 +7,10 @@ import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart
 import 'package:flutter/widgets.dart';
 
 final Map<String, WidgetBuilder> routes = {
+  Intro.routeName: (context) => Intro(),
   EnterPhoneNumber.routeName: (context) => EnterPhoneNumber(),
   VerifyPhoneNumber.routeName: (context) => VerifyPhoneNumber(),
   ConfirmThisUser.routeName: (context) => ConfirmThisUser(),
   RegisterNewUser.routeName: (context) => RegisterNewUser(),
   HomeScreen.routeName: (context) => HomeScreen(),
-  Intro.routeName: (context) => Intro(),
 };
