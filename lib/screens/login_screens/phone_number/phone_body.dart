@@ -3,8 +3,8 @@ import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-import 'country_code_field.dart';
-import 'phone_input_field.dart';
+import 'componants/country_code_field.dart';
+import 'componants/phone_input_field.dart';
 
 class Body extends StatelessWidget {
   @override
