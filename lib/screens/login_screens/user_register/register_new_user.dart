@@ -7,6 +7,15 @@ class RegisterNewUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Register New User',
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.normal,
+              color: Theme.of(context).primaryColorDark),
+        ),
+      ),
       body: Body(),
     );
   }

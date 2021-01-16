@@ -87,7 +87,8 @@ class _RegisterFormState extends State<RegisterForm> {
         if (value.isNotEmpty) {
           removeError(error: NullFirstNameError);
           return "";
-        } else if (value.length > 1) {
+        }
+        if (value.length > 1) {
           removeError(error: SmallFirstNameError);
           return "";
         }
@@ -119,7 +120,8 @@ class _RegisterFormState extends State<RegisterForm> {
         if (value.isNotEmpty) {
           removeError(error: NullLastNameError);
           return "";
-        } else if (value.length > 1) {
+        }
+        if (value.length > 1) {
           removeError(error: SmallLastNameError);
           return "";
         }

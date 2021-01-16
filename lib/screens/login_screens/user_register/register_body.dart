@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
         child: Column(
           children: <Widget>[
-            SizedBox(height: size.height * 0.01),
+            // SizedBox(height: size.height * 0.00005),
             Text(
               "What's Your Name",
               style: Theme.of(context).textTheme.headline1,

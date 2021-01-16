@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         //theme: lightTheme(), initialRoute: ConfirmThisUser.routeName, routes: routes);
         theme: lightTheme(),
-        initialRoute: RegisterNewUser.routeName,
+        initialRoute: Intro.routeName,
         routes: routes);
   }
 }

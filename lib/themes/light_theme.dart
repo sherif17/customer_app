@@ -5,7 +5,7 @@ ThemeData lightTheme() {
     return base.copyWith(
       headline1: base.headline1.copyWith(
         fontSize: 30.0,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.bold,
         fontFamily: 'Lato',
         color: Color(0xFFBD4242),
       ),
@@ -83,9 +83,11 @@ ThemeData lightTheme() {
     ),
     inputDecorationTheme: inputDecorationTheme(base),
     appBarTheme: AppBarTheme(
+      centerTitle: true,
       color: Colors.white,
-      elevation: 2,
+      elevation: 0,
       brightness: Brightness.light,
+      textTheme: base.textTheme..headline3,
     ),
   );
 }
