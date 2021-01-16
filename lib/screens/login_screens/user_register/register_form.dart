@@ -38,6 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
           children: [
             Expanded(
                 child: Column(
@@ -86,6 +87,7 @@ class _RegisterFormState extends State<RegisterForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: NullFirstNameError);
+          removeError(error: SmallFirstNameError);
           return "";
         }
         if (value.length > 1) {
@@ -119,6 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: NullLastNameError);
+          removeError(error: SmallLastNameError);
           return "";
         }
         if (value.length > 1) {
