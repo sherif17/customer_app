@@ -1,4 +1,3 @@
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app/lib/screens/login_screens/user_register/components/rounded_input_field.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';

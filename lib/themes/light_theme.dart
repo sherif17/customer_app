@@ -9,7 +9,11 @@ ThemeData lightTheme() {
         fontFamily: 'Lato',
         color: Color(0xFFBD4242),
       ),
-      headline2: base.headline2.copyWith(),
+      headline2: base.headline2.copyWith(
+        fontSize: 16.0,
+        fontFamily: 'Lato',
+        color: Colors.white,
+      ),
       headline3: base.headline3.copyWith(),
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
@@ -33,8 +37,9 @@ ThemeData lightTheme() {
       bodyText2: base.bodyText2.copyWith(
         fontSize: 16.0,
         fontFamily: 'Lato',
-        color: Colors.grey[900],
+        color: Colors.grey[800],
       ),
+
       caption: base.headline5.copyWith(
         fontSize: 12.0,
         fontFamily: 'Lato',

@@ -60,7 +60,7 @@ class _RegisterFormState extends State<RegisterForm> {
         SizedBox(height: size.height * 0.03),
         RoundedButton(
           text: 'Create Account',
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).primaryColor,
           press: () {
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
