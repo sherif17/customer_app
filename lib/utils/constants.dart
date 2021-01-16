@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 const animationDuration = Duration(microseconds: 2000);
 
 //form Error
+const String NullPhoneNumberError = "Please Enter Your Phone Number";
+const String SmallPhoneNumberError =
+    "This Number is too short to be Phone number";
 
 const String NullFirstNameError = "Please Enter Your First Name";
 const String InvalidFirstNameError = "Please Valid First Name";

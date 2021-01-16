@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
+import 'package:customer_app/screens/login_screens/phone_number/phone_form.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 import 'componants/country_code_field.dart';
-import 'componants/phone_input_field.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -30,44 +30,7 @@ class Body extends StatelessWidget {
           SizedBox(
             height: size.height * 0.06,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              children: <Widget>[
-                Expanded(
-                    flex: 2,
-                    child: CountryCode(
-                      radius: 10,
-                      borderColor: Theme.of(context).primaryColor,
-                      width: 20,
-                    )),
-                Expanded(
-                  flex: 8,
-                  child: PhoneInputField(
-                    type: TextInputType.phone,
-                    hint: 'Your Phone Number',
-                    radius: 10,
-                    borderColor: Theme.of(context).primaryColor,
-                    width: 30,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: size.height * 0.2,
-            ),
-            child: RoundedButton(
-              text: "Continue",
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).accentColor,
-              press: () {
-                Navigator.pushNamed(context, VerifyPhoneNumber.routeName);
-              },
-            ),
-          ),
+          PhoneForm(),
         ],
       ),
     );
