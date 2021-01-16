@@ -39,10 +39,15 @@ ThemeData lightTheme() {
         fontFamily: 'Lato',
         color: Colors.grey[800],
       ),
-
       caption: base.headline5.copyWith(
         fontSize: 12.0,
         fontFamily: 'Lato',
+      ),
+      subtitle1: base.subtitle1.copyWith(
+        fontSize: 15.0,
+        fontFamily: 'Lato',
+        fontWeight: FontWeight.bold,
+        color: Color(0xFFBD4242),
       ),
     );
   }

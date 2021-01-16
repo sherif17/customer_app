@@ -22,31 +22,49 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: size.height * 0.03),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-
-        child: Column(
-            children: [
-              Text(
-                "Enter the pin you have received Via SMS on+02xx-xxx-xxx-xx.",
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.left,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/PhoneNumber');
-                },
-                child: Text(
-                  "Edit number",
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: Row(
+              children: [
+                Text(
+                  "We sent your code via SMS to",
                   style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                Text(
+                  "+20xx-xxx-xxx-xx.",
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
           ),
-      ),
+          SizedBox(height: size.height * 0.01),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 65),
+            child: Row(
+              children: [
+                Text(
+                  "Please enter this code here",
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.left,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/PhoneNumber');
+                  },
+                  child: Text(
+                    "  Edit number",
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ),
+              ],
+            ),
+          ),
           SizedBox(height: size.height * 0.03),
-          buildTimer(),
           OtpForm(),
+          buildTimer(),
+          SizedBox(height: size.height * 0.06),
           RoundedButton(
             text: "Verify",
             color: Theme.of(context).primaryColor,
@@ -66,13 +84,13 @@ class Body extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("This code Will Expire in "),
+        Text("Resend Code "),
         TweenAnimationBuilder(
           tween: Tween(begin: 30.0, end: 0.0),
           duration: Duration(seconds: 30),
           builder: (context, value, child) => Text(
             "00:${value.toInt()}",
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           onEnd: () {},
         ),

@@ -1,6 +1,9 @@
+import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'componants/otp_code_field.dart';
 
 class OtpForm extends StatefulWidget {
   const OtpForm({
@@ -32,12 +35,6 @@ class _OtpFormState extends State<OtpForm> {
     pin4FocusNode.dispose();
   }
 
-  void nextField(String value, FocusNode focusNode) {
-    if (value.length == 1) {
-      focusNode.requestFocus();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -49,66 +46,28 @@ class _OtpFormState extends State<OtpForm> {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
                 SizedBox(
-                  width: size.width * 0.03,
-                  child: TextFormField(
-                    autofocus: true,
-                    obscureText: false,
-                    style: TextStyle(fontSize: 24),
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    // decoration: otpInputDecoration,
-                    onChanged: (value) {
-                      nextField(value, pin2FocusNode);
-                    },
-                  ),
+                  width: getProportionateScreenWidth(60),
+                  child: buildFirstCodeField(pin2FocusNode),
                 ),
                 SizedBox(
-                  width: size.width * 0.03,
-                  child: TextFormField(
-                    focusNode: pin2FocusNode,
-                    obscureText: false,
-                    style: TextStyle(fontSize: 24),
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    // decoration: otpInputDecoration,
-                    onChanged: (value) => nextField(value, pin3FocusNode),
-                  ),
+                  width: getProportionateScreenWidth(60),
+                  child: buildCodeFormField(pin2FocusNode, pin3FocusNode),
                 ),
                 SizedBox(
-                  width: size.width * 0.03,
-                  child: TextFormField(
-                    focusNode: pin3FocusNode,
-                    obscureText: false,
-                    style: TextStyle(fontSize: 24),
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    //decoration: otpInputDecoration,
-                    onChanged: (value) => nextField(value, pin4FocusNode),
-                  ),
+                  width: getProportionateScreenWidth(60),
+                  child: buildCodeFormField(pin3FocusNode, pin4FocusNode),
                 ),
                 SizedBox(
-                  width: size.width * 0.03,
-                  child: TextFormField(
-                    focusNode: pin4FocusNode,
-                    obscureText: false,
-                    style: TextStyle(fontSize: 24),
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    // decoration: otpInputDecoration,
-                    onChanged: (value) {
-                      if (value.length == 1) {
-                        pin4FocusNode.unfocus();
-                        // Then you need to check is the code is correct or not
-                      }
-                    },
-                  ),
+                  width: getProportionateScreenWidth(60),
+                  child: buildLastCodeField(pin4FocusNode),
                 ),
               ],
             ),
           ),
-          SizedBox(height: size.height * 0.15),
+          SizedBox(height: size.height * 0.07),
         ],
       ),
     );
