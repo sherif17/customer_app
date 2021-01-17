@@ -7,12 +7,19 @@ import 'form_error.dart';
 import 'components/or_divider.dart';
 import 'register_form.dart';
 import 'components/social_buttons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:customer_app/provider/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Body extends StatelessWidget {
   const Body({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
     return Background(
       child: SingleChildScrollView(
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -39,13 +46,32 @@ class Body extends StatelessWidget {
             SocialRoundedButton(
               text: 'Continue with Google',
               iconSrc: 'assets/icons/gmail_logo.svg',
-              press: () {},
+              press: ()  async {
+                //body: ChangeNotifierProvider(
+                //  create: (context) => GoogleSignInProvider(),
+                //child: StreamBuilder(
+                //  stream: FirebaseAuth.instance.authStateChanges(),
+                //)
+                //);
+                //final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                //provider.login();
+                try{
+                    await _googleSignIn.signIn();
+                  var name = Text(_googleSignIn.currentUser.displayName);
+                  var image = Image.network(_googleSignIn.currentUser.photoUrl);
+                  print(name);
+                }
+                catch(err){
+                  print(err);
+                }
+                },
             ),
             SizedBox(height: size.height * 0.02),
             SocialRoundedButton(
               text: 'Continue with Apple ID',
               iconSrc: 'assets/icons/apple.svg',
-              press: () {},
+              press: (){
+              },
             ),
             SizedBox(height: size.height * 0.02),
           ],

@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 
 class VerifyPhoneNumber extends StatelessWidget {
   static String routeName = '/PhoneVerification';
+  final String phoneNumber;
+
+  VerifyPhoneNumber({@required this.phoneNumber});
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
