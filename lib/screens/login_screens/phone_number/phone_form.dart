@@ -1,7 +1,10 @@
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
+import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/form_error.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 
@@ -14,8 +17,39 @@ class PhoneForm extends StatefulWidget {
 
 class _PhoneFormState extends State<PhoneForm> {
   final _formKey = GlobalKey<FormState>();
-  String phone;
+  String phone, smssent, verificationId;
   final List<String> errors = [];
+  get verifiedSuccess => null;
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp();
+  }
+
+  Future<void> verfiyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+      this.verificationId = verId;
+    };
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResent]) {
+      this.verificationId = verId;
+      print("Code Sent");
+      /*smsCodeDialoge(context).then((value) {
+
+      });*/
+    };
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {};
+    final PhoneVerificationFailed verifyFailed = (FirebaseAuthException e) {
+      print('${e.message}');
+    };
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phone,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verifyFailed,
+      codeSent: smsCodeSent,
+      codeAutoRetrievalTimeout: autoRetrieve,
+    );
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -73,8 +107,10 @@ class _PhoneFormState extends State<PhoneForm> {
               press: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
+                  verfiyPhone();
                   print('$phone');
-                  Navigator.pushNamed(context, VerifyPhoneNumber.routeName);
+                  Navigator.pushNamed(context, VerifyPhoneNumber.routeName,
+                      arguments: phoneNum(phoneNumber: phone));
                 }
               },
             ),
@@ -96,6 +132,7 @@ class _PhoneFormState extends State<PhoneForm> {
       ),
       onSaved: (newValue) => phone = newValue,
       onChanged: (value) {
+        this.phone = value;
         if (value.isNotEmpty) {
           removeError(error: NullPhoneNumberError);
           removeError(error: SmallPhoneNumberError);

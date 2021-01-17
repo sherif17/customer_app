@@ -1,5 +1,6 @@
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/otp_form.dart';
+import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class Body extends StatelessWidget {
   final bool islogin = false;
   @override
   Widget build(BuildContext context) {
+    phoneNum phoneNumber = ModalRoute.of(context).settings.arguments;
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
@@ -32,7 +34,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "+20xx-xxx-xxx-xx.",
+                  "+20-${phoneNumber.phoneNumber}.",
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.left,
                 ),
@@ -65,16 +67,6 @@ class Body extends StatelessWidget {
           OtpForm(),
           buildTimer(),
           SizedBox(height: size.height * 0.06),
-          RoundedButton(
-            text: "Verify",
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).accentColor,
-            press: () {
-              islogin
-                  ? Navigator.pushNamed(context, ConfirmThisUser.routeName)
-                  : Navigator.pushNamed(context, RegisterNewUser.routeName);
-            },
-          )
         ],
       ),
     );
