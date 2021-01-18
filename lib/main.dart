@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'themes/light_theme.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(MyApp());
 }
 

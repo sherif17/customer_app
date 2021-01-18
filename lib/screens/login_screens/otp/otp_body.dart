@@ -6,10 +6,9 @@ import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
-  final bool islogin = false;
   @override
   Widget build(BuildContext context) {
-    phoneNum phoneNumber = ModalRoute.of(context).settings.arguments;
+    phoneNum response = ModalRoute.of(context).settings.arguments;
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
@@ -25,16 +24,16 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.03),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 Text(
                   "We sent your code via SMS to",
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "+20-${phoneNumber.phoneNumber}.",
+                  "+20-${response.phoneNumber}.",
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.left,
                 ),
@@ -43,7 +42,7 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.01),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 65),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Row(
               children: [
                 Text(
@@ -64,7 +63,10 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: size.height * 0.03),
-          OtpForm(),
+          OtpForm(
+              phoneRequestModel: response.phoneRequestModel,
+              phone_num: response.phoneNumber,
+              scafoldKey: response.scafoldKey),
           buildTimer(),
           SizedBox(height: size.height * 0.06),
         ],

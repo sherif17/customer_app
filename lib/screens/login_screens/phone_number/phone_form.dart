@@ -1,6 +1,8 @@
+import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/form_error.dart';
+import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,14 +19,18 @@ class PhoneForm extends StatefulWidget {
 
 class _PhoneFormState extends State<PhoneForm> {
   final _formKey = GlobalKey<FormState>();
-  String phone, smssent, verificationId;
   final List<String> errors = [];
-  get verifiedSuccess => null;
-  @override
+  PhoneRequestModel phoneRequestModel;
+  String phone;
+
   void initState() {
     super.initState();
-    Firebase.initializeApp();
+    // Firebase.initializeApp();
+    phoneRequestModel = new PhoneRequestModel();
   }
+  /*, smssent, verificationId;
+  get verifiedSuccess => null;
+  @override
 
   Future<void> verfiyPhone() async {
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
@@ -49,7 +55,7 @@ class _PhoneFormState extends State<PhoneForm> {
       codeSent: smsCodeSent,
       codeAutoRetrievalTimeout: autoRetrieve,
     );
-  }
+  }*/
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -105,12 +111,12 @@ class _PhoneFormState extends State<PhoneForm> {
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).accentColor,
               press: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  verfiyPhone();
-                  print('$phone');
+                if (validateAndSave()) {
+                  print("Request body: ${phoneRequestModel.toJson()}.");
                   Navigator.pushNamed(context, VerifyPhoneNumber.routeName,
-                      arguments: phoneNum(phoneNumber: phone));
+                      arguments: phoneNum(
+                          phoneNumber: phone,
+                          phoneRequestModel: phoneRequestModel));
                 }
               },
             ),
@@ -118,6 +124,15 @@ class _PhoneFormState extends State<PhoneForm> {
         ],
       ),
     );
+  }
+
+  bool validateAndSave() {
+    final phoneFormKey = _formKey.currentState;
+    if (phoneFormKey.validate()) {
+      phoneFormKey.save();
+      return true;
+    } else
+      return false;
   }
 
   TextFormField buildPhoneField() {
@@ -130,7 +145,7 @@ class _PhoneFormState extends State<PhoneForm> {
         hintStyle: Theme.of(context).textTheme.bodyText2,
         border: OutlineInputBorder(),
       ),
-      onSaved: (newValue) => phone = newValue,
+      onSaved: (newValue) => phoneRequestModel.phoneNumber = newValue,
       onChanged: (value) {
         this.phone = value;
         if (value.isNotEmpty) {
@@ -157,3 +172,20 @@ class _PhoneFormState extends State<PhoneForm> {
     );
   }
 }
+
+/*
+  ApiService apiService = new ApiService();
+                  apiService.phoneCheck(phoneRequestModel).then(
+                    (value) {
+                      if (value.id.isNotEmpty) {
+                        print("Response:");
+                        print("ID:${value.id}.");
+                        print("FName:${value.firstName}.");
+                        print("LName:${value.lastName}.");
+                        print("Phone:${value.phoneNumber}.");
+                        print("info:${value.information}.");
+                      }
+                    },
+                  );
+
+ */

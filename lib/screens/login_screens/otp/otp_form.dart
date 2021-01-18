@@ -1,26 +1,35 @@
+import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
+import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
+import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import 'componants/otp_code_field.dart';
 
 class OtpForm extends StatefulWidget {
-  const OtpForm({
-    Key key,
-  }) : super(key: key);
+  PhoneRequestModel phoneRequestModel;
+  String phone_num;
+  ScaffoldState scafoldKey;
+  OtpForm({Key key, this.phoneRequestModel, this.phone_num, this.scafoldKey})
+      : super(key: key);
 
   @override
   _OtpFormState createState() => _OtpFormState();
 }
 
 class _OtpFormState extends State<OtpForm> {
-  final _pinKey = GlobalKey<ScaffoldState>();
+  bool checkServer = false;
+  bool checkFirebase = false;
   final _pinKey_two = GlobalKey<FormState>();
+  bool isApiCallProcess = false;
 
   String pin1;
   String pin2;
@@ -34,6 +43,7 @@ class _OtpFormState extends State<OtpForm> {
   FocusNode pin4FocusNode;
   FocusNode pin5FocusNode;
   FocusNode pin6FocusNode;
+
   String _verificationCode;
 
   @override
@@ -59,6 +69,14 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   Widget build(BuildContext context) {
+    return ProgressHUD(
+      child: _uiSetup(context),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+    );
+  }
+
+  Widget _uiSetup(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _pinKey_two,
@@ -163,43 +181,62 @@ class _OtpFormState extends State<OtpForm> {
                       }
                     },
                     onSaved: (newValue) => pin6 = newValue,
+                    onFieldSubmitted: (rand) async {
+                      ApiService apiService = new ApiService();
+                      await apiService
+                          .phoneCheck(widget.phoneRequestModel)
+                          .then((value) {
+                        // checkServer = value.id;
+                        print(checkServer);
+                      });
+                    },
                   ),
-                ),
+                )
               ],
             ),
           ),
           SizedBox(height: size.height * 0.07),
           RoundedButton(
-            text: "Verify",
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).accentColor,
-            press: () async {
-              _pinKey_two.currentState.save();
-              String code = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
-              print(code);
-              try {
-                await FirebaseAuth.instance
-                    .signInWithCredential(PhoneAuthProvider.credential(
-                        verificationId: _verificationCode, smsCode: code))
-                    .then((value) async {
-                  if (value.user != null) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ConfirmThisUser()),
-                        (route) => false);
-                  }
-                });
-              } catch (e) {
-                FocusScope.of(context).unfocus();
-                _pinKey.currentState
-                    .showSnackBar(SnackBar(content: Text('invalid OTP')));
-              }
-            },
-            /*islogin
-                  ? Navigator.pushNamed(context, ConfirmThisUser.routeName)
-                  : Navigator.pushNamed(context, RegisterNewUser.routeName);*/
-          ),
+              text: "Verify",
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).accentColor,
+              press: () async {
+                isApiCallProcess = true;
+                _pinKey_two.currentState.save();
+                String code = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
+                print(code);
+                try {
+                  await FirebaseAuth.instance
+                      .signInWithCredential(PhoneAuthProvider.credential(
+                          verificationId: _verificationCode, smsCode: code))
+                      .then((value) async {
+                    if (value.user != null) {
+                      checkFirebase = true;
+                      print(checkFirebase);
+                    }
+                  });
+                } catch (e) {
+                  print("invalid otp");
+                  /* FocusScope.of(context).unfocus();
+                  widget.scafoldKey
+                      .showSnackBar(SnackBar(content: Text('invalid OTP')));*/
+                }
+
+                while (checkServer == false) {
+                  ApiService apiService = new ApiService();
+                  await apiService.phoneCheck(widget.phoneRequestModel).then(
+                    (value) {
+                      while (value.id == null) {
+                        checkServer = false;
+                        isApiCallProcess = false;
+                      }
+                      if (value.id != null) {
+                        print("Done");
+                      }
+                    },
+                  );
+                }
+              }),
         ],
       ),
     );
@@ -207,16 +244,17 @@ class _OtpFormState extends State<OtpForm> {
 
   _verifyPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+201142555375',
+        phoneNumber: "+20${widget.phone_num}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
-              Navigator.pushAndRemoveUntil(
+              /*Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => ConfirmThisUser()),
-                  (route) => false);
+                  (route) => false);*/
+              print("LOGGEDINNNNNN");
             }
           });
         },
@@ -236,3 +274,26 @@ class _OtpFormState extends State<OtpForm> {
         timeout: Duration(seconds: 120));
   }
 }
+/*
+print("Response:");
+                    print("ID:${value.id}.");
+                    print("FName:${value.firstName}.");
+                    print("LName:${value.lastName}.");
+                    print("Phone:${value.phoneNumber}.");
+                    print("info:${value.information}.");
+
+
+
+
+                    print(value.id);
+                    if (value.firstName == null &&
+                        value.lastName == null &&
+                        checkFirebase == true) {
+                      print(
+                          "Firebase Token:${FirebaseAuth.instance.currentUser.uid}");
+                      Navigator.pushNamed(context, ConfirmThisUser.routeName);
+                    } else if (value.id.isNotEmpty) {
+                      print(value.id);
+                      Navigator.pushNamed(context, RegisterNewUser.routeName);
+                    }
+}*/

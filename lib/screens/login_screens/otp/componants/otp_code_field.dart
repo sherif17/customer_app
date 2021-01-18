@@ -53,5 +53,6 @@ TextFormField buildLastCodeField(FocusNode lastNode) {
         // Then you need to check is the code is correct or not
       }
     },
+    onFieldSubmitted: (value) {},
   );
 }
