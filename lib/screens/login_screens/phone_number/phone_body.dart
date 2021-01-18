@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'componants/country_code_field.dart';
 
 class Body extends StatelessWidget {
+  String phoneNumber = "";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
