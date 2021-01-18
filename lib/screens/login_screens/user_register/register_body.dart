@@ -11,6 +11,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:customer_app/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
 class Body extends StatelessWidget {
   const Body({Key key}) : super(key: key);
@@ -19,6 +22,9 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+    final facebookLogin = FacebookLogin();
+    bool _isLoggedIn = false;
+    Map userProfile;
 
     return Background(
       child: SingleChildScrollView(
@@ -30,6 +36,7 @@ class Body extends StatelessWidget {
               "What's Your Name",
               style: Theme.of(context).textTheme.headline1,
             ),
+
             SizedBox(height: size.height * 0.02),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -40,8 +47,18 @@ class Body extends StatelessWidget {
             SocialRoundedButton(
               text: 'Continue with Facebook',
               iconSrc: 'assets/icons/facebook.svg',
-              press: () {},
+              press: () async {
+                final result = await facebookLogin.logIn(['email']);
+
+                    final token = result.accessToken.token;
+                    final graphResponse = await http.get(
+                        'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+                    final profile = JSON.jsonDecode(graphResponse.body);
+                    print(profile);
+                    userProfile = profile;
+              },
             ),
+
             SizedBox(height: size.height * 0.02),
             SocialRoundedButton(
               text: 'Continue with Google',
@@ -66,6 +83,7 @@ class Body extends StatelessWidget {
                 }
                 },
             ),
+
             SizedBox(height: size.height * 0.02),
             SocialRoundedButton(
               text: 'Continue with Apple ID',
