@@ -32,11 +32,12 @@ ThemeData lightTheme() {
       ),
       bodyText1: base.bodyText1.copyWith(
         color: Colors.grey[800],
-        fontSize: 14,
+        fontSize: 15,
       ),
       bodyText2: base.bodyText2.copyWith(
         fontSize: 16.0,
         fontFamily: 'Lato',
+        fontWeight: FontWeight.w900,
         color: Colors.grey[800],
       ),
       caption: base.headline5.copyWith(
@@ -46,7 +47,7 @@ ThemeData lightTheme() {
       subtitle1: base.subtitle1.copyWith(
         fontSize: 15.0,
         fontFamily: 'Lato',
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w900,
         color: Color(0xFFBD4242),
       ),
     );

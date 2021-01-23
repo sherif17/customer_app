@@ -1,9 +1,10 @@
+import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
+import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/form_error.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 import 'componants/country_code_field.dart';
 
@@ -14,8 +15,15 @@ class PhoneForm extends StatefulWidget {
 
 class _PhoneFormState extends State<PhoneForm> {
   final _formKey = GlobalKey<FormState>();
-  String phone;
   final List<String> errors = [];
+  PhoneRequestModel phoneRequestModel;
+  String phone;
+
+  @override
+  void initState() {
+    super.initState();
+    phoneRequestModel = new PhoneRequestModel();
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -71,10 +79,11 @@ class _PhoneFormState extends State<PhoneForm> {
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).accentColor,
               press: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  print('$phone');
-                  Navigator.pushNamed(context, VerifyPhoneNumber.routeName);
+                if (validateAndSave()) {
+                  Navigator.pushNamed(context, VerifyPhoneNumber.routeName,
+                      arguments: phoneNum(
+                          phoneNumber: phone,
+                          phoneRequestModel: phoneRequestModel));
                 }
               },
             ),
@@ -82,6 +91,15 @@ class _PhoneFormState extends State<PhoneForm> {
         ],
       ),
     );
+  }
+
+  bool validateAndSave() {
+    final phoneFormKey = _formKey.currentState;
+    if (phoneFormKey.validate()) {
+      phoneFormKey.save();
+      return true;
+    } else
+      return false;
   }
 
   TextFormField buildPhoneField() {
@@ -94,11 +112,13 @@ class _PhoneFormState extends State<PhoneForm> {
         hintStyle: Theme.of(context).textTheme.bodyText2,
         border: OutlineInputBorder(),
       ),
-      onSaved: (newValue) => phone = newValue,
+      onSaved: (newValue) => phoneRequestModel.phoneNumber = newValue,
       onChanged: (value) {
+        this.phone = value;
         if (value.isNotEmpty) {
           removeError(error: NullPhoneNumberError);
           removeError(error: SmallPhoneNumberError);
+          removeError(error: ValidPhoneNumberError);
           return "";
         }
         if (value.length > 10) {
@@ -113,6 +133,13 @@ class _PhoneFormState extends State<PhoneForm> {
           return "";
         } else if (value.length < 10) {
           addError(error: SmallPhoneNumberError);
+          return "";
+        }
+        if (phoneValidatorRegExp.hasMatch(value) == true) {
+          removeError(error: ValidPhoneNumberError);
+          //return "";
+        } else if (phoneValidatorRegExp.hasMatch(value) == false) {
+          addError(error: ValidPhoneNumberError);
           return "";
         }
         return null;
