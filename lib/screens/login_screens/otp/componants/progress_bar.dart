@@ -19,17 +19,23 @@ class ProgressHUD extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetList = new List<Widget>();
+    Size size = MediaQuery.of(context).size;
     widgetList.add(child);
     if (inAsyncCall) {
       final modal = new Stack(
         children: [
-          FittedBox(
-            child: new Opacity(
-              opacity: opacity,
-              child: ModalBarrier(dismissible: false, color: color),
-            ),
+          new Opacity(
+            opacity: opacity,
+            child: SizedBox(
+                height: size.height,
+                width: size.width,
+                child: ModalBarrier(dismissible: false, color: color)),
           ),
-          new Center(child: new CircularProgressIndicator()),
+          new Center(
+              child: new CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColorLight),
+          )),
         ],
       );
       widgetList.add(modal);

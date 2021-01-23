@@ -30,6 +30,7 @@ class _OtpFormState extends State<OtpForm> {
   bool checkFirebase = false;
   final _pinKey_two = GlobalKey<FormState>();
   bool isApiCallProcess = false;
+  PhoneRequestModel phoneRequestModel;
 
   String pin1;
   String pin2;
@@ -72,7 +73,7 @@ class _OtpFormState extends State<OtpForm> {
     return ProgressHUD(
       child: _uiSetup(context),
       inAsyncCall: isApiCallProcess,
-      opacity: 0.3,
+      opacity: 0,
     );
   }
 
@@ -177,19 +178,9 @@ class _OtpFormState extends State<OtpForm> {
                     onChanged: (value) {
                       if (value.length == 1) {
                         pin6FocusNode.unfocus();
-                        // Then you need to check is the code is correct or not
                       }
                     },
                     onSaved: (newValue) => pin6 = newValue,
-                    onFieldSubmitted: (rand) async {
-                      ApiService apiService = new ApiService();
-                      await apiService
-                          .phoneCheck(widget.phoneRequestModel)
-                          .then((value) {
-                        // checkServer = value.id;
-                        print(checkServer);
-                      });
-                    },
                   ),
                 )
               ],
@@ -217,25 +208,36 @@ class _OtpFormState extends State<OtpForm> {
                   });
                 } catch (e) {
                   print("invalid otp");
-                  /* FocusScope.of(context).unfocus();
+
+                  /*FocusScope.of(context).unfocus();
                   widget.scafoldKey
                       .showSnackBar(SnackBar(content: Text('invalid OTP')));*/
                 }
-
-                while (checkServer == false) {
-                  ApiService apiService = new ApiService();
-                  await apiService.phoneCheck(widget.phoneRequestModel).then(
-                    (value) {
-                      while (value.id == null) {
-                        checkServer = false;
-                        isApiCallProcess = false;
-                      }
-                      if (value.id != null) {
-                        print("Done");
-                      }
-                    },
-                  );
-                }
+                print("Request body: ${widget.phoneRequestModel.toJson()}.");
+                setState(() {
+                  isApiCallProcess = true;
+                });
+                ApiService apiService = new ApiService();
+                apiService.phoneCheck(widget.phoneRequestModel).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    print("Response:");
+                    print("ID:${value.id}.");
+                    print("FName:${value.firstName}.");
+                    print("LName:${value.lastName}.");
+                    print("Phone:${value.phoneNumber}.");
+                    print("info:${value.exists}.");
+                    if (value.exists == true && checkFirebase == true) {
+                      print(
+                          "Firebase Token:${FirebaseAuth.instance.currentUser.uid}");
+                      Navigator.pushNamed(context, ConfirmThisUser.routeName);
+                    } else if (value.exists == false && checkFirebase == true) {
+                      Navigator.pushNamed(context, RegisterNewUser.routeName);
+                    }
+                  }
+                });
               }),
         ],
       ),
@@ -244,7 +246,7 @@ class _OtpFormState extends State<OtpForm> {
 
   _verifyPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: "+20${widget.phone_num}",
+        phoneNumber: "+2${widget.phone_num}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
@@ -274,26 +276,3 @@ class _OtpFormState extends State<OtpForm> {
         timeout: Duration(seconds: 120));
   }
 }
-/*
-print("Response:");
-                    print("ID:${value.id}.");
-                    print("FName:${value.firstName}.");
-                    print("LName:${value.lastName}.");
-                    print("Phone:${value.phoneNumber}.");
-                    print("info:${value.information}.");
-
-
-
-
-                    print(value.id);
-                    if (value.firstName == null &&
-                        value.lastName == null &&
-                        checkFirebase == true) {
-                      print(
-                          "Firebase Token:${FirebaseAuth.instance.currentUser.uid}");
-                      Navigator.pushNamed(context, ConfirmThisUser.routeName);
-                    } else if (value.id.isNotEmpty) {
-                      print(value.id);
-                      Navigator.pushNamed(context, RegisterNewUser.routeName);
-                    }
-}*/

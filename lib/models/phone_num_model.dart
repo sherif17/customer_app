@@ -31,6 +31,10 @@ class PhoneRequestModel {
 //
 //     final phoneResponseModel = phoneResponseModelFromJson(jsonString);
 
+// To parse this JSON data, do
+//
+//     final phoneResponseModel = phoneResponseModelFromJson(jsonString);
+
 PhoneResponseModel phoneResponseModelFromJson(String str) =>
     PhoneResponseModel.fromJson(json.decode(str));
 
@@ -43,14 +47,14 @@ class PhoneResponseModel {
     this.firstName,
     this.lastName,
     this.phoneNumber,
-    this.information,
+    this.exists,
   });
 
   String id;
   String firstName;
   String lastName;
   String phoneNumber;
-  String information;
+  bool exists;
 
   factory PhoneResponseModel.fromJson(Map<String, dynamic> json) =>
       PhoneResponseModel(
@@ -58,7 +62,7 @@ class PhoneResponseModel {
         firstName: json["firstName"],
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],
-        information: json["Information"],
+        exists: json["Exists"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +70,6 @@ class PhoneResponseModel {
         "firstName": firstName,
         "lastName": lastName,
         "phoneNumber": phoneNumber,
-        "Information": information,
+        "Exists": exists,
       };
 }
