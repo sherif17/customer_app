@@ -1,7 +1,7 @@
 import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
-import 'package:customer_app/screens/login_screens/user_register/form_error.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/widgets/form_error.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +112,10 @@ class _PhoneFormState extends State<PhoneForm> {
         hintStyle: Theme.of(context).textTheme.bodyText2,
         border: OutlineInputBorder(),
       ),
-      onSaved: (newValue) => phoneRequestModel.phoneNumber = newValue,
+      onSaved: (newValue) {
+        String numberCodeFormat = "+20${newValue}";
+        phoneRequestModel.phoneNumber = numberCodeFormat;
+      },
       onChanged: (value) {
         this.phone = value;
         if (value.isNotEmpty) {

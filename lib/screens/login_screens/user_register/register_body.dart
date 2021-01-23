@@ -3,10 +3,10 @@ import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../common_widgets/background.dart';
-import 'form_error.dart';
+import '../../../widgets/form_error.dart';
 import 'components/or_divider.dart';
 import 'register_form.dart';
-import 'components/social_buttons.dart';
+import '../../../widgets/borderd_buttons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:customer_app/provider/google_sign_in.dart';
@@ -44,26 +44,28 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.02),
             OrDivider(),
             SizedBox(height: size.height * 0.02),
-            SocialRoundedButton(
+            borderedRoundedButton(
               text: 'Continue with Facebook',
               iconSrc: 'assets/icons/facebook.svg',
+              CornerRadius: 29,
               press: () async {
                 final result = await facebookLogin.logIn(['email']);
 
-                    final token = result.accessToken.token;
-                    final graphResponse = await http.get(
-                        'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
-                    final profile = JSON.jsonDecode(graphResponse.body);
-                    print(profile);
-                    userProfile = profile;
+                final token = result.accessToken.token;
+                final graphResponse = await http.get(
+                    'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+                final profile = JSON.jsonDecode(graphResponse.body);
+                print(profile);
+                userProfile = profile;
               },
             ),
 
             SizedBox(height: size.height * 0.02),
-            SocialRoundedButton(
+            borderedRoundedButton(
               text: 'Continue with Google',
               iconSrc: 'assets/icons/gmail_logo.svg',
-              press: ()  async {
+              CornerRadius: 29,
+              press: () async {
                 //body: ChangeNotifierProvider(
                 //  create: (context) => GoogleSignInProvider(),
                 //child: StreamBuilder(
@@ -72,24 +74,23 @@ class Body extends StatelessWidget {
                 //);
                 //final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                 //provider.login();
-                try{
-                    await _googleSignIn.signIn();
+                try {
+                  await _googleSignIn.signIn();
                   var name = Text(_googleSignIn.currentUser.displayName);
                   var image = Image.network(_googleSignIn.currentUser.photoUrl);
                   print(name);
-                }
-                catch(err){
+                } catch (err) {
                   print(err);
                 }
-                },
+              },
             ),
 
             SizedBox(height: size.height * 0.02),
-            SocialRoundedButton(
+            borderedRoundedButton(
+              CornerRadius: 29,
               text: 'Continue with Apple ID',
               iconSrc: 'assets/icons/apple.svg',
-              press: (){
-              },
+              press: () {},
             ),
             SizedBox(height: size.height * 0.02),
           ],

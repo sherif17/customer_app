@@ -3,7 +3,7 @@ import 'package:customer_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 const animationDuration = Duration(microseconds: 2000);
-final RegExp phoneValidatorRegExp = RegExp(r"(01)[0-9]{9}$");
+final RegExp phoneValidatorRegExp = RegExp(r"(1)[0-9]{9}$");
 //form Error
 const String NullPhoneNumberError = "Please Enter Your Phone Number";
 const String SmallPhoneNumberError =
@@ -22,12 +22,28 @@ final otpInputDecoration = InputDecoration(
   counterText: '',
   contentPadding:
       EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
-  border: outlineInputBorder(),
-  focusedBorder: outlineInputBorder(),
-  enabledBorder: outlineInputBorder(),
+  border: enableInputBorder(),
+  focusedBorder: enableInputBorder(),
+  enabledBorder: enableInputBorder(),
+  disabledBorder: disableInputBorder(),
+  errorBorder: errorBorder(),
 );
 
-OutlineInputBorder outlineInputBorder() {
+OutlineInputBorder errorBorder() {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
+    borderSide: BorderSide(color: Colors.grey[800]),
+  );
+}
+
+OutlineInputBorder disableInputBorder() {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+    borderSide: BorderSide(color: Colors.grey[900], width: 3.0),
+  );
+}
+
+OutlineInputBorder enableInputBorder() {
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
     borderSide: BorderSide(color: Color(0xFF470000)),

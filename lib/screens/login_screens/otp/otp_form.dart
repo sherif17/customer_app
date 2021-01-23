@@ -246,7 +246,7 @@ class _OtpFormState extends State<OtpForm> {
 
   _verifyPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: "+2${widget.phone_num}",
+        phoneNumber: "+20${widget.phone_num}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)

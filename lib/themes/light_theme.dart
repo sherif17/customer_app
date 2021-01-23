@@ -1,3 +1,4 @@
+import 'package:customer_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme() {
@@ -63,6 +64,7 @@ ThemeData lightTheme() {
     hintColor: Color(0xFF42BDBD),
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
+    canvasColor: Colors.transparent,
     backgroundColor: Colors.white,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
@@ -105,19 +107,36 @@ ThemeData lightTheme() {
 
 // for register input field
 InputDecorationTheme inputDecorationTheme(ThemeData base) {
-  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+  OutlineInputBorder EnabledInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(28),
-    borderSide: BorderSide(color: Color(0xFFBD4242)),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1),
+    gapPadding: 15,
+  );
+  OutlineInputBorder FocusedInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(28),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1.5),
     gapPadding: 10,
   );
+
+  OutlineInputBorder disableInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: BorderSide(color: Colors.grey[900], width: 0.5),
+  );
+
+  OutlineInputBorder ErrorInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Color(0xFFBD4242)));
+
   return InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(
-      horizontal: 20,
+      horizontal: 25,
       vertical: 20,
     ),
-    enabledBorder: outlineInputBorder,
-    focusedBorder: outlineInputBorder,
-    border: outlineInputBorder,
+    enabledBorder: EnabledInputBorder,
+    disabledBorder: disableInputBorder,
+    focusedBorder: FocusedInputBorder,
+    errorBorder: ErrorInputBorder,
+    border: EnabledInputBorder,
     hintStyle: TextStyle(),
     labelStyle: TextStyle(color: Colors.red),
   );

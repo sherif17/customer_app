@@ -3,7 +3,7 @@ import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-import 'form_error.dart';
+import '../../../widgets/form_error.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
