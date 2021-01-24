@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'componants/otp_code_field.dart';
 
@@ -26,11 +27,18 @@ class OtpForm extends StatefulWidget {
 }
 
 class _OtpFormState extends State<OtpForm> {
-  bool checkServer = false;
   bool checkFirebase = false;
+  String fireToken;
   final _pinKey_two = GlobalKey<FormState>();
+
   bool isApiCallProcess = false;
   PhoneRequestModel phoneRequestModel;
+
+  String jwtToken;
+  String responseID;
+  String responseFName;
+  String responseLName;
+  int responseIat;
 
   String pin1;
   String pin2;
@@ -202,8 +210,10 @@ class _OtpFormState extends State<OtpForm> {
                           verificationId: _verificationCode, smsCode: code))
                       .then((value) async {
                     if (value.user != null) {
+                      fireToken = FirebaseAuth.instance.currentUser.uid;
                       checkFirebase = true;
                       print(checkFirebase);
+                      print("Firebase Token:${fireToken}");
                     }
                   });
                 } catch (e) {
@@ -213,6 +223,7 @@ class _OtpFormState extends State<OtpForm> {
                   widget.scafoldKey
                       .showSnackBar(SnackBar(content: Text('invalid OTP')));*/
                 }
+                widget.phoneRequestModel.fireBaseId = fireToken;
                 print("Request body: ${widget.phoneRequestModel.toJson()}.");
                 setState(() {
                   isApiCallProcess = true;
@@ -224,18 +235,28 @@ class _OtpFormState extends State<OtpForm> {
                       isApiCallProcess = false;
                     });
                     print("Response:");
-                    print("ID:${value.id}.");
-                    print("FName:${value.firstName}.");
-                    print("LName:${value.lastName}.");
-                    print("Phone:${value.phoneNumber}.");
-                    print("info:${value.exists}.");
-                    if (value.exists == true && checkFirebase == true) {
-                      print(
-                          "Firebase Token:${FirebaseAuth.instance.currentUser.uid}");
+                    jwtToken = value.token;
+                    print(jwtToken);
+                    Map<String, dynamic> decodedToken =
+                        JwtDecoder.decode(jwtToken);
+                    responseID = decodedToken["_id"];
+                    responseFName = decodedToken["firstName"];
+                    responseLName = decodedToken["lastName"];
+                    responseIat = decodedToken["iat"];
+                    print(responseID);
+                    print(responseLName);
+                    print(responseFName);
+                    print(responseIat);
+                    if (responseFName != null &&
+                        responseLName != null &&
+                        checkFirebase == true) {
                       Navigator.pushNamed(context, ConfirmThisUser.routeName);
-                    } else if (value.exists == false && checkFirebase == true) {
+                    } else if (responseFName == null &&
+                        responseLName == null &&
+                        checkFirebase == true) {
                       Navigator.pushNamed(context, RegisterNewUser.routeName);
-                    }
+                    } else
+                      print("Something wrong");
                   }
                 });
               }),

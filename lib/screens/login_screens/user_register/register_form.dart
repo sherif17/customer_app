@@ -1,3 +1,4 @@
+import 'package:customer_app/models/user_register_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
@@ -12,6 +13,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  UserRegisterRequestModel userRegisterRequestModel;
   String FName;
   String LName;
 
@@ -83,7 +85,7 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: 'First Name',
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
-      onSaved: (newValue) => FName = newValue,
+      onSaved: (newValue) => userRegisterRequestModel.firstName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: NullFirstNameError);
@@ -117,7 +119,7 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: 'Last Name',
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
-      onSaved: (newValue) => LName = newValue,
+      onSaved: (newValue) => userRegisterRequestModel.lastName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: NullLastNameError);

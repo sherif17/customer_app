@@ -13,17 +13,21 @@ String phoneRequestModelToJson(PhoneRequestModel data) =>
 class PhoneRequestModel {
   PhoneRequestModel({
     this.phoneNumber,
+    this.fireBaseId,
   });
 
   String phoneNumber;
+  String fireBaseId;
 
   factory PhoneRequestModel.fromJson(Map<String, dynamic> json) =>
       PhoneRequestModel(
         phoneNumber: json["phoneNumber"],
+        fireBaseId: json["fireBaseId"],
       );
 
   Map<String, dynamic> toJson() => {
         "phoneNumber": phoneNumber,
+        "fireBaseId": fireBaseId,
       };
 }
 
@@ -43,33 +47,21 @@ String phoneResponseModelToJson(PhoneResponseModel data) =>
 
 class PhoneResponseModel {
   PhoneResponseModel({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.phoneNumber,
-    this.exists,
+    this.token,
+    this.error,
   });
 
-  String id;
-  String firstName;
-  String lastName;
-  String phoneNumber;
-  bool exists;
+  String token;
+  String error;
 
   factory PhoneResponseModel.fromJson(Map<String, dynamic> json) =>
       PhoneResponseModel(
-        id: json["_id"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        phoneNumber: json["phoneNumber"],
-        exists: json["Exists"],
+        token: json["token"],
+        error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "phoneNumber": phoneNumber,
-        "Exists": exists,
+        "token": token,
+        "error": error,
       };
 }

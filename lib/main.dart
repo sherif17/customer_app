@@ -14,7 +14,7 @@ void main() async {
   runApp(MyApp());
 }
 
-class App extends StatelessWidget {
+/*class App extends StatelessWidget {
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
@@ -37,7 +37,7 @@ class App extends StatelessWidget {
       },
     );
   }
-}
+}*/
 
 class MyApp extends StatelessWidget {
   @override
