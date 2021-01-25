@@ -24,13 +24,13 @@ class ProgressHUD extends StatelessWidget {
     if (inAsyncCall) {
       final modal = new Stack(
         children: [
-          new Opacity(
+          /* new Opacity(
             opacity: opacity,
             child: SizedBox(
-                height: size.height,
-                width: size.width,
+                height: size.height * 0.5,
+                width: size.width * 0.5,
                 child: ModalBarrier(dismissible: false, color: color)),
-          ),
+          ),*/
           new Center(
               child: new CircularProgressIndicator(
             valueColor: new AlwaysStoppedAnimation<Color>(

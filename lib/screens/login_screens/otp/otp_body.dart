@@ -12,6 +12,7 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: size.height * 0.1),
           Padding(
@@ -33,7 +34,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "+20-${response.phoneNumber}.",
+                  " +20-${response.phoneNumber}.",
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.left,
                 ),
@@ -47,7 +48,7 @@ class Body extends StatelessWidget {
               children: [
                 Text(
                   "Please enter this code here",
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   textAlign: TextAlign.left,
                 ),
                 GestureDetector(

@@ -1,4 +1,3 @@
-import 'package:customer_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme() {
@@ -11,11 +10,16 @@ ThemeData lightTheme() {
         color: Color(0xFFBD4242),
       ),
       headline2: base.headline2.copyWith(
-        fontSize: 16.0,
+          fontSize: 25.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Lato',
+          color: Colors.black54),
+      headline3: base.headline3.copyWith(
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
         fontFamily: 'Lato',
-        color: Colors.white,
+        color: Colors.black,
       ),
-      headline3: base.headline3.copyWith(),
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
         fontFamily: 'Lato',
@@ -38,11 +42,16 @@ ThemeData lightTheme() {
       bodyText2: base.bodyText2.copyWith(
         fontSize: 16.0,
         fontFamily: 'Lato',
-        fontWeight: FontWeight.w900,
-        color: Colors.grey[800],
+        fontWeight: FontWeight.w800,
+        color: Colors.grey[900],
       ),
+      button: base.button.copyWith(
+          fontSize: 20.0,
+          fontFamily: 'Lato',
+          color: Colors.white,
+          fontWeight: FontWeight.bold),
       caption: base.headline5.copyWith(
-        fontSize: 12.0,
+        fontSize: 14.0,
         fontFamily: 'Lato',
       ),
       subtitle1: base.subtitle1.copyWith(

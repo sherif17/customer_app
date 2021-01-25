@@ -9,6 +9,7 @@ const String NullPhoneNumberError = "Please Enter Your Phone Number";
 const String SmallPhoneNumberError =
     "This Number is too short to be Phone number";
 const String ValidPhoneNumberError = "please enter valid phone number";
+const String StartWithOneNumberError = "Your number should start with 1";
 
 const String NullFirstNameError = "Please Enter Your First Name";
 const String InvalidFirstNameError = "Please Valid First Name";

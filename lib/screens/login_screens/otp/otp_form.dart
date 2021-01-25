@@ -1,7 +1,9 @@
 import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
+import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/utils/constants.dart';
@@ -10,6 +12,8 @@ import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -19,8 +23,7 @@ class OtpForm extends StatefulWidget {
   PhoneRequestModel phoneRequestModel;
   String phone_num;
   ScaffoldState scafoldKey;
-  OtpForm({Key key, this.phoneRequestModel, this.phone_num, this.scafoldKey})
-      : super(key: key);
+  OtpForm({Key key, this.phoneRequestModel, this.phone_num, this.scafoldKey});
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -218,47 +221,71 @@ class _OtpFormState extends State<OtpForm> {
                   });
                 } catch (e) {
                   print("invalid otp");
-
-                  /*FocusScope.of(context).unfocus();
-                  widget.scafoldKey
-                      .showSnackBar(SnackBar(content: Text('invalid OTP')));*/
+                  checkFirebase = false;
+                  _showModalBottomSheet(context, size.height * 0.4, code);
                 }
-                widget.phoneRequestModel.fireBaseId = fireToken;
-                print("Request body: ${widget.phoneRequestModel.toJson()}.");
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                ApiService apiService = new ApiService();
-                apiService.phoneCheck(widget.phoneRequestModel).then((value) {
-                  if (value != null) {
-                    setState(() {
-                      isApiCallProcess = false;
-                    });
-                    print("Response:");
-                    jwtToken = value.token;
-                    print(jwtToken);
-                    Map<String, dynamic> decodedToken =
-                        JwtDecoder.decode(jwtToken);
-                    responseID = decodedToken["_id"];
-                    responseFName = decodedToken["firstName"];
-                    responseLName = decodedToken["lastName"];
-                    responseIat = decodedToken["iat"];
-                    print(responseID);
-                    print(responseLName);
-                    print(responseFName);
-                    print(responseIat);
-                    if (responseFName != null &&
-                        responseLName != null &&
-                        checkFirebase == true) {
-                      Navigator.pushNamed(context, ConfirmThisUser.routeName);
-                    } else if (responseFName == null &&
-                        responseLName == null &&
-                        checkFirebase == true) {
-                      Navigator.pushNamed(context, RegisterNewUser.routeName);
-                    } else
-                      print("Something wrong");
-                  }
-                });
+                if (checkFirebase == true) {
+                  widget.phoneRequestModel.fireBaseId = fireToken;
+                  print("Request body: ${widget.phoneRequestModel.toJson()}.");
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  ApiService apiService = new ApiService();
+                  apiService.phoneCheck(widget.phoneRequestModel).then((value) {
+                    if (value.error == null) {
+                      print("Response:");
+                      jwtToken = value.token;
+                      print(jwtToken);
+                      Map<String, dynamic> decodedToken =
+                          JwtDecoder.decode(jwtToken);
+                      responseID = decodedToken["_id"];
+                      responseFName = decodedToken["firstName"];
+                      responseLName = decodedToken["lastName"];
+                      responseIat = decodedToken["iat"];
+                      print(responseID);
+                      print(responseLName);
+                      print(responseFName);
+                      print(responseIat);
+                      if (responseFName != null && responseLName != null) {
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+                        Navigator.pushNamed(context, ConfirmThisUser.routeName,
+                            arguments: otpNavData(
+                              jwtToken: jwtToken,
+                              uID: responseID,
+                              FName: responseFName,
+                              LName: responseLName,
+                              iAt: responseIat,
+                              Phone: "+20${widget.phone_num}",
+                            ));
+                      } else if (responseFName == null &&
+                          responseLName == null) {
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+                        Navigator.pushNamed(context, RegisterNewUser.routeName,
+                            arguments: otpNavData(
+                                jwtToken: jwtToken,
+                                Phone: "+20${widget.phone_num}"));
+                      } else {
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+                        print("Something wrong");
+                        showRegisterModalBottomSheet(
+                            context, size.height * 0.3, false, "");
+                      }
+                    } else {
+                      print(value.error);
+                      setState(() {
+                        isApiCallProcess = false;
+                      });
+                      showRegisterModalBottomSheet(
+                          context, size.height * 0.4, false, "");
+                    }
+                  });
+                }
               }),
         ],
       ),
@@ -290,10 +317,66 @@ class _OtpFormState extends State<OtpForm> {
           });
         },
         codeAutoRetrievalTimeout: (String verificationID) {
-          setState(() {
+          /* setState(() {
             _verificationCode = verificationID;
-          });
+          });*/
         },
         timeout: Duration(seconds: 120));
   }
+}
+
+_showModalBottomSheet(context, container_size, otpcode) {
+  Size size = MediaQuery.of(context).size;
+  bool x;
+  if (otpcode == "")
+    x = false;
+  else
+    x = true;
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: false,
+    enableDrag: true,
+    builder: (context) => Container(
+      height: container_size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: size.height * 0.02),
+            child: SvgPicture.asset(
+              'assets/icons/error_large.svg',
+              height: size.height * 0.12,
+              width: size.width * 0.12,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          SizedBox(height: size.height * 0.015),
+          Text(x ? "Invalid OTP" : "Empty Fields",
+              style: Theme.of(context).textTheme.headline3),
+          SizedBox(height: size.height * 0.015),
+          Text(
+            x
+                ? "This Code ${otpcode} doesn't match with the code we sent to you"
+                : "Please Enter the Received code",
+            style: Theme.of(context).textTheme.caption,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: size.height * 0.05),
+          RoundedButton(
+            text: "Try Again",
+            color: Theme.of(context).primaryColor,
+            press: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+    ),
+  );
 }

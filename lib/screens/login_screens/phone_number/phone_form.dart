@@ -122,6 +122,7 @@ class _PhoneFormState extends State<PhoneForm> {
           removeError(error: NullPhoneNumberError);
           removeError(error: SmallPhoneNumberError);
           removeError(error: ValidPhoneNumberError);
+          removeError(error: StartWithOneNumberError);
           return "";
         }
         if (value.length > 10) {
@@ -138,11 +139,16 @@ class _PhoneFormState extends State<PhoneForm> {
           addError(error: SmallPhoneNumberError);
           return "";
         }
-        if (phoneValidatorRegExp.hasMatch(value) == true) {
-          removeError(error: ValidPhoneNumberError);
-          //return "";
-        } else if (phoneValidatorRegExp.hasMatch(value) == false) {
-          addError(error: ValidPhoneNumberError);
+        if (value.startsWith("1")) {
+          if (phoneValidatorRegExp.hasMatch(value) == true) {
+            removeError(error: ValidPhoneNumberError);
+            //return "";
+          } else if (phoneValidatorRegExp.hasMatch(value) == false) {
+            addError(error: ValidPhoneNumberError);
+            return "";
+          }
+        } else {
+          addError(error: StartWithOneNumberError);
           return "";
         }
         return null;

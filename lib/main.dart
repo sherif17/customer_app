@@ -1,3 +1,4 @@
+import 'package:customer_app/screens/home_screen/home.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
@@ -10,11 +11,11 @@ import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
-  runApp(MyApp());
+  //Firebase.initializeApp();
+  runApp(App());
 }
 
-/*class App extends StatelessWidget {
+class App extends StatelessWidget {
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
@@ -33,11 +34,11 @@ void main() async {
           return MyApp();
         }
         // Otherwise, show something whilst waiting for initialization to complete
-        return ProgressHUD(child: null, inAsyncCall: null); //Loading();
+        return CircularProgressIndicator(); //ProgressHUD(child: null, inAsyncCall: null,); //Loading();
       },
     );
   }
-}*/
+}
 
 class MyApp extends StatelessWidget {
   @override

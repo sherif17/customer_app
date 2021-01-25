@@ -8,9 +8,9 @@ class ApiService {
       PhoneRequestModel phoneRequestModel) async {
     String url = 'http://161.97.155.244/api/registeration/customer';
     final response = await http.post(url,
-        //headers: {"Content-Type": "application/json; charset=utf-8"},
-        body: phoneRequestModel.toJson());
+        headers: {'charset': 'utf-8'}, body: phoneRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
+      print("response.body:${response.body}");
       return PhoneResponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception("failed to load Data");
@@ -18,15 +18,14 @@ class ApiService {
   }
 
   Future<UserRegisterResponseModel> registerUser(
-      UserRegisterRequestModel userRegisterRequestModel) async {
+      UserRegisterRequestModel userRegisterRequestModel, token) async {
     String url = 'http://161.97.155.244/api/customer/me/updateprofile';
     final response = await http.post(url,
-        headers: {"Content-Type": userRegisterRequestModel.token},
+        headers: {"x-auth-token": "$token"},
         body: userRegisterRequestModel.toJson());
     if (response.statusCode == 200) {
       return UserRegisterResponseModel.fromJson(json.decode(response.body));
-    } else if (response.statusCode == 400) {
+    } else if (response.statusCode == 400)
       return UserRegisterResponseModel.fromJson(json.decode(response.body));
-    }
   }
 }

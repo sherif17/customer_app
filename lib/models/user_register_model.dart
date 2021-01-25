@@ -8,24 +8,20 @@ String userRegisterRequestModelToJson(UserRegisterRequestModel data) =>
 
 class UserRegisterRequestModel {
   UserRegisterRequestModel({
-    this.token,
     this.firstName,
     this.lastName,
   });
 
-  String token;
   String firstName;
   String lastName;
 
   factory UserRegisterRequestModel.fromJson(Map<String, dynamic> json) =>
       UserRegisterRequestModel(
-        token: json["token"],
         firstName: json["firstName"],
         lastName: json["lastName"],
       );
 
   Map<String, dynamic> toJson() => {
-        "token": token,
         "firstName": firstName,
         "lastName": lastName,
       };
