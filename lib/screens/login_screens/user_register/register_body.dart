@@ -169,7 +169,7 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.02),
             borderedRoundedButton(
               text: 'Continue with Google',
-              iconSrc: 'assets/icons/gmail_logo.svg',
+              iconSrc: 'assets/icons/google_logo.svg',
               CornerRadius: 29,
               press: () async {
                 try {

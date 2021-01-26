@@ -42,7 +42,6 @@ class borderedRoundedButton extends StatelessWidget {
                 iconSrc,
                 height: size.height * 0.03,
                 width: size.width * 0.03,
-                color: Theme.of(context).hintColor,
               ),
           ],
         ),

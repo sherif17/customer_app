@@ -1,8 +1,8 @@
 import 'package:customer_app/models/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/widgets/form_error.dart';
 import 'package:customer_app/utils/constants.dart';
+import 'package:customer_app/widgets/form_error.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 

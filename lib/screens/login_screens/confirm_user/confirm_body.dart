@@ -1,12 +1,12 @@
 import 'package:customer_app/screens/home_screen/home.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/login_screens/confirm_user/components/user_avatar.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/widgets/borderd_buttons.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
+import 'components/user_avatar.dart';
 import 'confirm_user_form.dart';
 
 class Body extends StatelessWidget {

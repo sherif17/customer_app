@@ -162,7 +162,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             Navigator.pushNamed(context, HomeScreen.routeName,
                                 arguments: otpNavData(
                                     jwtToken: jwtToken,
-                                    Phone: widget.otpResponse_Phone));
+                                    Phone: widget.otpResponse_Phone,socialPhoto:null));
                           } else
                             print(value.error);
                         },
