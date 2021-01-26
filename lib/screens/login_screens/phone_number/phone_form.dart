@@ -52,14 +52,14 @@ class _PhoneFormState extends State<PhoneForm> {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               children: <Widget>[
                 Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: CountryCode(
-                      radius: 10,
+                      radius: 5,
                       borderColor: Theme.of(context).primaryColor,
-                      width: 20,
+                      width: 100,
                     )),
                 Expanded(
-                  flex: 8,
+                  flex: 9,
                   child: Column(
                     children: [
                       buildPhoneField(),
@@ -106,7 +106,7 @@ class _PhoneFormState extends State<PhoneForm> {
     return TextFormField(
       style: Theme.of(context).textTheme.subtitle1,
       keyboardType: TextInputType.phone,
-      maxLength: 11,
+      maxLength: 10,
       decoration: InputDecoration(
         hintText: "enter Your Phone Number",
         hintStyle: Theme.of(context).textTheme.bodyText2,

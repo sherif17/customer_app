@@ -1,29 +1,20 @@
 {
   "project_info": {
-    "project_number": "363549313591",
-    "firebase_url": "https://car-rescue-4174a-default-rtdb.firebaseio.com",
-    "project_id": "car-rescue-4174a",
-    "storage_bucket": "car-rescue-4174a.appspot.com"
+    "project_number": "748745160924",
+    "project_id": "rescuemycarapp",
+    "storage_bucket": "rescuemycarapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:363549313591:android:a7786fba0167a54df70db2",
+        "mobilesdk_app_id": "1:748745160924:android:fed532892ea622faa79c19",
         "android_client_info": {
           "package_name": "com.example.customer_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "363549313591-1oht38h29c4e2of5rai4ll0ehg2cbqdd.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.customer_app",
-            "certificate_hash": "25787234dc1354db3a83ea62a95f87294c31031e"
-          }
-        },
-        {
-          "client_id": "363549313591-i2jvf4j9ggdov1bhkhnqfts07ql94lvm.apps.googleusercontent.com",
+          "client_id": "748745160924-7tetm822fuilq6g2vneb0b5cjldk4m0l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.customer_app",
@@ -31,20 +22,20 @@
           }
         },
         {
-          "client_id": "363549313591-da8jt8asibq8ldqiqvpvf3hdloh7ptai.apps.googleusercontent.com",
+          "client_id": "748745160924-587rjgcsbvp74j9rop62vgoehm7edigm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDJ0-qrgMub7Y8zWoPAoU4ikIoFNx9xpZg"
+          "current_key": "AIzaSyCLtXlHwK8wnkhH7i4TYbU0Hdf_mDmWDX4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "363549313591-da8jt8asibq8ldqiqvpvf3hdloh7ptai.apps.googleusercontent.com",
+              "client_id": "748745160924-587rjgcsbvp74j9rop62vgoehm7edigm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

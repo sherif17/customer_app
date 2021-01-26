@@ -117,18 +117,18 @@ ThemeData lightTheme() {
 // for register input field
 InputDecorationTheme inputDecorationTheme(ThemeData base) {
   OutlineInputBorder EnabledInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(28),
+    borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Colors.grey[900], width: 1),
     gapPadding: 15,
   );
   OutlineInputBorder FocusedInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(28),
+    borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Colors.grey[900], width: 1.5),
     gapPadding: 10,
   );
 
   OutlineInputBorder disableInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30),
+    borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Colors.grey[900], width: 0.5),
   );
 

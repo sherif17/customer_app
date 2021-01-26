@@ -140,6 +140,7 @@ class _BodyState extends State<Body> {
                           context,
                           size.height * 0.4,
                           true,
+                          "ByFacebook",
                           otpNavData(
                               jwtToken: jwtToken,
                               Phone: otpResponse.Phone,
@@ -152,7 +153,7 @@ class _BodyState extends State<Body> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, "");
+                          context, size.height * 0.4, false, " ", "");
                     }
                   });
                 } else {
@@ -161,7 +162,7 @@ class _BodyState extends State<Body> {
                     isApiCallProcess = false;
                   });
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "");
+                      context, size.height * 0.4, false, "byFacebookError", "");
                 }
               },
             ),
@@ -218,6 +219,7 @@ class _BodyState extends State<Body> {
                           context,
                           size.height * 0.4,
                           true,
+                          "byGoogle",
                           otpNavData(
                               jwtToken: jwtToken,
                               Phone: otpResponse.Phone,
@@ -230,7 +232,7 @@ class _BodyState extends State<Body> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, "");
+                          context, size.height * 0.4, false, " ", "");
                     }
                   });
                 } else {
@@ -239,7 +241,7 @@ class _BodyState extends State<Body> {
                     isApiCallProcess = false;
                   });
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "");
+                      context, size.height * 0.4, false, "byGoogleError", "");
                 }
               },
             ),
@@ -259,7 +261,55 @@ class _BodyState extends State<Body> {
   }
 }
 
-showRegisterModalBottomSheet(context, container_size, bool state, arguments) {
+showRegisterModalBottomSheet(
+    context, container_size, bool state, errorCausal, arguments) {
+  String processMsg;
+  switch (errorCausal) {
+    case "byName":
+      {
+        processMsg = "You registered by first & last name";
+      }
+      break;
+
+    case "byGoogle":
+      {
+        processMsg = "You registered by your Google account";
+      }
+      break;
+
+    case "ByFacebook":
+      {
+        processMsg = "You registered by your Facebook account";
+      }
+      break;
+
+    case "byNameError":
+      {
+        processMsg = "Failed to sync your Data to the server";
+      }
+      break;
+
+    case "byGoogleError":
+      {
+        processMsg = "Failed to fetch your Data from google account";
+      }
+      break;
+    case "byFacebookError":
+      {
+        processMsg = "Failed to fetch your Data from your facebook account";
+      }
+      break;
+    case "InvalidUserToken":
+      {
+        processMsg = "Invalid User Token";
+      }
+      break;
+    default:
+      {
+        processMsg = "server response error";
+      }
+      break;
+  }
   Size size = MediaQuery.of(context).size;
   showModalBottomSheet(
     context: context,
@@ -298,7 +348,13 @@ showRegisterModalBottomSheet(context, container_size, bool state, arguments) {
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: size.height * 0.05),
+          SizedBox(height: size.height * 0.02),
+          Text(
+            processMsg,
+            style: Theme.of(context).textTheme.caption,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: size.height * 0.02),
           RoundedButton(
             text: state ? "Go To Home Page" : "Try again",
             color: Theme.of(context).primaryColorLight,
