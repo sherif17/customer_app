@@ -82,7 +82,7 @@ class Body extends StatelessWidget {
         Text("Resend Code "),
         TweenAnimationBuilder(
           tween: Tween(begin: 30.0, end: 0.0),
-          duration: Duration(seconds: 30),
+          duration: Duration(seconds: 60),
           builder: (context, value, child) => Text(
             "00:${value.toInt()}",
             style: Theme.of(context).textTheme.subtitle1,

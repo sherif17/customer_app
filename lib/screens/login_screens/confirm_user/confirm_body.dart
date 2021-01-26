@@ -39,7 +39,7 @@ class Body extends StatelessWidget {
                     arguments: otpNavData(
                         jwtToken: otpResponse.jwtToken,
                         Phone: otpResponse.Phone,
-                        socialPhoto: ""));
+                        socialPhoto: null));
               }),
           Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.transparent),

@@ -222,7 +222,8 @@ class _OtpFormState extends State<OtpForm> {
                 } catch (e) {
                   print("invalid otp");
                   checkFirebase = false;
-                  _showModalBottomSheet(context, size.height * 0.4, code);
+                  _showModalBottomSheet(context, size.height * 0.4, code,
+                      "failed to get user fire token");
                 }
                 if (checkFirebase == true) {
                   widget.phoneRequestModel.fireBaseId = fireToken;
@@ -274,7 +275,7 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false, "");
+                            context, size.height * 0.3, false," ", "");
                       }
                     } else {
                       print(value.error);
@@ -282,7 +283,7 @@ class _OtpFormState extends State<OtpForm> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, "");
+                          context, size.height * 0.4, false,"InvalidUserToken", "");
                     }
                   });
                 }
@@ -300,10 +301,6 @@ class _OtpFormState extends State<OtpForm> {
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
-              /*Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => ConfirmThisUser()),
-                  (route) => false);*/
               print("LOGGEDINNNNNN");
             }
           });
@@ -325,7 +322,7 @@ class _OtpFormState extends State<OtpForm> {
   }
 }
 
-_showModalBottomSheet(context, container_size, otpcode) {
+_showModalBottomSheet(context, container_size, otpcode, errorCousal) {
   Size size = MediaQuery.of(context).size;
   bool x;
   if (otpcode == "")
@@ -367,7 +364,13 @@ _showModalBottomSheet(context, container_size, otpcode) {
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: size.height * 0.05),
+          SizedBox(height: size.height * 0.015),
+          Text(
+            errorCousal,
+            style: Theme.of(context).textTheme.caption,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: size.height * 0.005),
           RoundedButton(
             text: "Try Again",
             color: Theme.of(context).primaryColor,

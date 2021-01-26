@@ -130,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   });
                   print(value.error);
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "");
+                      context, size.height * 0.4, false, "byNameError", "");
                 }
               });
             } else

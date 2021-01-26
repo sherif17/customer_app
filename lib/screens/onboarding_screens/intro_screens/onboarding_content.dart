@@ -1,5 +1,6 @@
 import 'package:customer_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class onBoardingContent extends StatelessWidget {
   final String text;
@@ -15,7 +16,7 @@ class onBoardingContent extends StatelessWidget {
     return Column(
       children: [
         Spacer(),
-        Image.asset(
+        SvgPicture.asset(
           image,
           height: getProportionateScreenHeight(400),
           width: getProportionateScreenWidth(400),
