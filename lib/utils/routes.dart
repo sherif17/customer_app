@@ -1,4 +1,4 @@
-import 'package:customer_app/screens/home_screen/home.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';

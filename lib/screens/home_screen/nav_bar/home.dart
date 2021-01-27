@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'home_body.dart';
+import '../profile_body.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = '/HomeScreen';
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: HomeBody(),
+      body: ProfileBody(),
     );
   }
 }

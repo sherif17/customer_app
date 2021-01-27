@@ -4,12 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-class HomeBody extends StatefulWidget {
+class ProfileBody extends StatefulWidget {
   @override
-  _HomeBodyState createState() => _HomeBodyState();
+  _ProfileBodyState createState() => _ProfileBodyState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _ProfileBodyState extends State<ProfileBody> {
   Widget _greenColors() {
     return Positioned(
       top: 0,
