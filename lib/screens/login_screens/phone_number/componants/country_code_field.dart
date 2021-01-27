@@ -20,7 +20,7 @@ class CountryCode extends StatelessWidget {
       textAlign: TextAlign.center,
       decoration: InputDecoration(
           hintText: "+20",
-          hintStyle: Theme.of(context).textTheme.bodyText2,
+          hintStyle: Theme.of(context).textTheme.subtitle1,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(radius),

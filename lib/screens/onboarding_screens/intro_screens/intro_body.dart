@@ -15,26 +15,32 @@ class IntroBody extends StatefulWidget {
 class _IntroBodyState extends State<IntroBody> {
   int currentPage = 0;
   List<Map<String, String>> onBoardingData = [
-    {"text": "info 1", "image": "assets/images/women_truck.jpg"},
-    {"text": "info 2", "image": "assets/images/mechanic_2.jpg"},
-    {"text": "info 3", "image": "assets/images/mechnic.jpg"},
+    {"text": "info 1", "image": "assets/illustrations/towTruck.svg"},
+    {"text": "info 2", "image": "assets/illustrations/womanCar.svg"},
+    {"text": "info 3", "image": "assets/illustrations/boyCar.svg"},
   ];
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              "Rescue My Car\n",
-              style: TextStyle(
-                fontSize: getProportionateScreenWidth(30),
-                color: Theme.of(context).primaryColor,
+            Padding(
+              padding: EdgeInsets.only(top: size.height * 0.05),
+              child: Text(
+                "Rescue My Car\n",
+                style: Theme.of(context).textTheme.headline1,
+                /*style: TextStyle(
+                  fontSize: getProportionateScreenWidth(30),
+                  color: Theme.of(context).primaryColor,
+                ),*/
               ),
             ),
-            Text("Customer APP ,Let's Start",
-                style: Theme.of(context).textTheme.bodyText2),
+            Text("Customer App ,Let's Start",
+                style: Theme.of(context).textTheme.headline2),
             Expanded(
               flex: 4,
               child: PageView.builder(
@@ -91,8 +97,8 @@ class _IntroBodyState extends State<IntroBody> {
       width: currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
           color: currentPage == index
-              ? Theme.of(context).accentColor
-              : Theme.of(context).primaryColor,
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
           borderRadius: BorderRadius.circular(3)),
     );
   }

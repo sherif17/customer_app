@@ -9,8 +9,17 @@ ThemeData lightTheme() {
         fontFamily: 'Lato',
         color: Color(0xFFBD4242),
       ),
-      headline2: base.headline2.copyWith(),
-      headline3: base.headline3.copyWith(),
+      headline2: base.headline2.copyWith(
+          fontSize: 25.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Lato',
+          color: Colors.black54),
+      headline3: base.headline3.copyWith(
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Lato',
+        color: Colors.black,
+      ),
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
         fontFamily: 'Lato',
@@ -28,16 +37,28 @@ ThemeData lightTheme() {
       ),
       bodyText1: base.bodyText1.copyWith(
         color: Colors.grey[800],
-        fontSize: 14,
+        fontSize: 15,
       ),
       bodyText2: base.bodyText2.copyWith(
         fontSize: 16.0,
         fontFamily: 'Lato',
+        fontWeight: FontWeight.w800,
         color: Colors.grey[900],
       ),
+      button: base.button.copyWith(
+          fontSize: 20.0,
+          fontFamily: 'Lato',
+          color: Colors.white,
+          fontWeight: FontWeight.bold),
       caption: base.headline5.copyWith(
-        fontSize: 12.0,
+        fontSize: 14.0,
         fontFamily: 'Lato',
+      ),
+      subtitle1: base.subtitle1.copyWith(
+        fontSize: 15.0,
+        fontFamily: 'Lato',
+        fontWeight: FontWeight.w900,
+        color: Color(0xFFBD4242),
       ),
     );
   }
@@ -52,6 +73,7 @@ ThemeData lightTheme() {
     hintColor: Color(0xFF42BDBD),
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
+    canvasColor: Colors.transparent,
     backgroundColor: Colors.white,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
@@ -94,19 +116,36 @@ ThemeData lightTheme() {
 
 // for register input field
 InputDecorationTheme inputDecorationTheme(ThemeData base) {
-  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(28),
-    borderSide: BorderSide(color: Color(0xFFBD4242)),
+  OutlineInputBorder EnabledInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1),
+    gapPadding: 15,
+  );
+  OutlineInputBorder FocusedInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1.5),
     gapPadding: 10,
   );
+
+  OutlineInputBorder disableInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 0.5),
+  );
+
+  OutlineInputBorder ErrorInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Color(0xFFBD4242)));
+
   return InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(
-      horizontal: 20,
+      horizontal: 25,
       vertical: 20,
     ),
-    enabledBorder: outlineInputBorder,
-    focusedBorder: outlineInputBorder,
-    border: outlineInputBorder,
+    enabledBorder: EnabledInputBorder,
+    disabledBorder: disableInputBorder,
+    focusedBorder: FocusedInputBorder,
+    errorBorder: ErrorInputBorder,
+    border: EnabledInputBorder,
     hintStyle: TextStyle(),
     labelStyle: TextStyle(color: Colors.red),
   );
