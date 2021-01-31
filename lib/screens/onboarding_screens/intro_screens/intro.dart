@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 class Intro extends StatefulWidget {
   static String routeName = '/intro';
-
   @override
   _IntroState createState() => _IntroState();
 }

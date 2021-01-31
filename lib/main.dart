@@ -2,6 +2,7 @@ import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.d
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
+import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
-        initialRoute: Intro.routeName,
+        initialRoute: ToWinchMap.routeName,
         routes: routes,
         locale: _locale,
         supportedLocales: [
