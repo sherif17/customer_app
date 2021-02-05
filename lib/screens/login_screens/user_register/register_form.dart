@@ -103,13 +103,11 @@ class _RegisterFormState extends State<RegisterForm> {
               });
               ApiService apiService = new ApiService();
               apiService
-                  .registerUser(
-                      userRegisterRequestModel, widget.otpResponse_jwt)
+                  .registerUser(userRegisterRequestModel, widget.otpResponse_jwt)
                   .then((value) {
                 if (value.error == null) {
                   jwtToken = value.token;
-                  Map<String, dynamic> decodedToken =
-                      JwtDecoder.decode(jwtToken);
+                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
                   responseID = decodedToken["_id"];
                   responseFName = decodedToken["firstName"];
                   responseLName = decodedToken["lastName"];
@@ -123,8 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     isApiCallProcess = false;
                   });
                   Navigator.pushNamed(context, HomeScreen.routeName,
-                      arguments: otpNavData(
-                          jwtToken: jwtToken, Phone: widget.otpResponse_phone));
+                      arguments: otpNavData(jwtToken: jwtToken, Phone: widget.otpResponse_phone));
                 } else {
                   setState(() {
                     isApiCallProcess = false;

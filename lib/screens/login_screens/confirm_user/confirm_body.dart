@@ -1,6 +1,4 @@
-//import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/home.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/home.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
@@ -67,8 +65,7 @@ class Body extends StatelessWidget {
           height: size,
           /*padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),*/
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(

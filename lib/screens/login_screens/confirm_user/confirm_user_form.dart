@@ -114,39 +114,32 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                     child: DecoratedEditLNameTextField())
               ],
             ),
-            SizedBox(
-                width: size.height * 0.1,
-                child: FormError(size: size, errors: errors)),
+            SizedBox(width: size.height * 0.1, child: FormError(size: size, errors: errors)),
             SizedBox(
               height: size.height * 0.02,
             ),
             SizedBox(
-                height: size.height * 0.1,
-                width: size.width * 0.5,
-                child: DecoratedPhoneTField()),
+                height: size.height * 0.1, width: size.width * 0.5, child: DecoratedPhoneTField()),
             RoundedButton(
                 text: "Edit my info",
                 color: Theme.of(context).primaryColor,
                 press: () {
                   if (confirmValidateAndSave()) {
                     if (FName_Changed == true || LName_changed == true) {
-                      print(
-                          "Request body: ${userRegisterRequestModel.toJson()}.");
+                      print("Request body: ${userRegisterRequestModel.toJson()}.");
                       print("hii${widget.otpResponse_JWT}");
                       setState(() {
                         isApiCallProcess = true;
                       });
                       ApiService apiService = new ApiService();
                       apiService
-                          .registerUser(
-                              userRegisterRequestModel, widget.otpResponse_JWT)
+                          .registerUser(userRegisterRequestModel, widget.otpResponse_JWT)
                           .then(
                         (value) {
                           if (value.error == null) {
                             jwtToken = value.token;
                             print(jwtToken);
-                            Map<String, dynamic> decodedToken =
-                                JwtDecoder.decode(jwtToken);
+                            Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
                             responseID = decodedToken["_id"];
                             responseFName = decodedToken["firstName"];
                             responseLName = decodedToken["lastName"];
@@ -162,7 +155,8 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             Navigator.pushNamed(context, HomeScreen.routeName,
                                 arguments: otpNavData(
                                     jwtToken: jwtToken,
-                                    Phone: widget.otpResponse_Phone,socialPhoto:null));
+                                    Phone: widget.otpResponse_Phone,
+                                    socialPhoto: null));
                           } else
                             print(value.error);
                         },
