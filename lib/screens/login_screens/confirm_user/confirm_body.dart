@@ -1,4 +1,4 @@
-import 'package:customer_app/screens/home_screen/nav_bar/dash_board.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';

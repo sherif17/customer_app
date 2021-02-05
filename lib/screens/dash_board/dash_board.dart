@@ -1,8 +1,7 @@
-import 'package:customer_app/screens/home_screen/nav_bar/home/home.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/profile/profile.dart';
+import 'package:customer_app/screens/dash_board/chatbot/chat.dart';
+import 'package:customer_app/screens/dash_board/home/home.dart';
+import 'package:customer_app/screens/dash_board/profile/profile.dart';
 import 'package:flutter/material.dart';
-
-import 'chatbot/chat.dart';
 
 class DashBoard extends StatefulWidget {
   static String routeName = '/DashBoard';

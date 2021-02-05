@@ -1,6 +1,6 @@
-import 'package:customer_app/screens/home_screen/nav_bar/home/home_body.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/dash_board.dart';
 import 'package:flutter/material.dart';
+
+import 'home_body.dart';
 
 class Home extends StatefulWidget {
   @override

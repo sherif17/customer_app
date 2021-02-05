@@ -1,4 +1,4 @@
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/profile/profile_body.dart';
+import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {

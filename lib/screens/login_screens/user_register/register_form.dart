@@ -1,5 +1,5 @@
 import 'package:customer_app/models/user_register_model.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/dash_board.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
