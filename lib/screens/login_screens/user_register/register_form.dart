@@ -1,12 +1,10 @@
 import 'package:customer_app/models/user_register_model.dart';
-//import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
-import 'package:customer_app/screens/home_screen/nav_bar/home.dart';
+import 'package:customer_app/screens/home_screen/nav_bar/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/utils/constants.dart';
-import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -120,7 +118,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   setState(() {
                     isApiCallProcess = false;
                   });
-                  Navigator.pushNamed(context, HomeScreen.routeName,
+                  Navigator.pushNamed(context, DashBoard.routeName,
                       arguments: otpNavData(jwtToken: jwtToken, Phone: widget.otpResponse_phone));
                 } else {
                   setState(() {

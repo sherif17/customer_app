@@ -209,7 +209,7 @@ packages:
       name: google_maps_flutter_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   google_sign_in:
     dependency: "direct main"
     description:

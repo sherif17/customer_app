@@ -1,27 +1,27 @@
-import 'package:bottom_tab_app/pages/profile.dart';
-import 'package:bottom_tab_app/pages/home1.dart';
+import 'package:customer_app/screens/home_screen/nav_bar/home/home.dart';
+import 'package:customer_app/screens/home_screen/nav_bar/profile/profile.dart';
 import 'package:flutter/material.dart';
-import 'chat.dart';
-import 'home1.dart';
-import 'first.dart';
 
-class Home extends StatefulWidget {
+import 'chatbot/chat.dart';
+
+class DashBoard extends StatefulWidget {
+  static String routeName = '/DashBoard';
   @override
-  _HomeState createState() => _HomeState();
+  _DashBoard createState() => _DashBoard();
 }
 
-class _HomeState extends State<Home> {
+class _DashBoard extends State<DashBoard> {
   // Properties & Variables needed
 
   int currentTab = 0; // to keep track of active tab index
   final List<Widget> screens = [
-    home1(),
-    Chat(),
+    Home(),
+    ChatBot(),
     Profile(),
   ]; // to store nested tabs
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen = Chat(); // Our first view in viewport
+  Widget currentScreen = Home(); // Our first view in viewport
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,8 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.chat),
         onPressed: () {
           setState(() {
-            currentScreen = Chat(); // if user taps on this dashboard tab will be active
+            currentScreen =
+                ChatBot(); // if user taps on this dashboard tab will be active
             currentTab = 1;
           });
         },
@@ -56,7 +57,7 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                            home1(); // if user taps on this dashboard tab will be active
+                            Home(); // if user taps on this dashboard tab will be active
                         currentTab = 0;
                       });
                     },

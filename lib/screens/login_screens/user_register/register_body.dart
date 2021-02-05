@@ -1,5 +1,5 @@
 import 'package:customer_app/models/user_register_model.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
+import 'package:customer_app/screens/home_screen/nav_bar/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
@@ -360,7 +360,7 @@ showRegisterModalBottomSheet(
             color: Theme.of(context).primaryColorLight,
             press: () {
               state
-                  ? Navigator.pushNamed(context, HomeScreen.routeName,
+                  ? Navigator.pushNamed(context, DashBoard.routeName,
                       arguments: arguments)
                   : Navigator.pop(context);
             },

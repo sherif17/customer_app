@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
+class ChatBot extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _ChatBotState createState() => _ChatBotState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ChatBotState extends State<ChatBot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('chatbot'),
       ),
     );
   }
