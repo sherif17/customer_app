@@ -4,6 +4,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:customer_app/widgets/divider.dart';
+import 'package:customer_app/widgets/borderd_buttons.dart';
+import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 
 class ToWinchMap extends StatelessWidget {
   static String routeName = '/ToWinchMap';
@@ -22,32 +25,457 @@ class ToWinchMap extends StatelessWidget {
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-  final CameraPosition _initialPosition =
-        CameraPosition(target: LatLng(31.2001, 29.9187),
-          zoom: 15.4746,
-        );
+
+  bool buttonState = true;
+
+
+  final CameraPosition _initialPosition = CameraPosition(
+    target: LatLng(31.2001, 29.9187),
+    zoom: 15.4746,
+  );
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
-        children :[
-       GoogleMap(
-        initialCameraPosition: _initialPosition,
-        mapType: MapType.satellite,
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        zoomGesturesEnabled: true,
-        zoomControlsEnabled: true,
+        children:[
+          //Padding(
+            //padding: const EdgeInsets.only(bottom: 190.0),
+             Column(
+              children: [
+                //Padding(
+                  //padding: const EdgeInsets.only(bottom: 190.0),
+                  //child:
+      Container(
+                    height: 600.0,
+                   child: GoogleMap(
+                      initialCameraPosition: _initialPosition,
+                      mapType: MapType.normal,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapToolbarEnabled: true,
 
-         onMapCreated: (GoogleMapController controller)
-           {
-             _completerGoogleMap.complete(controller);
-             _googleMapController = controller;
-             locatePosition();
-           }
+                      onMapCreated: (GoogleMapController controller) {
+                        _completerGoogleMap.complete(controller);
+                        _googleMapController = controller;
+                        locatePosition();
+                      }
+                  ),
+                  ),
+              //  ),
+                Positioned(
+                  left: 0.0,
+                  right: 0.0,
+                  bottom: 0.0,
+                  child: Container(
+                    height: 220.0,
+                    width: 400.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 16.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7,0.7),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 6.0),
+                          Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
+                          Text("Where to?", style: Theme.of(context).textTheme.headline2),
+                          SizedBox(height: 20.0),
+
+                          FlatButton(
+                            onPressed: (){
+                              myBottomSheet(context);
+                          },
+                          color: Theme.of(context).accentColor,
+                            padding: EdgeInsets.all(10.0),
+                            child: Text("Search Drop off", style: Theme.of(context).textTheme.bodyText2,),
+                            minWidth: 300.0,
+
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+                ),
+
+              ],
+            )
+            //),
+
+          //locationBottomSheet(),
+        ],
       ),
-      ],
-    ),
+    );
+  }
+
+  Padding locationBottomSheet(context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: DraggableScrollableSheet(builder: (context, controller){
+        return Container(
+          child: ListView.builder(
+            itemCount: 1,
+            controller: controller,
+            itemBuilder: (BuildContext context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start,
+                  children: [
+                    //SizedBox(height: 6.0),
+                    Text(
+                        "Hi there,",
+                        style: Theme.of(context).textTheme.bodyText1
+                    ),
+                    Text(
+                        "Where to?",
+                        style: Theme.of(context).textTheme.headline2
+                    ),
+                    SizedBox(height: 20.0),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(5.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 6.0,
+                            spreadRadius: 0.5,
+                            offset: Offset(0.7, 0.7),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            12.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.location_pin,
+                              color: Theme.of(context).hintColor,
+                            ),
+                            SizedBox(width: 10.0,),
+                            Text("My location")
+
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 20.0),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme
+                            .of(context)
+                            .accentColor,
+                        borderRadius: BorderRadius
+                            .circular(5.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 6.0,
+                            spreadRadius: 0.5,
+                            offset: Offset(0.7, 0.7),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            12.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search, color: Theme
+                                .of(context)
+                                .hintColor,),
+                            SizedBox(width: 10.0,),
+                            Text("Search Drop off")
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 24.0),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 60.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.push_pin, color: Theme
+                              .of(context)
+                              .primaryColorDark,),
+                          SizedBox(width: 12.0,),
+                          Text(
+                              "Set A location on the map"),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 24.0),
+                    Row(
+                      children: [
+                        Icon(Icons.home, color: Theme
+                            .of(context)
+                            .primaryColorDark,),
+                        SizedBox(width: 12.0,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start,
+                          children: [
+                            Text("Add Home"),
+                            SizedBox(height: 4.0,),
+                            Text(
+                              "Your living home address",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    DividerWidget(),
+                    SizedBox(height: 18.0),
+                    Row(
+                      children: [
+                        Icon(Icons.work, color: Theme
+                            .of(context)
+                            .primaryColorDark,),
+                        SizedBox(width: 12.0,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start,
+                          children: [
+                            Text("Add Work"),
+                            SizedBox(height: 4.0,),
+                            Text("Your office address",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+              //);
+            },
+          ),
+
+          decoration: BoxDecoration(
+
+              color: Theme.of(context).accentColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20)
+              )
+          ),
+
+        );
+      },
+      ),
+
+
+
     );
   }
 }
+
+myBottomSheet(context){
+  showModalBottomSheet(context: context, builder: (BuildContext c){
+    return SingleChildScrollView(
+      child: Container(
+        //color: Theme.of(context).accentColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 6.0),
+            Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
+            Text("Where to?", style: Theme.of(context).textTheme.headline2),
+            SizedBox(height: 20.0),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.circular(5.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 6.0,
+                    spreadRadius: 0.5,
+                    offset: Offset(0.7, 0.7),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(
+                    12.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_pin,
+                      color: Theme.of(context).hintColor,
+                    ),
+                    SizedBox(width: 10.0,),
+                    Text("My location")
+
+                  ],
+                ),
+              ),
+            ),
+
+            SizedBox(height: 20.0),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme
+                    .of(context)
+                    .accentColor,
+                borderRadius: BorderRadius
+                    .circular(5.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 6.0,
+                    spreadRadius: 0.5,
+                    offset: Offset(0.7, 0.7),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(
+                    12.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.search, color: Theme
+                        .of(context)
+                        .hintColor,),
+                    SizedBox(width: 10.0,),
+                    Text("Search Drop off")
+                  ],
+                ),
+              ),
+            ),
+
+            SizedBox(height: 24.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 60.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.push_pin, color: Theme
+                      .of(context)
+                      .primaryColorDark,),
+                  SizedBox(width: 12.0,),
+                  Text(
+                      "Set A location on the map"),
+                ],
+              ),
+            ),
+            SizedBox(height: 24.0),
+            Row(
+              children: [
+                Icon(Icons.home, color: Theme
+                    .of(context)
+                    .primaryColorDark,),
+                SizedBox(width: 12.0,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start,
+                  children: [
+                    Text("Add Home"),
+                    SizedBox(height: 4.0,),
+                    Text(
+                      "Your living home address",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(height: 10.0),
+            DividerWidget(),
+            SizedBox(height: 18.0),
+            Row(
+              children: [
+                Icon(Icons.work, color: Theme
+                    .of(context)
+                    .primaryColorDark,),
+                SizedBox(width: 12.0,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start,
+                  children: [
+                    Text("Add Work"),
+                    SizedBox(height: 4.0,),
+                    Text("Your office address",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,),
+                  ],
+                )
+              ],
+            ),
+
+          ],
+
+        ),
+
+        decoration: BoxDecoration(
+
+            color: Theme.of(context).accentColor,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20)
+            )
+        ),
+      ),
+    );
+  }
+  );
+}
+
+myBottomSheet2(context){
+  DraggableScrollableSheet(builder: (context, controller){
+    return Container(
+      color: Theme.of(context).accentColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 6.0),
+          Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
+          Text("Where to?", style: Theme.of(context).textTheme.headline2),
+          SizedBox(height: 20.0),
+        ],
+
+      ),
+    );
+  }
+  );
+}
+
+
+
