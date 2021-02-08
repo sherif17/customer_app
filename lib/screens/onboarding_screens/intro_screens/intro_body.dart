@@ -1,4 +1,5 @@
 import 'package:customer_app/localization/localization_constants.dart';
+import 'package:customer_app/screens/dash_board/home/componnets/car_model.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';

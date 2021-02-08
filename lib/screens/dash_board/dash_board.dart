@@ -30,21 +30,25 @@ class _DashBoard extends State<DashBoard> {
         bucket: bucket,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.chat),
-        onPressed: () {
-          setState(() {
-            currentScreen =
-                ChatBot(); // if user taps on this dashboard tab will be active
-            currentTab = 1;
-          });
-        },
-      ),
+          child: Icon(
+            Icons.chat_outlined,
+            size: 35,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              currentScreen =
+                  ChatBot(); // if user taps on this dashboard tab will be active
+              currentTab = 1;
+            });
+          },
+          backgroundColor: Theme.of(context).primaryColorLight),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 10,
+        notchMargin: 5,
         child: Container(
-          height: 60,
+          height: 70,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -64,13 +68,18 @@ class _DashBoard extends State<DashBoard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.home,
-                          color: currentTab == 0 ? Colors.blue : Colors.grey,
+                          Icons.home_outlined,
+                          size: 35,
+                          color: currentTab == 0
+                              ? Theme.of(context).primaryColorLight
+                              : Colors.grey,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
-                            color: currentTab == 0 ? Colors.blue : Colors.grey,
+                            color: currentTab == 0
+                                ? Theme.of(context).primaryColorLight
+                                : Colors.grey,
                           ),
                         ),
                       ],
@@ -83,7 +92,10 @@ class _DashBoard extends State<DashBoard> {
                 child: Text(
                   'Chatbot',
                   style: TextStyle(
-                    color: currentTab == 1 ? Colors.blue : Colors.grey,
+                    fontSize: 20,
+                    color: currentTab == 1
+                        ? Theme.of(context).primaryColorLight
+                        : Colors.grey,
                   ),
                 ),
               ),
@@ -103,13 +115,18 @@ class _DashBoard extends State<DashBoard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.people_alt,
-                          color: currentTab == 2 ? Colors.blue : Colors.grey,
+                          Icons.person,
+                          size: 35,
+                          color: currentTab == 2
+                              ? Theme.of(context).primaryColorLight
+                              : Colors.grey,
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
-                            color: currentTab == 2 ? Colors.blue : Colors.grey,
+                            color: currentTab == 2
+                                ? Theme.of(context).primaryColorLight
+                                : Colors.grey,
                           ),
                         ),
                       ],
