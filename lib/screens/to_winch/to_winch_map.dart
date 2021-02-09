@@ -1,12 +1,14 @@
+import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/screens/to_winch/search_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:customer_app/widgets/divider.dart';
-import 'package:customer_app/widgets/borderd_buttons.dart';
-import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
+import 'package:customer_app/services/api_services.dart';
+import 'package:provider/provider.dart';
+
 
 class ToWinchMap extends StatelessWidget {
   static String routeName = '/ToWinchMap';
@@ -15,14 +17,18 @@ class ToWinchMap extends StatelessWidget {
   Position currentPosition;
   var geoLocator = Geolocator();
 
-  void locatePosition() async
+  void locatePosition(context) async
   {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
-
+    print("current position is $position");
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 15.5);
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    String address = await ApiService.searchCoordinateAddress(position, context);
+    //Provider.of<AppData>(context).updatePickUpLocationAddress(address);
+    print("This is your address:: " + address);
   }
 
 
@@ -46,32 +52,37 @@ class ToWinchMap extends StatelessWidget {
                 //Padding(
                   //padding: const EdgeInsets.only(bottom: 190.0),
                   //child:
-      Container(
-                    height: 600.0,
-                   child: GoogleMap(
-                      initialCameraPosition: _initialPosition,
-                      mapType: MapType.normal,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      zoomControlsEnabled: true,
-                      mapToolbarEnabled: true,
+      Padding(
+        padding: EdgeInsets.only(top: size.height * 0.03,),
+        child: Container(
+                      height: size.height * 0.75,
+                     child: GoogleMap(
+                        initialCameraPosition: _initialPosition,
+                        mapType: MapType.normal,
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
+                        zoomGesturesEnabled: true,
+                        zoomControlsEnabled: true,
+                        mapToolbarEnabled: true,
 
-                      onMapCreated: (GoogleMapController controller) {
-                        _completerGoogleMap.complete(controller);
-                        _googleMapController = controller;
-                        locatePosition();
-                      }
-                  ),
-                  ),
+                        onMapCreated: (GoogleMapController controller) {
+                          _completerGoogleMap.complete(controller);
+                          _googleMapController = controller;
+                          locatePosition(context);
+                        }
+
+                    ),
+
+                    ),
+      ),
               //  ),
                 Positioned(
                   left: 0.0,
                   right: 0.0,
                   bottom: 0.0,
                   child: Container(
-                    height: 220.0,
-                    width: 400.0,
+                    height: size.height * 0.22,
+                    width: size.width,
                     decoration: BoxDecoration(
                       color: Theme.of(context).accentColor,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
@@ -85,32 +96,213 @@ class ToWinchMap extends StatelessWidget {
                       ],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+                      padding: EdgeInsets.symmetric(horizontal: size.width * 0.02, vertical: size.height * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 6.0),
+                          SizedBox(height: size.height * 0.006),
                           Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
                           Text("Where to?", style: Theme.of(context).textTheme.headline2),
-                          SizedBox(height: 20.0),
+                          SizedBox(height: size.height * 0.02),
 
-                          FlatButton(
-                            onPressed: (){
-                              myBottomSheet(context);
-                          },
-                          color: Theme.of(context).accentColor,
-                            padding: EdgeInsets.all(10.0),
-                            child: Text("Search Drop off", style: Theme.of(context).textTheme.bodyText2,),
-                            minWidth: 300.0,
+                          GestureDetector(
+                            onTap:()
+                            {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(5.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 6.0,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(0.7, 0.7),
+                                  ),
+                                ],
 
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.02, vertical: size.height * 0.006,),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(
+                                      Icons.search, color: Theme
+                                        .of(context)
+                                        .hintColor,),
+                                    //SizedBox(width: size.width * 0.0001,),
+                                    Text("Search Drop off",
+                                      style: Theme.of(context).textTheme.bodyText2,
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
 
+                        /*
+                          GestureDetector(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(5.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 6.0,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(0.7, 0.7),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(
+                                    12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_pin,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                    SizedBox(width: 10.0,),
+                                    Text("My location")
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 20.0),
+
+                          GestureDetector(
+                            onTap:()
+                              {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                              },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(5.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 6.0,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(0.7, 0.7),
+                                  ),
+                                ],
+
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.02, vertical: size.height * 0.006,),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(
+                                      Icons.search, color: Theme
+                                        .of(context)
+                                        .hintColor,),
+                                    //SizedBox(width: size.width * 0.0001,),
+                                    Text("Search Drop off",
+                                      style: Theme.of(context).textTheme.bodyText2,
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 24.0),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 60.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.push_pin, color: Theme
+                                    .of(context)
+                                    .primaryColorDark,),
+                                SizedBox(width: 12.0,),
+                                GestureDetector(
+                                  child: Text(
+                                      "Set A location on the map"),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 24.0),
+                          Row(
+                            children: [
+                              Icon(Icons.home, color: Theme
+                                  .of(context)
+                                  .primaryColorDark,),
+                              SizedBox(width: 12.0,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start,
+                                children: [
+                                  Text(
+                                      Provider.of<AppData>(context).pickUpLocation != null
+                                          ? Provider.of<AppData>(context).pickUpLocation.placeName
+                                          : "Add Home"
+                                  ),
+                                  SizedBox(height: 4.0,),
+                                  Text(
+                                    "Your living home address",
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .bodyText1,),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10.0),
+                          DividerWidget(),
+                          SizedBox(height: 18.0),
+                          Row(
+                            children: [
+                              Icon(Icons.work, color: Theme
+                                  .of(context)
+                                  .primaryColorDark,),
+                              SizedBox(width: 12.0,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start,
+                                children: [
+                                  Text("Add Work"),
+                                  SizedBox(height: 4.0,),
+                                  Text("Your office address",
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .bodyText1,),
+                                ],
+                              )
+                            ],
+                          ),
+                                */
                         ],
+
+                      ),
+
                       ),
                     ),
                   ),
 
-                ),
+
 
               ],
             )
@@ -123,6 +315,7 @@ class ToWinchMap extends StatelessWidget {
   }
 
   Padding locationBottomSheet(context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: DraggableScrollableSheet(builder: (context, controller){
@@ -149,38 +342,42 @@ class ToWinchMap extends StatelessWidget {
                     ),
                     SizedBox(height: 20.0),
 
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(5.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 6.0,
-                            spreadRadius: 0.5,
-                            offset: Offset(0.7, 0.7),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                            12.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_pin,
-                              color: Theme.of(context).hintColor,
+                    GestureDetector(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.circular(5.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54,
+                              blurRadius: 6.0,
+                              spreadRadius: 0.5,
+                              offset: Offset(0.7, 0.7),
                             ),
-                            SizedBox(width: 10.0,),
-                            Text("My location")
-
                           ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                              12.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_pin,
+                                color: Theme.of(context).hintColor,
+                              ),
+                              SizedBox(width: 10.0,),
+                              Text("My location")
+
+                            ],
+                          ),
                         ),
                       ),
                     ),
 
                     SizedBox(height: 20.0),
-                    Container(
+                    
+                    GestureDetector(
+                    child: Container(
                       decoration: BoxDecoration(
                         color: Theme
                             .of(context)
@@ -211,6 +408,7 @@ class ToWinchMap extends StatelessWidget {
                         ),
                       ),
                     ),
+                    ),
 
                     SizedBox(height: 24.0),
                     Padding(
@@ -223,8 +421,10 @@ class ToWinchMap extends StatelessWidget {
                               .of(context)
                               .primaryColorDark,),
                           SizedBox(width: 12.0,),
-                          Text(
-                              "Set A location on the map"),
+                          GestureDetector(
+                            child: Text(
+                                "Set A location on the map"),
+                          ),
                         ],
                       ),
                     ),
@@ -313,38 +513,43 @@ myBottomSheet(context){
             Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
             Text("Where to?", style: Theme.of(context).textTheme.headline2),
             SizedBox(height: 20.0),
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 6.0,
-                    spreadRadius: 0.5,
-                    offset: Offset(0.7, 0.7),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(
-                    12.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.location_pin,
-                      color: Theme.of(context).hintColor,
-                    ),
-                    SizedBox(width: 10.0,),
-                    Text("My location")
 
+            GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.circular(5.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 6.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
                   ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                      12.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_pin,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      SizedBox(width: 10.0,),
+                      Text("My location")
+
+                    ],
+                  ),
                 ),
               ),
             ),
 
             SizedBox(height: 20.0),
-            Container(
+
+            GestureDetector(
+            child: Container(
               decoration: BoxDecoration(
                 color: Theme
                     .of(context)
@@ -375,6 +580,7 @@ myBottomSheet(context){
                 ),
               ),
             ),
+            ),
 
             SizedBox(height: 24.0),
             Padding(
@@ -387,8 +593,10 @@ myBottomSheet(context){
                       .of(context)
                       .primaryColorDark,),
                   SizedBox(width: 12.0,),
-                  Text(
-                      "Set A location on the map"),
+                  GestureDetector(
+                    child: Text(
+                        "Set A location on the map"),
+                  ),
                 ],
               ),
             ),
@@ -403,7 +611,11 @@ myBottomSheet(context){
                   crossAxisAlignment: CrossAxisAlignment
                       .start,
                   children: [
-                    Text("Add Home"),
+                    Text(
+                      Provider.of<AppData>(context).pickUpLocation != null
+                          ? Provider.of<AppData>(context).pickUpLocation
+                          : "Add Home"
+                    ),
                     SizedBox(height: 4.0,),
                     Text(
                       "Your living home address",
@@ -452,25 +664,6 @@ myBottomSheet(context){
                 topRight: Radius.circular(20)
             )
         ),
-      ),
-    );
-  }
-  );
-}
-
-myBottomSheet2(context){
-  DraggableScrollableSheet(builder: (context, controller){
-    return Container(
-      color: Theme.of(context).accentColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: 6.0),
-          Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
-          Text("Where to?", style: Theme.of(context).textTheme.headline2),
-          SizedBox(height: 20.0),
-        ],
-
       ),
     );
   }
