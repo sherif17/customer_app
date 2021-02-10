@@ -28,6 +28,9 @@ class _ToWinchState extends State<ToWinchMap> {
   Position currentPosition;
   var geoLocator = Geolocator();
 
+  Set<Marker> markersSet = {};
+  Set<Circle> circlesSet = {};
+
   void locatePosition(context) async
   {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -74,6 +77,8 @@ class _ToWinchState extends State<ToWinchMap> {
                         zoomControlsEnabled: true,
                         mapToolbarEnabled: true,
                         polylines: polylineSet,
+                        markers: markersSet,
+                        circles: circlesSet,
 
                         onMapCreated: (GoogleMapController controller) {
                           _completerGoogleMap.complete(controller);
@@ -401,9 +406,47 @@ class _ToWinchState extends State<ToWinchMap> {
 
     _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
+    Marker pickUpLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+        infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My location"),
+        position: pickUpLatLng,
+        markerId: MarkerId("pickUpId")
+    );
 
+    Marker dropOffLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        infoWindow: InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
+        position: dropOffLatLng,
+        markerId: MarkerId("dropOffId")
+    );
 
+    setState(() {
+      markersSet.add(pickUpLocMarker);
+      markersSet.add(dropOffLocMarker);
+    });
 
+    Circle pickUpLocCircle = Circle(
+        fillColor: Colors.blue,
+        center: pickUpLatLng,
+        radius: 12.0,
+        strokeWidth: 4,
+        strokeColor: Colors.blue,
+        circleId: CircleId("pickUpId"),
+    );
+
+    Circle dropOffLocCircle = Circle(
+        fillColor: Theme.of(context).hintColor,
+        center: dropOffLatLng,
+        radius: 12.0,
+        strokeWidth: 4,
+        strokeColor: Theme.of(context).hintColor,
+        circleId: CircleId("dropOffId"),
+    );
+
+    setState(() {
+      circlesSet.add(pickUpLocCircle);
+      circlesSet.add(dropOffLocCircle);
+    });
 
   }
 
