@@ -1,5 +1,6 @@
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/screens/to_winch/search_screen.dart';
+import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -14,6 +15,10 @@ class ToWinchMap extends StatelessWidget {
   static String routeName = '/ToWinchMap';
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
+
+  List<LatLng> pLineCoordinates = [];
+  Set<Polyline> polylineSet = {};
+
   Position currentPosition;
   var geoLocator = Geolocator();
 
@@ -104,9 +109,12 @@ class ToWinchMap extends StatelessWidget {
                           SizedBox(height: size.height * 0.02),
 
                           GestureDetector(
-                            onTap:()
+                            onTap:() async
                             {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                              var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                              if (res == "obtainDirection") {
+                                await getPlaceDirection(context);
+                              }
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: size.width * 0.08),
@@ -310,6 +318,28 @@ class ToWinchMap extends StatelessWidget {
         ],
       ),
     );
+
+  }
+
+  Future<void> getPlaceDirection(context) async
+  {
+    var initialPos = Provider.of<AppData>(context, listen: false).pickUpLocation;
+    var finalPos = Provider.of<AppData>(context, listen: false).dropOffLocation;
+
+    var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
+    var dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(message: "Please wait..")
+    );
+
+    var details = await ApiService.obtainPlaceDirectionDetails(pickUpLatLng, dropOffLatLng);
+
+    Navigator.pop(context);
+
+    print("This is Encoded Points ::");
+    print(details.encodedPoints);
   }
 
   Padding locationBottomSheet(context) {

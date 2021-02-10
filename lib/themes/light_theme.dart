@@ -76,7 +76,7 @@ ThemeData lightTheme() {
     errorColor: Colors.redAccent[700],
     canvasColor: Colors.transparent,
     backgroundColor: Colors.white,
-    dialogBackgroundColor: Colors.amber,
+    dialogBackgroundColor: Colors.white30,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
         color: Colors.white,
