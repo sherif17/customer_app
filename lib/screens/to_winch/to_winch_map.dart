@@ -21,13 +21,11 @@ class ToWinchMap extends StatelessWidget {
   {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
-    print("current position is $position");
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 15.5);
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     String address = await ApiService.searchCoordinateAddress(position, context);
-    //Provider.of<AppData>(context).updatePickUpLocationAddress(address);
     print("This is your address:: " + address);
   }
 
