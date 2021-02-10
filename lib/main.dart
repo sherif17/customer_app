@@ -4,6 +4,7 @@ import 'package:customer_app/screens/login_screens/phone_number/enter_phone_numb
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
-          initialRoute: ToWinchMap.routeName,
+          initialRoute: WinchMap.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

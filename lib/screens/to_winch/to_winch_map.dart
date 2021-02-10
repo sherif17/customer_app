@@ -4,6 +4,7 @@ import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:customer_app/widgets/divider.dart';
@@ -11,7 +12,12 @@ import 'package:customer_app/services/api_services.dart';
 import 'package:provider/provider.dart';
 
 
-class ToWinchMap extends StatelessWidget {
+class ToWinchMap extends StatefulWidget {
+  @override
+  _ToWinchState createState() => _ToWinchState();
+}
+class _ToWinchState extends State<ToWinchMap> {
+  @override
   static String routeName = '/ToWinchMap';
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
@@ -67,6 +73,7 @@ class ToWinchMap extends StatelessWidget {
                         zoomGesturesEnabled: true,
                         zoomControlsEnabled: true,
                         mapToolbarEnabled: true,
+                        polylines: polylineSet,
 
                         onMapCreated: (GoogleMapController controller) {
                           _completerGoogleMap.complete(controller);
@@ -340,6 +347,64 @@ class ToWinchMap extends StatelessWidget {
 
     print("This is Encoded Points ::");
     print(details.encodedPoints);
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodedPolylinePointsResult = polylinePoints.decodePolyline(details.encodedPoints);
+
+    pLineCoordinates.clear();
+
+    if (decodedPolylinePointsResult.isNotEmpty)
+      {
+        decodedPolylinePointsResult.forEach((PointLatLng pointLatLng) {
+          pLineCoordinates.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+        });
+      }
+    polylineSet.clear();
+
+    setState(() {
+      Polyline polyline = Polyline(
+          color: Theme.of(context).primaryColor,
+          polylineId: PolylineId("PolylineID"),
+        jointType: JointType.round,
+        points:pLineCoordinates,
+        width: 5,
+        startCap: Cap.roundCap,
+        endCap: Cap.roundCap,
+        geodesic: true,
+      );
+      polylineSet.add(polyline);
+
+    });
+
+    LatLngBounds latLngBounds;
+
+    if(pickUpLatLng.latitude > dropOffLatLng.latitude && pickUpLatLng.longitude > dropOffLatLng.longitude)
+      {
+        latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+
+      }
+    else if(pickUpLatLng.longitude > dropOffLatLng.longitude)
+      {
+        latLngBounds = LatLngBounds(southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude), northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
+
+      }
+    else if(pickUpLatLng.latitude > dropOffLatLng.latitude)
+      {
+        latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude), northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+
+
+      }
+    else
+      {
+        latLngBounds = LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+      }
+
+    _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+
+
+
+
+
   }
 
   Padding locationBottomSheet(context) {
@@ -527,6 +592,7 @@ class ToWinchMap extends StatelessWidget {
 
     );
   }
+
 }
 
 myBottomSheet(context){
