@@ -74,6 +74,7 @@ ThemeData lightTheme() {
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
     backgroundColor: Colors.white,
+    dialogBackgroundColor: Colors.white30,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
         color: Colors.white,

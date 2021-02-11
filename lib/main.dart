@@ -1,14 +1,15 @@
-import 'package:customer_app/screens/dash_board/dash_board.dart';
-//import 'package:customer_app/screens/dash_board/home/home_body.dart';
+import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'localization/demo_localization.dart';
 import 'localization/localization_constants.dart';
 import 'themes/light_theme.dart';
@@ -89,31 +90,34 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       // TODO: implement build
-      return new MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme(),
-        initialRoute: DashBoard.routeName,
-        routes: routes,
-        locale: _locale,
-        supportedLocales: [
-          Locale("en", "US"),
-          Locale("ar", "EG"),
-        ],
-        localizationsDelegates: [
-          DemoLocalization.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (deviceLocal, supportedLocales) {
-          for (var local in supportedLocales) {
-            if (local.languageCode == deviceLocal.languageCode &&
-                local.countryCode == deviceLocal.countryCode) {
-              return deviceLocal;
+      return ChangeNotifierProvider(
+        create: (context) => AppData(),
+        child: new MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme(),
+          initialRoute: WinchMap.routeName,
+          routes: routes,
+          locale: _locale,
+          supportedLocales: [
+            Locale("en", "US"),
+            Locale("ar", "EG"),
+          ],
+          localizationsDelegates: [
+            DemoLocalization.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (deviceLocal, supportedLocales) {
+            for (var local in supportedLocales) {
+              if (local.languageCode == deviceLocal.languageCode &&
+                  local.countryCode == deviceLocal.countryCode) {
+                return deviceLocal;
+              }
             }
-          }
-          return supportedLocales.first;
-        },
+            return supportedLocales.first;
+          },
+        ),
       );
     }
   }

@@ -37,8 +37,9 @@ dependencies:
   shared_preferences: ^0.5.12+4
   google_maps_flutter: ^1.1.1
   geolocator: ^6.1.14
-  carousel_slider: ^3.0.0
-  im_stepper: ^0.1.2+9
+  location: ^3.2.4
+  flutter_polyline_points: ^0.2.4
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -108,10 +109,6 @@ flutter:
          - asset: assets/fonts/Lato-BoldItalic.ttf
          - asset: assets/fonts/Lato-Regular.ttf
          - asset: assets/fonts/Lato-Thin.ttf
-
-    - family: CustomerAppIcons
-      fonts:
-         - asset: assets/fonts/CustomerAppIcons.ttf
 
 
   #MPLUSRounded1c
