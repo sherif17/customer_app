@@ -4,38 +4,61 @@ ThemeData lightTheme() {
   TextTheme _basicTextTheme(TextTheme base) {
     return base.copyWith(
       headline1: base.headline1.copyWith(
-        fontSize: 72.0,
+        fontSize: 30.0,
         fontWeight: FontWeight.bold,
-        fontFamily: 'MPLUSRounded1c',
-        color: Colors.white,
+        fontFamily: 'Lato',
+        color: Color(0xFFBD4242),
       ),
-      headline6: base.headline6.copyWith(
-        fontSize: 23.0,
-        fontFamily: 'MPLUSRounded1c',
-      ),
-      bodyText2: base.bodyText2.copyWith(
-        fontSize: 16.0,
-        fontFamily: 'MPLUSRounded1c',
-        color: Colors.deepPurple[300],
+      headline2: base.headline2.copyWith(
+          fontSize: 25.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Lato',
+          color: Colors.black54),
+      headline3: base.headline3.copyWith(
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Lato',
+        color: Colors.black,
       ),
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
-        fontFamily: 'MPLUSRounded1c',
-        color: Colors.deepPurple[600],
+        fontFamily: 'Lato',
+        color: Color(0xFF42BDBD),
       ),
       headline5: base.headline4.copyWith(
-        fontSize: 18.0,
-        fontFamily: 'MPLUSRounded1c',
-        color: Colors.deepPurple[50],
+        fontSize: 17.0,
+        fontFamily: 'Lato',
+        color: Colors.grey[700],
         //buttons
       ),
-      caption: base.headline5.copyWith(
-        fontSize: 12.0,
-        fontFamily: 'MPLUSRounded1c',
+      headline6: base.headline6.copyWith(
+        fontSize: 23.0,
+        fontFamily: 'Lato',
       ),
       bodyText1: base.bodyText1.copyWith(
-        color: Colors.deepPurple[300],
-        fontSize: 14,
+        color: Colors.grey[800],
+        fontSize: 15,
+      ),
+      bodyText2: base.bodyText2.copyWith(
+        fontSize: 16.0,
+        fontFamily: 'Lato',
+        fontWeight: FontWeight.w800,
+        color: Colors.grey[900],
+      ),
+      button: base.button.copyWith(
+          fontSize: 20.0,
+          fontFamily: 'Lato',
+          color: Colors.white,
+          fontWeight: FontWeight.bold),
+      caption: base.headline5.copyWith(
+        fontSize: 14.0,
+        fontFamily: 'Lato',
+      ),
+      subtitle1: base.subtitle1.copyWith(
+        fontSize: 15.0,
+        fontFamily: 'Lato',
+        fontWeight: FontWeight.w900,
+        color: Color(0xFFBD4242),
       ),
     );
   }
@@ -43,22 +66,88 @@ ThemeData lightTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
-    primaryColor: Colors.deepPurple[300],
-    accentColor: Colors.deepPurple[300],
+    primaryColor: Color(0xFFBD4242),
+    primaryColorLight: Color(0xFFC45555),
+    primaryColorDark: Color(0xFF470000),
+    accentColor: Colors.white,
+    hintColor: Color(0xFF42BDBD),
+    scaffoldBackgroundColor: Colors.white,
+    errorColor: Colors.redAccent[700],
+    canvasColor: Colors.transparent,
+    backgroundColor: Colors.white,
+    primaryTextTheme: TextTheme(
+      headline2: TextStyle(
+        color: Colors.white,
+        fontFamily: "Lato",
+        fontSize: 16.0,
+      ),
+    ),
+    accentTextTheme: TextTheme(
+      headline3: TextStyle(
+        color: Colors.black54,
+        fontFamily: "Lato",
+        fontSize: 16.0,
+      ),
+    ),
     iconTheme: IconThemeData(
-      color: Colors.deepPurple[300],
+      color: Color(0xFFBD4242),
       size: 20.0,
     ),
     buttonTheme: ButtonThemeData(
-      buttonColor: Colors.deepPurple[300],
+      buttonColor: Color(0xFFBD4242),
       shape: RoundedRectangleBorder(),
       textTheme: ButtonTextTheme.primary,
     ),
     sliderTheme: SliderThemeData(
-      activeTrackColor: Colors.deepPurple[300],
-      overlayColor: Colors.deepPurple[300].withAlpha(32),
-      thumbColor: Colors.deepPurple[300],
+      activeTrackColor: Color(0xFFBD4242),
+      overlayColor: Color(0xFFBD4242).withAlpha(32),
+      thumbColor: Color(0xFFBD4242),
     ),
+    inputDecorationTheme: inputDecorationTheme(base),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      color: Colors.white,
+      elevation: 0,
+      brightness: Brightness.light,
+      textTheme: base.textTheme..headline3,
+    ),
+  );
+}
+
+// for register input field
+InputDecorationTheme inputDecorationTheme(ThemeData base) {
+  OutlineInputBorder EnabledInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1),
+    gapPadding: 15,
+  );
+  OutlineInputBorder FocusedInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 1.5),
+    gapPadding: 10,
+  );
+
+  OutlineInputBorder disableInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey[900], width: 0.5),
+  );
+
+  OutlineInputBorder ErrorInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Color(0xFFBD4242)));
+
+  return InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 20,
+    ),
+    enabledBorder: EnabledInputBorder,
+    disabledBorder: disableInputBorder,
+    focusedBorder: FocusedInputBorder,
+    errorBorder: ErrorInputBorder,
+    border: EnabledInputBorder,
+    hintStyle: TextStyle(),
+    labelStyle: TextStyle(color: Colors.red),
   );
 }
 ////link url fot this method :https://codeburst.io/managing-multiple-themes-in-flutter-application-37411adeb04c
