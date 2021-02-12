@@ -1,4 +1,5 @@
 import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
@@ -95,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
-          initialRoute: WinchMap.routeName,
+          initialRoute: Intro.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

@@ -5,6 +5,7 @@ import 'package:customer_app/screens/login_screens/phone_number/enter_phone_numb
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:flutter/widgets.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -14,5 +15,5 @@ final Map<String, WidgetBuilder> routes = {
   ConfirmThisUser.routeName: (context) => ConfirmThisUser(),
   RegisterNewUser.routeName: (context) => RegisterNewUser(),
   DashBoard.routeName: (context) => DashBoard(),
-  ToWinchMap.routeName: (context) => ToWinchMap(),
+  WinchMap.routeName: (context) => WinchMap(),
 };

@@ -11,14 +11,13 @@ import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:provider/provider.dart';
 
-
 class ToWinchMap extends StatefulWidget {
   @override
   _ToWinchState createState() => _ToWinchState();
 }
+
 class _ToWinchState extends State<ToWinchMap> {
   @override
-  static String routeName = '/ToWinchMap';
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
 
@@ -31,21 +30,22 @@ class _ToWinchState extends State<ToWinchMap> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
 
-  void locatePosition(context) async
-  {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  void locatePosition(context) async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 15.5);
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 15.5);
+    _googleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    String address = await ApiService.searchCoordinateAddress(position, context);
+    String address =
+        await ApiService.searchCoordinateAddress(position, context);
     print("This is your address:: " + address);
   }
 
-
   bool buttonState = true;
-
 
   final CameraPosition _initialPosition = CameraPosition(
     target: LatLng(31.2001, 29.9187),
@@ -56,114 +56,124 @@ class _ToWinchState extends State<ToWinchMap> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
-        children:[
+        children: [
           //Padding(
-            //padding: const EdgeInsets.only(bottom: 190.0),
-             Column(
-              children: [
-                //Padding(
-                  //padding: const EdgeInsets.only(bottom: 190.0),
-                  //child:
-      Padding(
-        padding: EdgeInsets.only(top: size.height * 0.03,),
-        child: Container(
-                      height: size.height * 0.75,
-                     child: GoogleMap(
-                        initialCameraPosition: _initialPosition,
-                        mapType: MapType.normal,
-                        myLocationButtonEnabled: true,
-                        myLocationEnabled: true,
-                        zoomGesturesEnabled: true,
-                        zoomControlsEnabled: true,
-                        mapToolbarEnabled: true,
-                        polylines: polylineSet,
-                        markers: markersSet,
-                        circles: circlesSet,
-
-                        onMapCreated: (GoogleMapController controller) {
-                          _completerGoogleMap.complete(controller);
-                          _googleMapController = controller;
-                          locatePosition(context);
-                        }
-
-                    ),
-
-                    ),
-      ),
+          //padding: const EdgeInsets.only(bottom: 190.0),
+          Column(
+            children: [
+              //Padding(
+              //padding: const EdgeInsets.only(bottom: 190.0),
+              //child:
+              Padding(
+                padding: EdgeInsets.only(
+                  top: size.height * 0.03,
+                ),
+                child: Container(
+                  height: size.height * 0.75,
+                  child: GoogleMap(
+                      initialCameraPosition: _initialPosition,
+                      mapType: MapType.normal,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapToolbarEnabled: true,
+                      polylines: polylineSet,
+                      markers: markersSet,
+                      circles: circlesSet,
+                      onMapCreated: (GoogleMapController controller) {
+                        _completerGoogleMap.complete(controller);
+                        _googleMapController = controller;
+                        locatePosition(context);
+                      }),
+                ),
+              ),
               //  ),
-                Positioned(
-                  left: 0.0,
-                  right: 0.0,
-                  bottom: 0.0,
-                  child: Container(
-                    height: size.height * 0.22,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 16.0,
-                          spreadRadius: 0.5,
-                          offset: Offset(0.7,0.7),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: size.width * 0.02, vertical: size.height * 0.02),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: size.height * 0.006),
-                          Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
-                          Text("Where to?", style: Theme.of(context).textTheme.headline2),
-                          SizedBox(height: size.height * 0.02),
-
-                          GestureDetector(
-                            onTap:() async
-                            {
-                              var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
-                              if (res == "obtainDirection") {
-                                await getPlaceDirection(context);
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: Theme.of(context).accentColor,
-                                borderRadius: BorderRadius.circular(5.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black54,
-                                    blurRadius: 6.0,
-                                    spreadRadius: 0.5,
-                                    offset: Offset(0.7, 0.7),
+              Positioned(
+                left: 0.0,
+                right: 0.0,
+                bottom: 0.0,
+                child: Container(
+                  height: size.height * 0.22,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.0),
+                        topRight: Radius.circular(18.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black54,
+                        blurRadius: 16.0,
+                        spreadRadius: 0.5,
+                        offset: Offset(0.7, 0.7),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.02,
+                        vertical: size.height * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: size.height * 0.006),
+                        Text("Hi there,",
+                            style: Theme.of(context).textTheme.bodyText1),
+                        Text("Where to?",
+                            style: Theme.of(context).textTheme.headline2),
+                        SizedBox(height: size.height * 0.02),
+                        GestureDetector(
+                          onTap: () async {
+                            var res = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchScreen()));
+                            if (res == "obtainDirection") {
+                              await getPlaceDirection(context);
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.08),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: Theme.of(context).accentColor,
+                              borderRadius: BorderRadius.circular(5.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black54,
+                                  blurRadius: 6.0,
+                                  spreadRadius: 0.5,
+                                  offset: Offset(0.7, 0.7),
+                                ),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.02,
+                                vertical: size.height * 0.006,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    color: Theme.of(context).hintColor,
+                                  ),
+                                  //SizedBox(width: size.width * 0.0001,),
+                                  Text(
+                                    "Search Drop off",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
-
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: size.width * 0.02, vertical: size.height * 0.006,),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      Icons.search, color: Theme
-                                        .of(context)
-                                        .hintColor,),
-                                    //SizedBox(width: size.width * 0.0001,),
-                                    Text("Search Drop off",
-                                      style: Theme.of(context).textTheme.bodyText2,
-                                    ),
-
-                                  ],
-                                ),
                               ),
                             ),
                           ),
+                        ),
 
                         /*
                           GestureDetector(
@@ -312,30 +322,24 @@ class _ToWinchState extends State<ToWinchMap> {
                             ],
                           ),
                                 */
-                        ],
-
-                      ),
-
-                      ),
+                      ],
                     ),
                   ),
-
-
-
-              ],
-            )
-            //),
+                ),
+              ),
+            ],
+          )
+          //),
 
           //locationBottomSheet(),
         ],
       ),
     );
-
   }
 
-  Future<void> getPlaceDirection(context) async
-  {
-    var initialPos = Provider.of<AppData>(context, listen: false).pickUpLocation;
+  Future<void> getPlaceDirection(context) async {
+    var initialPos =
+        Provider.of<AppData>(context, listen: false).pickUpLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOffLocation;
 
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
@@ -343,10 +347,11 @@ class _ToWinchState extends State<ToWinchMap> {
 
     showDialog(
         context: context,
-        builder: (BuildContext context) => ProgressDialog(message: "Please wait..")
-    );
+        builder: (BuildContext context) =>
+            ProgressDialog(message: "Please wait.."));
 
-    var details = await ApiService.obtainPlaceDirectionDetails(pickUpLatLng, dropOffLatLng);
+    var details = await ApiService.obtainPlaceDirectionDetails(
+        pickUpLatLng, dropOffLatLng);
 
     Navigator.pop(context);
 
@@ -354,71 +359,68 @@ class _ToWinchState extends State<ToWinchMap> {
     print(details.encodedPoints);
 
     PolylinePoints polylinePoints = PolylinePoints();
-    List<PointLatLng> decodedPolylinePointsResult = polylinePoints.decodePolyline(details.encodedPoints);
+    List<PointLatLng> decodedPolylinePointsResult =
+        polylinePoints.decodePolyline(details.encodedPoints);
 
     pLineCoordinates.clear();
 
-    if (decodedPolylinePointsResult.isNotEmpty)
-      {
-        decodedPolylinePointsResult.forEach((PointLatLng pointLatLng) {
-          pLineCoordinates.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
-        });
-      }
+    if (decodedPolylinePointsResult.isNotEmpty) {
+      decodedPolylinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      });
+    }
     polylineSet.clear();
 
     setState(() {
       Polyline polyline = Polyline(
-          color: Theme.of(context).primaryColor,
-          polylineId: PolylineId("PolylineID"),
+        color: Theme.of(context).primaryColor,
+        polylineId: PolylineId("PolylineID"),
         jointType: JointType.round,
-        points:pLineCoordinates,
+        points: pLineCoordinates,
         width: 5,
         startCap: Cap.roundCap,
         endCap: Cap.roundCap,
         geodesic: true,
       );
       polylineSet.add(polyline);
-
     });
 
     LatLngBounds latLngBounds;
 
-    if(pickUpLatLng.latitude > dropOffLatLng.latitude && pickUpLatLng.longitude > dropOffLatLng.longitude)
-      {
-        latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+    if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
+        pickUpLatLng.longitude > dropOffLatLng.longitude) {
+      latLngBounds =
+          LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+    } else if (pickUpLatLng.longitude > dropOffLatLng.longitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude),
+          northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
+    } else if (pickUpLatLng.latitude > dropOffLatLng.latitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude),
+          northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+    } else {
+      latLngBounds =
+          LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+    }
 
-      }
-    else if(pickUpLatLng.longitude > dropOffLatLng.longitude)
-      {
-        latLngBounds = LatLngBounds(southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude), northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
-
-      }
-    else if(pickUpLatLng.latitude > dropOffLatLng.latitude)
-      {
-        latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude), northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
-
-
-      }
-    else
-      {
-        latLngBounds = LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
-      }
-
-    _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    _googleMapController
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     Marker pickUpLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
-        infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My location"),
+        infoWindow:
+            InfoWindow(title: initialPos.placeName, snippet: "My location"),
         position: pickUpLatLng,
-        markerId: MarkerId("pickUpId")
-    );
+        markerId: MarkerId("pickUpId"));
 
     Marker dropOffLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        infoWindow: InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
+        infoWindow:
+            InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
         position: dropOffLatLng,
-        markerId: MarkerId("dropOffId")
-    );
+        markerId: MarkerId("dropOffId"));
 
     setState(() {
       markersSet.add(pickUpLocMarker);
@@ -426,386 +428,366 @@ class _ToWinchState extends State<ToWinchMap> {
     });
 
     Circle pickUpLocCircle = Circle(
-        fillColor: Colors.blue,
-        center: pickUpLatLng,
-        radius: 12.0,
-        strokeWidth: 4,
-        strokeColor: Colors.blue,
-        circleId: CircleId("pickUpId"),
+      fillColor: Colors.blue,
+      center: pickUpLatLng,
+      radius: 12.0,
+      strokeWidth: 4,
+      strokeColor: Colors.blue,
+      circleId: CircleId("pickUpId"),
     );
 
     Circle dropOffLocCircle = Circle(
-        fillColor: Theme.of(context).hintColor,
-        center: dropOffLatLng,
-        radius: 12.0,
-        strokeWidth: 4,
-        strokeColor: Theme.of(context).hintColor,
-        circleId: CircleId("dropOffId"),
+      fillColor: Theme.of(context).hintColor,
+      center: dropOffLatLng,
+      radius: 12.0,
+      strokeWidth: 4,
+      strokeColor: Theme.of(context).hintColor,
+      circleId: CircleId("dropOffId"),
     );
 
     setState(() {
       circlesSet.add(pickUpLocCircle);
       circlesSet.add(dropOffLocCircle);
     });
-
   }
 
   Padding locationBottomSheet(context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: DraggableScrollableSheet(builder: (context, controller){
-        return Container(
-          child: ListView.builder(
-            itemCount: 1,
-            controller: controller,
-            itemBuilder: (BuildContext context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 4.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start,
-                  children: [
-                    //SizedBox(height: 6.0),
-                    Text(
-                        "Hi there,",
-                        style: Theme.of(context).textTheme.bodyText1
-                    ),
-                    Text(
-                        "Where to?",
-                        style: Theme.of(context).textTheme.headline2
-                    ),
-                    SizedBox(height: 20.0),
+      child: DraggableScrollableSheet(
+        builder: (context, controller) {
+          return Container(
+            child: ListView.builder(
+              itemCount: 1,
+              controller: controller,
+              itemBuilder: (BuildContext context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //SizedBox(height: 6.0),
+                      Text("Hi there,",
+                          style: Theme.of(context).textTheme.bodyText1),
+                      Text("Where to?",
+                          style: Theme.of(context).textTheme.headline2),
+                      SizedBox(height: 20.0),
 
-                    GestureDetector(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.circular(5.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black54,
-                              blurRadius: 6.0,
-                              spreadRadius: 0.5,
-                              offset: Offset(0.7, 0.7),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                              12.0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_pin,
-                                color: Theme.of(context).hintColor,
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 6.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(0.7, 0.7),
                               ),
-                              SizedBox(width: 10.0,),
-                              Text("My location")
-
                             ],
                           ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_pin,
+                                  color: Theme.of(context).hintColor,
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text("My location")
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: 20.0),
-                    
-                    GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme
-                            .of(context)
-                            .accentColor,
-                        borderRadius: BorderRadius
-                            .circular(5.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 6.0,
-                            spreadRadius: 0.5,
-                            offset: Offset(0.7, 0.7),
+                      SizedBox(height: 20.0),
+
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 6.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(0.7, 0.7),
+                              ),
+                            ],
                           ),
-                        ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).hintColor,
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text("Search Drop off")
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                            12.0),
+
+                      SizedBox(height: 24.0),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 60.0),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.search, color: Theme
-                                .of(context)
-                                .hintColor,),
-                            SizedBox(width: 10.0,),
-                            Text("Search Drop off")
+                              Icons.push_pin,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            SizedBox(
+                              width: 12.0,
+                            ),
+                            GestureDetector(
+                              child: Text("Set A location on the map"),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    ),
+                      SizedBox(height: 24.0),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          SizedBox(
+                            width: 12.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Add Home"),
+                              SizedBox(
+                                height: 4.0,
+                              ),
+                              Text(
+                                "Your living home address",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10.0),
+                      DividerWidget(),
+                      SizedBox(height: 18.0),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.work,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          SizedBox(
+                            width: 12.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Add Work"),
+                              SizedBox(
+                                height: 4.0,
+                              ),
+                              Text(
+                                "Your office address",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+                //);
+              },
+            ),
+            decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+          );
+        },
+      ),
+    );
+  }
+}
 
-                    SizedBox(height: 24.0),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 60.0),
+myBottomSheet(context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext c) {
+        return SingleChildScrollView(
+          child: Container(
+            //color: Theme.of(context).accentColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 6.0),
+                Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
+                Text("Where to?", style: Theme.of(context).textTheme.headline2),
+                SizedBox(height: 20.0),
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 6.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7, 0.7),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
                       child: Row(
                         children: [
                           Icon(
-                            Icons.push_pin, color: Theme
-                              .of(context)
-                              .primaryColorDark,),
-                          SizedBox(width: 12.0,),
-                          GestureDetector(
-                            child: Text(
-                                "Set A location on the map"),
+                            Icons.location_pin,
+                            color: Theme.of(context).hintColor,
                           ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text("My location")
                         ],
                       ),
                     ),
-                    SizedBox(height: 24.0),
-                    Row(
-                      children: [
-                        Icon(Icons.home, color: Theme
-                            .of(context)
-                            .primaryColorDark,),
-                        SizedBox(width: 12.0,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .start,
-                          children: [
-                            Text("Add Home"),
-                            SizedBox(height: 4.0,),
-                            Text(
-                              "Your living home address",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .bodyText1,),
-                          ],
-                        )
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 6.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7, 0.7),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 10.0),
-                    DividerWidget(),
-                    SizedBox(height: 18.0),
-                    Row(
-                      children: [
-                        Icon(Icons.work, color: Theme
-                            .of(context)
-                            .primaryColorDark,),
-                        SizedBox(width: 12.0,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .start,
-                          children: [
-                            Text("Add Work"),
-                            SizedBox(height: 4.0,),
-                            Text("Your office address",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .bodyText1,),
-                          ],
-                        )
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.search,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text("Search Drop off")
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-              );
-              //);
-            },
-          ),
-
-          decoration: BoxDecoration(
-
-              color: Theme.of(context).accentColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20)
-              )
-          ),
-
-        );
-      },
-      ),
-
-
-
-    );
-  }
-
-}
-
-myBottomSheet(context){
-  showModalBottomSheet(context: context, builder: (BuildContext c){
-    return SingleChildScrollView(
-      child: Container(
-        //color: Theme.of(context).accentColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 6.0),
-            Text("Hi there,", style: Theme.of(context).textTheme.bodyText1),
-            Text("Where to?", style: Theme.of(context).textTheme.headline2),
-            SizedBox(height: 20.0),
-
-            GestureDetector(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black54,
-                      blurRadius: 6.0,
-                      spreadRadius: 0.5,
-                      offset: Offset(0.7, 0.7),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                      12.0),
+                SizedBox(height: 24.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 60.0),
                   child: Row(
                     children: [
                       Icon(
-                        Icons.location_pin,
-                        color: Theme.of(context).hintColor,
+                        Icons.push_pin,
+                        color: Theme.of(context).primaryColorDark,
                       ),
-                      SizedBox(width: 10.0,),
-                      Text("My location")
-
+                      SizedBox(
+                        width: 12.0,
+                      ),
+                      GestureDetector(
+                        child: Text("Set A location on the map"),
+                      ),
                     ],
                   ),
                 ),
-              ),
-            ),
-
-            SizedBox(height: 20.0),
-
-            GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme
-                    .of(context)
-                    .accentColor,
-                borderRadius: BorderRadius
-                    .circular(5.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 6.0,
-                    spreadRadius: 0.5,
-                    offset: Offset(0.7, 0.7),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(
-                    12.0),
-                child: Row(
+                SizedBox(height: 24.0),
+                Row(
                   children: [
                     Icon(
-                      Icons.search, color: Theme
-                        .of(context)
-                        .hintColor,),
-                    SizedBox(width: 10.0,),
-                    Text("Search Drop off")
+                      Icons.home,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    SizedBox(
+                      width: 12.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            Provider.of<AppData>(context).pickUpLocation != null
+                                ? Provider.of<AppData>(context).pickUpLocation
+                                : "Add Home"),
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Text(
+                          "Your living home address",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    )
                   ],
                 ),
-              ),
-            ),
-            ),
-
-            SizedBox(height: 24.0),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 60.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.push_pin, color: Theme
-                      .of(context)
-                      .primaryColorDark,),
-                  SizedBox(width: 12.0,),
-                  GestureDetector(
-                    child: Text(
-                        "Set A location on the map"),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 24.0),
-            Row(
-              children: [
-                Icon(Icons.home, color: Theme
-                    .of(context)
-                    .primaryColorDark,),
-                SizedBox(width: 12.0,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start,
+                SizedBox(height: 10.0),
+                DividerWidget(),
+                SizedBox(height: 18.0),
+                Row(
                   children: [
-                    Text(
-                      Provider.of<AppData>(context).pickUpLocation != null
-                          ? Provider.of<AppData>(context).pickUpLocation
-                          : "Add Home"
+                    Icon(
+                      Icons.work,
+                      color: Theme.of(context).primaryColorDark,
                     ),
-                    SizedBox(height: 4.0,),
-                    Text(
-                      "Your living home address",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1,),
+                    SizedBox(
+                      width: 12.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Add Work"),
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Text(
+                          "Your office address",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-            SizedBox(height: 10.0),
-            DividerWidget(),
-            SizedBox(height: 18.0),
-            Row(
-              children: [
-                Icon(Icons.work, color: Theme
-                    .of(context)
-                    .primaryColorDark,),
-                SizedBox(width: 12.0,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start,
-                  children: [
-                    Text("Add Work"),
-                    SizedBox(height: 4.0,),
-                    Text("Your office address",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1,),
-                  ],
-                )
+                ),
               ],
             ),
 
-          ],
-
-        ),
-
-        decoration: BoxDecoration(
-
-            color: Theme.of(context).accentColor,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20)
-            )
-        ),
-      ),
-    );
-  }
-  );
+            decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+          ),
+        );
+      });
 }
-
-
-

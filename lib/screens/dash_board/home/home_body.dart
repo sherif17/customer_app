@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/car_model.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/new_car_selection.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/customer_app_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +61,7 @@ class _HomeBodyState extends State<HomeBody> {
           onTap: () {
             Navigator.pushNamed(
               context,
-              ToWinchMap.routeName,
+              WinchMap.routeName,
             );
           },
           child: buildServices(
@@ -97,7 +98,7 @@ class _HomeBodyState extends State<HomeBody> {
         ),
         Positioned(
           top: x == 1 ? size.height * 0.05 : size.height * 0.05,
-          left: x == 1 ? size.width * 0.05 : size.height * 0.06,
+          left: x == 1 ? size.width * 0.05 : size.height * 0.045,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -325,11 +326,13 @@ class _customerCarsState extends State<customerCars> {
   int _current = 0;
   //int currentPage = 0;
   String url_1 =
-      'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80';
+      'https://i.pinimg.com/564x/e2/11/42/e2114295cfee2babeed1edf3e26c8d51.jpg';
   String url_2 =
-      'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80';
+      'https://i.pinimg.com/564x/a7/df/a2/a7dfa2843fa35b09de01320dfac55c87.jpg';
   String url_3 =
-      'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80';
+      'https://i.pinimg.com/564x/72/a1/88/72a188d519e791179897eb861f720c2a.jpg';
+  String url_4 =
+      'https://i.pinimg.com/564x/a1/13/ea/a113ead0c8175ad02df43770ee97199a.jpg';
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];

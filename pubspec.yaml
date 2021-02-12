@@ -39,6 +39,8 @@ dependencies:
   geolocator: ^6.1.14
   location: ^3.2.4
   flutter_polyline_points: ^0.2.4
+  carousel_slider: ^3.0.0
+  im_stepper: ^0.1.2+9
 
 
 
