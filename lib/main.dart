@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
-          initialRoute: Intro.routeName,
+          initialRoute: DashBoard.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

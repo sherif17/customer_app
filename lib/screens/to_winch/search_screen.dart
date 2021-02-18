@@ -1,11 +1,11 @@
 import 'package:customer_app/DataHandler/appData.dart';
-import 'package:customer_app/models/placePredictions.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/maps/placePredictions.dart';
 import 'package:customer_app/services/RequestAssistant.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:customer_app/models/address.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/maps/address.dart';
 
 
 class SearchScreen extends StatefulWidget {

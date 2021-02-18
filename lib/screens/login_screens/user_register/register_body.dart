@@ -1,4 +1,4 @@
-import 'package:customer_app/models/user_register_model.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -125,8 +125,8 @@ class _BodyState extends State<Body> {
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
                       responseID = decodedToken["_id"];
-                      responseFName = decodedToken["firstName"];
-                      responseLName = decodedToken["lastName"];
+                      // responseFName = decodedToken["firstName"];
+                      // responseLName = decodedToken["lastName"];
                       responseIat = decodedToken["iat"];
                       print(jwtToken);
                       print(responseID);

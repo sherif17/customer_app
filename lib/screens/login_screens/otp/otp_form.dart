@@ -1,4 +1,4 @@
-import 'package:customer_app/models/phone_num_model.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/phone_num_model.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -240,14 +240,15 @@ class _OtpFormState extends State<OtpForm> {
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
                       responseID = decodedToken["_id"];
-                      responseFName = decodedToken["firstName"];
-                      responseLName = decodedToken["lastName"];
+                      //  responseFName = decodedToken["firstName"];
+                      // responseLName = decodedToken["lastName"];
                       responseIat = decodedToken["iat"];
                       print(responseID);
-                      print(responseLName);
-                      print(responseFName);
+                      print(value.firstName);
+                      print(value.lastName);
+                      //print(responseFName);
                       print(responseIat);
-                      if (responseFName != null && responseLName != null) {
+                      if (value.firstName != null && value.lastName != null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
@@ -255,13 +256,13 @@ class _OtpFormState extends State<OtpForm> {
                             arguments: otpNavData(
                               jwtToken: jwtToken,
                               uID: responseID,
-                              FName: responseFName,
-                              LName: responseLName,
+                              FName: value.firstName,
+                              LName: value.lastName,
                               iAt: responseIat,
                               Phone: "+20${widget.phone_num}",
                             ));
-                      } else if (responseFName == null &&
-                          responseLName == null) {
+                      } else if (value.firstName == null &&
+                          value.lastName == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
@@ -275,15 +276,15 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false," ", "");
+                            context, size.height * 0.3, false, " ", "");
                       }
                     } else {
                       print(value.error);
                       setState(() {
                         isApiCallProcess = false;
                       });
-                      showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false,"InvalidUserToken", "");
+                      showRegisterModalBottomSheet(context, size.height * 0.4,
+                          false, "InvalidUserToken", "");
                     }
                   });
                 }

@@ -48,20 +48,28 @@ String phoneResponseModelToJson(PhoneResponseModel data) =>
 class PhoneResponseModel {
   PhoneResponseModel({
     this.token,
+    this.firstName,
+    this.lastName,
     this.error,
   });
 
   String token;
+  String firstName;
+  String lastName;
   String error;
 
   factory PhoneResponseModel.fromJson(Map<String, dynamic> json) =>
       PhoneResponseModel(
         token: json["token"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
         error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
         "token": token,
+        "firstName": firstName,
+        "lastName": lastName,
         "error": error,
       };
 }

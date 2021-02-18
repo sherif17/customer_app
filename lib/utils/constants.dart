@@ -19,6 +19,17 @@ const String NullLastNameError = "Please Enter Your Last Name";
 const String InvalidLastNameError = "Please Valid Last Name";
 const String SmallLastNameError = " Entered Last Name is too Short";
 
+// plates
+const String NullCharPlateError = "Please Enter  Plate Characters";
+const String InvalidCharPlateError = "Please Enter Valid  Plate Characters";
+const String SmallCharPlateError = " Entered  Plate Character is too Short";
+const String LargeCharPlateError =
+    "Maximum allowed Characters is 3 ,please remove extra ones";
+
+const String NullNumPlateError = "Please Enter  Plate Numbers";
+const String InvalidNumPlateError = "Please Enter Valid  Plate Numbers";
+const String SmallNumPlateError = " Entered  Plate Numbers is too Short";
+
 final otpInputDecoration = InputDecoration(
   counterText: '',
   contentPadding:

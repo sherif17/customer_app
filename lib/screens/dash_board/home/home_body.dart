@@ -4,6 +4,8 @@ import 'package:customer_app/screens/dash_board/home/componnets/car_model.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/new_car_selection.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/screens/to_winch/winch_map.dart';
+import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/services/car_services/car_services.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/customer_app_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -178,6 +180,8 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 */
+  CarApiService api = new CarApiService();
+  Map<String, List<dynamic>> response = {};
   Padding addNewCar(BuildContext context, Size size) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -188,9 +192,24 @@ class _HomeBodyState extends State<HomeBody> {
         children: [
           Text("Your Cars", style: Theme.of(context).textTheme.headline2),
           GestureDetector(
-            onTap: () {
-              buildStepperShowModalBottomSheet(
-                  context, size, this.activeStep, this.upperBound);
+            onTap: () async {
+              var list = await api.loadCarsData();
+              for (var j in list) {
+                if (response.containsKey(j.carBrand)) {
+                  response
+                      .putIfAbsent(j.carBrand, () => null)
+                      .add([j.carBrand, j.model, j.startYear, j.endYear]);
+                } else
+                  response.addAll({
+                    j.carBrand: [j.carBrand, j.model, j.startYear, j.endYear]
+                  });
+              }
+              buildStepperShowModalBottomSheet(context, size, this.activeStep,
+                  this.upperBound, list, response);
+              response.forEach((key, value) {
+                print('$key: ${value}');
+              });
+              print("end");
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -514,3 +533,25 @@ class _customerCarsState extends State<customerCars> {
     );
   }
 }
+
+/* Map<String, List<Car>> response =
+                  Map.fromIterable(list, key: (v) {
+                //if(v.containsKey(key))
+                return v.carBrand;
+              }, value: (v) {
+                return [
+                  Car(v.carBrand, v.model, v.startYear, v.endYear),
+                ];
+              });*/
+
+//list.map((e) => e.carBrand,)
+//var ListToDisplay = new Map<string, List<Car>>();
+//LoadCar();
+// response = {};
+/* for (var x in list) {
+                print(x.id + " " + x.carBrand + " " + x.model);
+                if (carBrands.contains(x.carBrand) == false)
+                  carBrands.add(x.carBrand);
+                else
+                  count++;
+              }*/

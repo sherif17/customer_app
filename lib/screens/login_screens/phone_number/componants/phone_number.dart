@@ -1,4 +1,4 @@
-import 'package:customer_app/models/phone_num_model.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/phone_num_model.dart';
 import 'package:flutter/material.dart';
 
 class phoneNum {

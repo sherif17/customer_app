@@ -13,9 +13,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     otpNavData finalResponse = ModalRoute.of(context).settings.arguments;
-    Map<String, dynamic> decodedToken =
-        JwtDecoder.decode(finalResponse.jwtToken);
-    String Fname = decodedToken['firstName'];
+    /* Map<String, dynamic> decodedToken =
+        JwtDecoder.decode(finalResponse.jwtToken);*/
+    // String Fname = decodedToken['firstName'];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Welcome $Fname,",
+              "Welcome user,",
               style: TextStyle(
                   color: Colors.blueGrey,
                   fontSize: 30.0,
