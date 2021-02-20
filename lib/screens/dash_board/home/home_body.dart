@@ -1,11 +1,13 @@
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:customer_app/screens/dash_board/home/componnets/car_model.dart';
-import 'package:customer_app/screens/dash_board/home/componnets/new_car_selection.dart';
+import 'package:customer_app/models/cars/load_user_cars_model.dart';
+import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';
+import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/customer_cars.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/customer_app_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,22 +20,26 @@ class HomeBody extends StatefulWidget {
   _HomeBodyState createState() => _HomeBodyState();
 }
 
-/* @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      carList.map((i) {
-        precacheImage(NetworkImage(i.carImage), context);
-      });
-    });
-    super.initState();
-  }
-*/
 class _HomeBodyState extends State<HomeBody> {
   int _currentstep = 0;
   // new stepper
   int activeStep = 0;
   int upperBound = 5;
   int x = 1;
+  CarApiService api = new CarApiService();
+  @override
+  void initState() {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
+      carList.map((i) {
+        precacheImage(NetworkImage(i.carImage), context);
+      });
+    });*/
+
+    //getCarList(jwt);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -180,7 +186,6 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 */
-  CarApiService api = new CarApiService();
   Map<String, List<dynamic>> response = {};
   Padding addNewCar(BuildContext context, Size size) {
     return Padding(
@@ -335,223 +340,3 @@ Widget choosingServices() {
     ),
   );
 }
-
-class customerCars extends StatefulWidget {
-  @override
-  _customerCarsState createState() => _customerCarsState();
-}
-
-class _customerCarsState extends State<customerCars> {
-  int _current = 0;
-  //int currentPage = 0;
-  String url_1 =
-      'https://i.pinimg.com/564x/e2/11/42/e2114295cfee2babeed1edf3e26c8d51.jpg';
-  String url_2 =
-      'https://i.pinimg.com/564x/a7/df/a2/a7dfa2843fa35b09de01320dfac55c87.jpg';
-  String url_3 =
-      'https://i.pinimg.com/564x/72/a1/88/72a188d519e791179897eb861f720c2a.jpg';
-  String url_4 =
-      'https://i.pinimg.com/564x/a1/13/ea/a113ead0c8175ad02df43770ee97199a.jpg';
-
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-    return result;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<CarModel> carList = new List<CarModel>();
-    Size size = MediaQuery.of(context).size;
-    carList.add(new CarModel(url_1, "kia", "rio", "س ص ع  1234"));
-    carList.add(new CarModel(url_2, "BWM", "X6", "س ق ط  5674"));
-    carList.add(new CarModel(url_3, "Audi", "A3", "ص ف ي  7921"));
-    carList.add(new CarModel(url_2, "Seat", "Leon", "ص ف ي  7921"));
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: map<Widget>(carList, (index, url) {
-            return AnimatedContainer(
-              width: _current == index ? 20 : 10,
-              height: 6.0,
-              duration: animationDuration,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(3),
-                color: _current == index ? Colors.redAccent : Colors.grey,
-              ),
-            );
-          }),
-        ),
-        CarouselSlider(
-          options: CarouselOptions(
-            height: size.height * 0.2,
-            aspectRatio: 16 / 9,
-            viewportFraction: 1,
-            initialPage: 0,
-            enableInfiniteScroll: true,
-            reverse: false,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 7),
-            autoPlayAnimationDuration: Duration(milliseconds: 1200),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: true,
-            onPageChanged: (index, a) {
-              setState(() {
-                _current = index;
-              });
-            },
-          ),
-          items: carList.map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        // margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                        decoration: new BoxDecoration(
-                          image: new DecorationImage(
-                            image: i.carImage == null
-                                ? AssetImage("assets/images/women_truck.jpg")
-                                : new NetworkImage(i.carImage),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius:
-                              BorderRadiusDirectional.all(Radius.circular(10)),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: size.height * 0.5,
-                          // margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: new BoxDecoration(
-                            gradient: new LinearGradient(
-                              end: Alignment.topCenter,
-                              begin: Alignment.bottomCenter,
-                              colors: <Color>[
-                                const Color(0xFFBD4242),
-                                Colors.black12.withOpacity(0.2)
-                              ],
-                            ),
-                            borderRadius: BorderRadiusDirectional.all(
-                                Radius.circular(10)),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.1,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.05),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                i.carBrand + "-" + i.carModel,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              //SizedBox(height: size.height * 0.01),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    i.carPlate,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(width: size.width * 0.42),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(width: size.width * 0.01),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            carList.remove(i);
-                                          });
-                                          print(carList.length);
-                                        },
-                                        child: Padding(
-                                            padding: EdgeInsets.all(5),
-                                            child: Icon(Icons.delete,
-                                                color: Colors.white)),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  AnimatedContainer DotSweeper({int index}) {
-    return AnimatedContainer(
-      duration: animationDuration,
-      margin: EdgeInsets.only(right: 5),
-      height: 6,
-      width: _current == index ? 20 : 6,
-      decoration: BoxDecoration(
-          color:
-              _current == index ? Theme.of(context).primaryColor : Colors.grey,
-          borderRadius: BorderRadius.circular(3)),
-    );
-  }
-}
-
-/* Map<String, List<Car>> response =
-                  Map.fromIterable(list, key: (v) {
-                //if(v.containsKey(key))
-                return v.carBrand;
-              }, value: (v) {
-                return [
-                  Car(v.carBrand, v.model, v.startYear, v.endYear),
-                ];
-              });*/
-
-//list.map((e) => e.carBrand,)
-//var ListToDisplay = new Map<string, List<Car>>();
-//LoadCar();
-// response = {};
-/* for (var x in list) {
-                print(x.id + " " + x.carBrand + " " + x.model);
-                if (carBrands.contains(x.carBrand) == false)
-                  carBrands.add(x.carBrand);
-                else
-                  count++;
-              }*/

@@ -3,6 +3,7 @@ import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/form_error.dart';
@@ -13,17 +14,20 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class ConfirmUserForm extends StatefulWidget {
-  String otpResponse_FName;
-  String otpResponse_LName;
-  String otpResponse_Phone;
-  String otpResponse_JWT;
+  String prefFName;
+  String prefLName;
+  String prefJwtToken;
+  String prefPhone;
+  String currentLang;
+
   ConfirmUserForm({
-    Key key,
-    this.otpResponse_FName,
-    this.otpResponse_LName,
-    this.otpResponse_Phone,
-    this.otpResponse_JWT,
-  }) : super(key: key);
+    //Key key,
+    this.prefFName,
+    this.prefLName,
+    this.prefJwtToken,
+    this.prefPhone,
+    this.currentLang,
+  }); //: super(key: key);
   @override
   _ConfirmUserFormState createState() => _ConfirmUserFormState();
 }
@@ -41,6 +45,9 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
 
   bool FName_Changed = false;
   bool LName_changed = false;
+
+  String Fname;
+  String Lname;
 
   @override
   void initState() {
@@ -83,18 +90,18 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
           //mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              // margin: EdgeInsets.symmetric(horizontal: size.width * 0.09),
-              padding: EdgeInsets.all(30),
-              child: SvgPicture.asset(
-                'assets/icons/profile.svg',
-                height: size.height * 0.08,
-                width: size.width * 0.08,
-                //color: Theme.of(context),
-              ),
-            ),
+            // Container(
+            //   // margin: EdgeInsets.symmetric(horizontal: size.width * 0.09),
+            //   padding: EdgeInsets.all(30),
+            //   child: SvgPicture.asset(
+            //     'assets/icons/profile.svg',
+            //     height: size.height * 0.08,
+            //     width: size.width * 0.08,
+            //     //color: Theme.of(context),
+            //   ),
+            // ),
             SizedBox(
-              height: size.height * 0.001,
+              height: size.height * 0.1,
               width: size.width * 0.6,
             ),
             Row(
@@ -114,49 +121,66 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                     child: DecoratedEditLNameTextField())
               ],
             ),
-            SizedBox(width: size.height * 0.1, child: FormError(size: size, errors: errors)),
+            SizedBox(
+                width: size.height * 0.1,
+                child: FormError(size: size, errors: errors)),
             SizedBox(
               height: size.height * 0.02,
             ),
             SizedBox(
-                height: size.height * 0.1, width: size.width * 0.5, child: DecoratedPhoneTField()),
+                height: size.height * 0.1,
+                width: size.width * 0.5,
+                child: DecoratedPhoneTField()),
             RoundedButton(
                 text: "Edit my info",
                 color: Theme.of(context).primaryColor,
                 press: () {
                   if (confirmValidateAndSave()) {
                     if (FName_Changed == true || LName_changed == true) {
-                      print("Request body: ${userRegisterRequestModel.toJson()}.");
-                      print("hii${widget.otpResponse_JWT}");
+                      print(
+                          "Request body: ${userRegisterRequestModel.toJson()}.");
+                      print("hii${widget.prefJwtToken}");
                       setState(() {
                         isApiCallProcess = true;
                       });
                       ApiService apiService = new ApiService();
                       apiService
-                          .registerUser(userRegisterRequestModel, widget.otpResponse_JWT)
+                          .registerUser(
+                              userRegisterRequestModel, widget.prefJwtToken)
                           .then(
                         (value) {
                           if (value.error == null) {
                             jwtToken = value.token;
+                            setPrefJwtToken(jwtToken);
                             print(jwtToken);
-                            Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+                            Map<String, dynamic> decodedToken =
+                                JwtDecoder.decode(jwtToken);
                             responseID = decodedToken["_id"];
-                            responseFName = decodedToken["firstName"];
-                            responseLName = decodedToken["lastName"];
+                            setPrefBackendID(responseID);
+                            //responseFName = decodedToken["firstName"];
+                            setPrefFirstName(
+                                userRegisterRequestModel.firstName);
+                            //responseLName = decodedToken["lastName"];
+                            setPrefLastName(userRegisterRequestModel.lastName);
                             responseIat = decodedToken["iat"];
-                            print(responseID);
-                            print(responseLName);
-                            print(responseFName);
-                            print(responseIat);
-                            print(value.token);
+                            setPrefIAT(responseIat.toString());
+                            // print(responseID);
+                            // print(responseLName);
+                            // print(responseFName);
+                            // print(responseIat);
+                            // print(value.token);
+                            printAllUserCurrentData();
                             setState(() {
                               isApiCallProcess = false;
                             });
-                            Navigator.pushNamed(context, DashBoard.routeName,
-                                arguments: otpNavData(
+                            Navigator.pushNamed(
+                              context,
+                              DashBoard.routeName,
+                              /* arguments: otpNavData(
                                     jwtToken: jwtToken,
                                     Phone: widget.otpResponse_Phone,
-                                    socialPhoto: null));
+                                    socialPhoto: null)*/
+                            );
                           } else
                             print(value.error);
                         },
@@ -188,14 +212,14 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
   TextFormField DecoratedEditFNameTextField() {
     return TextFormField(
       keyboardType: TextInputType.name,
-      initialValue: widget.otpResponse_FName,
+      initialValue: widget.prefFName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         labelText: 'First Name',
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
-        if (newValue != widget.otpResponse_FName) FName_Changed = true;
+        if (newValue != widget.prefFName) FName_Changed = true;
         userRegisterRequestModel.firstName = newValue;
       },
       onChanged: (value) {
@@ -226,14 +250,14 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
   TextFormField DecoratedEditLNameTextField() {
     return TextFormField(
       keyboardType: TextInputType.name,
-      initialValue: widget.otpResponse_LName,
+      initialValue: widget.prefLName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         labelText: 'Last Name',
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
-        if (newValue != widget.otpResponse_LName) LName_changed = true;
+        if (newValue != widget.prefLName) LName_changed = true;
         userRegisterRequestModel.lastName = newValue;
       },
       onChanged: (value) {
@@ -265,7 +289,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
     return TextFormField(
       keyboardType: TextInputType.name,
       enabled: false,
-      initialValue: widget.otpResponse_Phone,
+      initialValue: widget.prefPhone,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         labelText: 'Phone',

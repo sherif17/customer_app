@@ -3,6 +3,7 @@ import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class _BodyState extends State<Body> {
   @override
   Widget social_build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
+    //otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
     final facebookLogin = FacebookLogin();
     Map userProfile;
@@ -83,8 +84,9 @@ class _BodyState extends State<Body> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: RegisterForm(
-                    otpResponse_jwt: otpResponse.jwtToken,
-                    otpResponse_phone: otpResponse.Phone)),
+                    /* otpResponse_jwt: otpResponse.jwtToken,
+                    otpResponse_phone: otpResponse.Phone*/
+                    )),
             SizedBox(height: size.height * 0.02),
             OrDivider(),
             SizedBox(height: size.height * 0.02),
@@ -93,6 +95,7 @@ class _BodyState extends State<Body> {
               iconSrc: 'assets/icons/facebook.svg',
               CornerRadius: 29,
               press: () async {
+                String currentJwtToken = await getPrefJwtToken();
                 final result = await facebookLogin.logIn(['email']);
                 final token = result.accessToken.token;
                 final graphResponse = await http.get(
@@ -109,6 +112,7 @@ class _BodyState extends State<Body> {
                     faceImage != null) {
                   FDecode = faceName.split(new RegExp('\\s+'));
                   print(FDecode);
+                  setPrefFirstName(FDecode[0]);
                   registerRequestModel.firstName = FDecode[0];
                   registerRequestModel.lastName = FDecode[1];
                   print("Request body: ${registerRequestModel.toJson()}.");
@@ -118,34 +122,43 @@ class _BodyState extends State<Body> {
 
                   ApiService apiService = new ApiService();
                   apiService
-                      .registerUser(registerRequestModel, otpResponse.jwtToken)
+                      .registerUser(registerRequestModel, currentJwtToken)
                       .then((value) {
                     if (value.error == null) {
                       jwtToken = value.token;
+                      setPrefJwtToken(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
-                      responseID = decodedToken["_id"];
+                      //responseID = decodedToken["_id"];
+                      setPrefBackendID(decodedToken["_id"]);
+                      setPrefFirstName(FDecode[0]);
+                      setPrefLastName(FDecode[1]);
+                      setPrefSocialEmail(faceEmail);
+                      setPrefSocialImage(faceImage);
                       // responseFName = decodedToken["firstName"];
                       // responseLName = decodedToken["lastName"];
-                      responseIat = decodedToken["iat"];
-                      print(jwtToken);
-                      print(responseID);
-                      print(responseLName);
-                      print(responseFName);
-                      print(responseIat);
+                      // responseIat = decodedToken["iat"];
+                      setPrefIAT(decodedToken["iat"].toString());
+                      // print(jwtToken);
+                      // print(responseID);
+                      // print(responseLName);
+                      // print(responseFName);
+                      // print(responseIat);
+                      printAllUserCurrentData();
                       setState(() {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context,
-                          size.height * 0.4,
-                          true,
-                          "ByFacebook",
-                          otpNavData(
+                        context,
+                        size.height * 0.4,
+                        true,
+                        "ByFacebook",
+                        /*otpNavData(
                               jwtToken: jwtToken,
                               Phone: otpResponse.Phone,
                               socialEmail: faceEmail,
-                              socialPhoto: faceImage));
+                              socialPhoto: faceImage)*/
+                      );
                     } else {
                       //response come error msg
                       print(value.error);
@@ -153,7 +166,7 @@ class _BodyState extends State<Body> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, " ", "");
+                          context, size.height * 0.4, false, " ");
                     }
                   });
                 } else {
@@ -162,7 +175,7 @@ class _BodyState extends State<Body> {
                     isApiCallProcess = false;
                   });
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byFacebookError", "");
+                      context, size.height * 0.4, false, "byFacebookError");
                 }
               },
             ),
@@ -173,6 +186,7 @@ class _BodyState extends State<Body> {
               iconSrc: 'assets/icons/google_logo.svg',
               CornerRadius: 29,
               press: () async {
+                String currentJwtToken = await getPrefJwtToken();
                 try {
                   await _googleSignIn.signIn();
                   googleName = _googleSignIn.currentUser.displayName;
@@ -197,34 +211,43 @@ class _BodyState extends State<Body> {
                   });
                   ApiService apiService = new ApiService();
                   apiService
-                      .registerUser(registerRequestModel, otpResponse.jwtToken)
+                      .registerUser(registerRequestModel, currentJwtToken)
                       .then((value) {
                     if (value.error == null) {
                       jwtToken = value.token;
+                      setPrefJwtToken(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
                       responseID = decodedToken["_id"];
-                      responseFName = decodedToken["firstName"];
-                      responseLName = decodedToken["lastName"];
+                      setPrefBackendID(decodedToken["_id"]);
+                      // responseFName = decodedToken["firstName"];
+                      //responseLName = decodedToken["lastName"];
                       responseIat = decodedToken["iat"];
-                      print(jwtToken);
-                      print(responseID);
-                      print(responseLName);
-                      print(responseFName);
-                      print(responseIat);
+                      setPrefIAT(decodedToken["iat"].toString());
+                      setPrefFirstName(Gdecode[0]);
+                      setPrefLastName(Gdecode[1]);
+                      setPrefSocialEmail(googleEmail);
+                      setPrefSocialImage(googleImage);
+                      printAllUserCurrentData();
+                      //print(jwtToken);
+                      // print(responseID);
+                      // print(responseLName);
+                      //print(responseFName);
+                      //print(responseIat);
                       setState(() {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context,
-                          size.height * 0.4,
-                          true,
-                          "byGoogle",
-                          otpNavData(
+                        context,
+                        size.height * 0.4,
+                        true,
+                        "byGoogle",
+                        /*otpNavData(
                               jwtToken: jwtToken,
                               Phone: otpResponse.Phone,
                               socialPhoto: googleImage,
-                              socialEmail: googleEmail));
+                              socialEmail: googleEmail)*/
+                      );
                     } else {
                       //response come error msg
                       print(value.error);
@@ -232,7 +255,7 @@ class _BodyState extends State<Body> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, " ", "");
+                          context, size.height * 0.4, false, " ");
                     }
                   });
                 } else {
@@ -241,7 +264,7 @@ class _BodyState extends State<Body> {
                     isApiCallProcess = false;
                   });
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byGoogleError", "");
+                      context, size.height * 0.4, false, "byGoogleError");
                 }
               },
             ),
@@ -261,8 +284,7 @@ class _BodyState extends State<Body> {
   }
 }
 
-showRegisterModalBottomSheet(
-    context, container_size, bool state, errorCausal, arguments) {
+showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
   String processMsg;
   switch (errorCausal) {
     case "byName":
@@ -360,8 +382,11 @@ showRegisterModalBottomSheet(
             color: Theme.of(context).primaryColorLight,
             press: () {
               state
-                  ? Navigator.pushNamed(context, DashBoard.routeName,
-                      arguments: arguments)
+                  ? Navigator.pushNamed(
+                      context,
+                      DashBoard.routeName,
+                      /* arguments: arguments*/
+                    )
                   : Navigator.pop(context);
             },
           )

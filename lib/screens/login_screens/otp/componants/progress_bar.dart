@@ -40,8 +40,10 @@ class ProgressHUD extends StatelessWidget {
       );
       widgetList.add(modal);
     }
-    return Stack(
-      children: widgetList,
+    return Expanded(
+      child: Stack(
+        children: widgetList,
+      ),
     );
   }
 }

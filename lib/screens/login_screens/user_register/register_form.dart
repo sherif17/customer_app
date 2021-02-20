@@ -4,6 +4,7 @@ import 'package:customer_app/screens/login_screens/otp/componants/navigation_arg
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../../widgets/form_error.dart';
 
 class RegisterForm extends StatefulWidget {
-  String otpResponse_jwt;
-  String otpResponse_phone;
-  RegisterForm({Key key, this.otpResponse_jwt, this.otpResponse_phone});
+  RegisterForm({Key key});
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -93,7 +92,8 @@ class _RegisterFormState extends State<RegisterForm> {
         RoundedButton(
           text: 'Create Account',
           color: Theme.of(context).primaryColor,
-          press: () {
+          press: () async {
+            String currentJwtToken = await getPrefJwtToken();
             if (registerValidateAndSave()) {
               print("Request body: ${userRegisterRequestModel.toJson()}.");
               setState(() {
@@ -101,32 +101,38 @@ class _RegisterFormState extends State<RegisterForm> {
               });
               ApiService apiService = new ApiService();
               apiService
-                  .registerUser(userRegisterRequestModel, widget.otpResponse_jwt)
+                  .registerUser(userRegisterRequestModel, currentJwtToken)
                   .then((value) {
                 if (value.error == null) {
                   jwtToken = value.token;
-                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+                  setPrefJwtToken(jwtToken);
+                  Map<String, dynamic> decodedToken =
+                      JwtDecoder.decode(jwtToken);
                   responseID = decodedToken["_id"];
-                  responseFName = decodedToken["firstName"];
-                  responseLName = decodedToken["lastName"];
+                  setPrefBackendID(decodedToken["_id"]);
+                  // responseFName = decodedToken["firstName"];
+                  //responseLName = decodedToken["lastName"];
                   responseIat = decodedToken["iat"];
-                  print(responseID);
-                  print(responseLName);
-                  print(responseFName);
-                  print(responseIat);
-                  print(value.token);
+                  setPrefIAT(decodedToken["iat"].toString());
+                  setPrefFirstName(userRegisterRequestModel.firstName);
+                  setPrefLastName(userRegisterRequestModel.lastName);
+                  printAllUserCurrentData();
+                  // print(responseID);
+                  // print(responseLName);
+                  // print(responseFName);
+                  // print(responseIat);
+                  // print(value.token);
                   setState(() {
                     isApiCallProcess = false;
                   });
-                  Navigator.pushNamed(context, DashBoard.routeName,
-                      arguments: otpNavData(jwtToken: jwtToken, Phone: widget.otpResponse_phone));
+                  Navigator.pushNamed(context, DashBoard.routeName);
                 } else {
                   setState(() {
                     isApiCallProcess = false;
                   });
                   print(value.error);
                   showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byNameError", "");
+                      context, size.height * 0.4, false, "byNameError");
                 }
               });
             } else

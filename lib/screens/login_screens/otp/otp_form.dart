@@ -6,6 +6,7 @@ import 'package:customer_app/screens/login_screens/phone_number/componants/phone
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
@@ -215,6 +216,7 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.user != null) {
                       fireToken = FirebaseAuth.instance.currentUser.uid;
                       checkFirebase = true;
+                      setPrefFirebaseID(fireToken);
                       print(checkFirebase);
                       print("Firebase Token:${fireToken}");
                     }
@@ -236,6 +238,7 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.error == null) {
                       print("Response:");
                       jwtToken = value.token;
+                      setPrefJwtToken(jwtToken);
                       print(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
@@ -243,40 +246,49 @@ class _OtpFormState extends State<OtpForm> {
                       //  responseFName = decodedToken["firstName"];
                       // responseLName = decodedToken["lastName"];
                       responseIat = decodedToken["iat"];
+                      setPrefIAT(responseIat.toString());
                       print(responseID);
-                      print(value.firstName);
-                      print(value.lastName);
+                      //print(value.firstName);
+                      //print(value.lastName);
                       //print(responseFName);
-                      print(responseIat);
+                      //print(responseIat);
                       if (value.firstName != null && value.lastName != null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        Navigator.pushNamed(context, ConfirmThisUser.routeName,
-                            arguments: otpNavData(
-                              jwtToken: jwtToken,
-                              uID: responseID,
-                              FName: value.firstName,
-                              LName: value.lastName,
-                              iAt: responseIat,
-                              Phone: "+20${widget.phone_num}",
-                            ));
+                        setPrefFirstName(value.firstName);
+                        setPrefLastName(value.lastName);
+                        Navigator.pushNamed(
+                          context, ConfirmThisUser.routeName,
+                          // arguments: otpNavData(
+                          //   jwtToken: jwtToken,
+                          //   uID: responseID,
+                          //   FName: value.firstName,
+                          //   LName: value.lastName,
+                          //   iAt: responseIat,
+                          //   Phone: "+20${widget.phone_num}",
+                          // )
+                        );
+                        printAllUserCurrentData();
                       } else if (value.firstName == null &&
                           value.lastName == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        Navigator.pushNamed(context, RegisterNewUser.routeName,
-                            arguments: otpNavData(
-                                jwtToken: jwtToken,
-                                Phone: "+20${widget.phone_num}"));
+                        printAllUserCurrentData();
+                        Navigator.pushNamed(
+                          context, RegisterNewUser.routeName,
+                          // arguments: otpNavData(
+                          //     jwtToken: jwtToken,
+                          //     Phone: "+20${widget.phone_num}")
+                        );
                       } else {
                         setState(() {
                           isApiCallProcess = false;
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false, " ", "");
+                            context, size.height * 0.3, false, " ");
                       }
                     } else {
                       print(value.error);
@@ -284,7 +296,7 @@ class _OtpFormState extends State<OtpForm> {
                         isApiCallProcess = false;
                       });
                       showRegisterModalBottomSheet(context, size.height * 0.4,
-                          false, "InvalidUserToken", "");
+                          false, "InvalidUserToken");
                     }
                   });
                 }

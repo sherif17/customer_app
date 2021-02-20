@@ -7,6 +7,9 @@ const String _BACKEND_ID = 'ID';
 const String _FIRST_NAME = 'firstName';
 const String _LAST_NAME = 'lastName';
 const String _PHONE_NUMBER = 'phoneNumber';
+const String _IAT = 'iat';
+const String _SOCIAL_IMAGE = 'socialImage';
+const String _SOCIAL_EMAIL = 'socialEmail';
 
 ///////////////////////////////////////////////////////
 Future<String> getPrefCurrentLang() async {
@@ -83,4 +86,63 @@ Future<String> getPrefPhoneNumber() async {
 Future<String> setPrefPhoneNumber(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_PHONE_NUMBER, value);
+}
+
+/////////////////////////////////////////////////////////////////////
+Future<String> getPrefIAT() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_IAT) ?? null;
+}
+
+Future<String> setPrefIAT(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_IAT, value);
+}
+
+loadPrefIAT() async {
+  return getPrefIAT();
+}
+
+///////////////////////////////////////////////////////
+Future<String> getPrefSocialImage() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_SOCIAL_IMAGE) ?? "";
+}
+
+Future<String> setPrefSocialImage(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_SOCIAL_IMAGE, value);
+}
+
+loadPrefGoogleImage() async {
+  return getPrefSocialImage();
+}
+
+///////////////////////////////////////////////////////
+Future<String> getPrefSocialEmail() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_SOCIAL_EMAIL) ?? "";
+}
+
+Future<String> setPrefSocialEmail(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_SOCIAL_EMAIL, value);
+}
+
+loadPrefGoogleEmail() async {
+  return getPrefSocialEmail();
+}
+
+/////////////////////////////////////////////////////////////////
+printAllUserCurrentData() async {
+  print("_CURRENT_LANGUAGE : ${await getPrefCurrentLang()}");
+  print("_JWT_TOKEN : ${await getPrefJwtToken()}");
+  print("_FIREBASE_ID : ${await getPrefFirebaseID()}");
+  print("_BACKEND_ID : ${await getPrefBackendID()}");
+  print("_FIRST_NAME : ${await getPrefFirstName()}");
+  print("_LAST_NAME : ${await getPrefLastName()}");
+  print("_PHONE_NUMBER : ${await getPrefPhoneNumber()}");
+  print("_IAT : ${await getPrefIAT()}");
+  print("_GOOGLE_IMAGE : ${await getPrefSocialImage()}");
+  print("_GOOGLE_EMAIL : ${await getPrefSocialEmail()}");
 }

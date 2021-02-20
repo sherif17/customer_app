@@ -6,6 +6,7 @@ import 'package:customer_app/screens/login_screens/user_register/register_new_us
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/screens/to_winch/winch_map.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
+  String TOKEN;
+  String BACKEND_ID;
+
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -77,6 +81,16 @@ class _MyAppState extends State<MyApp> {
             _locale = local;
           })
         });
+    getPrefJwtToken().then((value) {
+      setState(() {
+        TOKEN = value;
+      });
+    });
+    getPrefBackendID().then((value) {
+      setState(() {
+        BACKEND_ID = value;
+      });
+    });
     super.didChangeDependencies();
   }
 
@@ -96,7 +110,9 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
-          initialRoute: DashBoard.routeName,
+          initialRoute: TOKEN == null && BACKEND_ID == null
+              ? Intro.routeName
+              : DashBoard.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

@@ -1,4 +1,7 @@
+import 'package:customer_app/models/cars/add_new_car_model.dart';
+import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
+import 'package:customer_app/services/car_services/car_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/form_error.dart';
@@ -8,6 +11,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
 
 GlobalKey<FormState> finalStepFormKey = GlobalKey<FormState>();
+AddNewCarRequestModel addNewCarRequestModel;
+String winchPlatesNum;
+String winchPlatesChar;
+bool isApiCallProcess = false;
+List<dynamic> answer = [0, 0, 0];
 
 Future buildStepperShowModalBottomSheet(
     BuildContext context, Size size, activeStep, upperBound, list, response) {
@@ -89,17 +97,47 @@ Future buildStepperShowModalBottomSheet(
                     ),
                     header(activeStep),
                     IconButton(
-                      onPressed: activeStep == 3
-                          ? null
-                          : () {
-                              // Increment activeStep, when the next button is tapped. However, check for upper bound.
-                              if (activeStep < upperBound) {
-                                setState(() {
-                                  activeStep++;
-                                  print(activeStep);
-                                });
+                      onPressed: () async {
+                        if (activeStep == 3) {
+                          if (finalFormValidateAndSave()) {
+                            addNewCarRequestModel.carBrand = answer[0];
+                            addNewCarRequestModel.model = answer[1];
+                            addNewCarRequestModel.year = answer[2];
+                            addNewCarRequestModel.plates =
+                                winchPlatesNum + winchPlatesChar;
+                            print(
+                                "Request body: ${addNewCarRequestModel.toJson()}.");
+
+                            setState(() {
+                              isApiCallProcess = true;
+                            });
+
+                            CarApiService api = new CarApiService();
+                            api
+                                .addUserNewCar(addNewCarRequestModel,
+                                    await getPrefJwtToken())
+                                .then((value) {
+                              if (value.error == null) {
+                                print(value.id);
+                                print(value.plates);
+                                Navigator.pop(context);
+                              } else {
+                                print(value.error);
                               }
-                            },
+                            });
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
+                          }
+                        }
+                        // Increment activeStep, when the next button is tapped. However, check for upper bound.
+                        else if (activeStep < upperBound) {
+                          setState(() {
+                            activeStep++;
+                            print(activeStep);
+                          });
+                        }
+                      },
                       icon: activeStep == 3
                           ? Icon(
                               Icons.check,
@@ -119,6 +157,15 @@ Future buildStepperShowModalBottomSheet(
       );
     },
   );
+}
+
+bool finalFormValidateAndSave() {
+  final registerFormKey = finalStepFormKey.currentState;
+  if (registerFormKey.validate()) {
+    registerFormKey.save();
+    return true;
+  } else
+    return false;
 }
 
 Widget header(activeStep) {
@@ -148,7 +195,6 @@ String headerText(activeStep) {
 
     case 1:
       return 'Car Modal';
-
     case 2:
       return 'Year of Production';
 
@@ -161,6 +207,8 @@ String headerText(activeStep) {
 }
 
 class Content extends StatefulWidget {
+  // GlobalKey<FormState> finalStepFormKey = GlobalKey<FormState>();
+  //List<dynamic> answer = [0, 0, 0];
   var list;
   Map<String, List<dynamic>> response = {};
   Content({Key key, @required this.activeStep, this.list, this.response})
@@ -172,7 +220,6 @@ class Content extends StatefulWidget {
   _ContentState createState() => _ContentState();
 }
 
-List<dynamic> answer = [0, 0, 0];
 List<RadioModel> step0;
 Map<dynamic, List<RadioModel>> step1Index;
 Map<dynamic, List<RadioModel>> step3;
@@ -234,7 +281,8 @@ class _ContentState extends State<Content> {
 
       case 2:
         return Expanded(
-            child: SelectableCard(options: choiceFinalStep(), step: 2));
+          child: SelectableCard(options: choiceFinalStep(), step: 2),
+        );
       case 3:
         return Expanded(child: FinalForm());
     }
@@ -242,17 +290,22 @@ class _ContentState extends State<Content> {
 }
 
 class FinalForm extends StatefulWidget {
+  //GlobalKey<FormState> finalStepFormKey = GlobalKey<FormState>();
+  // List<dynamic> answer = [0, 0, 0];
   @override
   _FinalFormState createState() => _FinalFormState();
+
+  FinalForm();
 }
 
 class _FinalFormState extends State<FinalForm> {
-  String Lang;
+  String Lang = 'en';
   @override
   void initState() {
     getCurrentLang();
     // TODO: implement initState
     super.initState();
+    addNewCarRequestModel = new AddNewCarRequestModel();
   }
 
   getCurrentLang() async {
@@ -298,8 +351,6 @@ class _FinalFormState extends State<FinalForm> {
                     "assets/icons/m.svg",
                     "assets/icons/y.svg"
                   ]))
-                  //buildFinalSelectedCards("assets/icons/man.svg", answer[1]),
-                  //buildFinalSelectedCards("assets/icons/man.svg", answer[2]),
                 ],
               ),
             ),
@@ -315,17 +366,21 @@ class _FinalFormState extends State<FinalForm> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: BuildCharPlateTextFormField(),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            children: [
+                              Expanded(
+                                child: BuildCharPlateTextFormField(),
+                              ),
+                              Expanded(child: BuildNumPlateTextFormField()),
+                            ],
                           ),
-                          Expanded(child: BuildNumPlateTextFormField()),
+                          FormError(size: size, errors: errors),
                         ],
                       ),
                     ),
-                    FormError(size: size, errors: errors),
                   ],
                 ),
               ),
@@ -430,7 +485,8 @@ class _FinalFormState extends State<FinalForm> {
                     topRight: Radius.circular(10))),
       ),
       onSaved: (newValue) {
-        //firstName = newValue;
+        winchPlatesChar = newValue;
+        print(winchPlatesChar);
         //winchRegisterRequestModel.firstName = newValue;
         // setPrefFirstName(newValue);
         // setPrefWinchPlatesChars(newValue);
@@ -511,7 +567,8 @@ class _FinalFormState extends State<FinalForm> {
                     topLeft: Radius.circular(10))),
       ),
       onSaved: (newValue) {
-        //firstName = newValue;
+        winchPlatesNum = newValue;
+        print(winchPlatesNum);
         //winchRegisterRequestModel.firstName = newValue;
         // setPrefFirstName(newValue);
         //numPlatController.text = newValue;
@@ -570,11 +627,11 @@ List<RadioModel> choiceFinalStep() {
 
 class SelectableCard extends StatefulWidget {
   List<RadioModel> options;
-
+  List<dynamic> answer = [0, 0, 0];
   //Future<List<CarModel>> cars;
   var finalList;
   int step;
-  SelectableCard({@required this.options, @required this.step});
+  SelectableCard({@required this.options, @required this.step, this.answer});
 
   @override
   _SelectableCardState createState() => _SelectableCardState();
@@ -671,6 +728,7 @@ class RadioModel {
   IconData icon;
   RadioModel(this.isSelected, this.time, this.icon);
 }
+
 //https://stackoverflow.com/questions/59130685/flutter-populating-steps-content-based-on-previous-selection-on-stepper
 
 /*
@@ -687,6 +745,7 @@ class _SelectableInLineCardState extends State<SelectableInLineCard> {
   List<RadioModel> sampleData = new List<RadioModel>();
 
   void initState() {
+
     // TODO: implement initState
     super.initState();
     _getAllCars();
