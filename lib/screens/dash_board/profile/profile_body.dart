@@ -48,7 +48,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       top: 75,
       child: Container(
         margin: const EdgeInsets.all(20),
-        height: 500,
+        height: 250,
         width: MediaQuery.of(context).size.width * 0.90,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -121,7 +121,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     else
       exist = false;
     return Positioned(
-      top: 400,
+      top: 300,
       child: Container(
         margin: EdgeInsets.all(20),
         height: 1000,

@@ -42,16 +42,16 @@ class _HomeState extends State<Home> {
                   fontSize: 28.0,
                   fontWeight: FontWeight.w900),
             ),
-            // SizedBox(
-            //   width: size.width * 0.3,
-            // ),
-            /* Expanded(
+            SizedBox(
+              width: size.width * 0.3,
+            ),
+            Expanded(
               child: Icon(
                 Icons.notifications_rounded,
                 color: Colors.redAccent,
                 size: 30,
               ),
-            )*/
+            )
           ],
         ),
         centerTitle: false,

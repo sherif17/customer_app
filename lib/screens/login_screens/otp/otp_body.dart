@@ -11,66 +11,69 @@ class Body extends StatelessWidget {
     phoneNum response = ModalRoute.of(context).settings.arguments;
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: size.height * 0.1),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              "Verify This Mobile  Number",
-              style: Theme.of(context).textTheme.headline1,
-              textAlign: TextAlign.left,
+      child: SizedBox(
+        height: size.height * 0.9,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: size.height * 0.1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                "Verify This Mobile  Number",
+                style: Theme.of(context).textTheme.headline1,
+                textAlign: TextAlign.left,
+              ),
             ),
-          ),
-          SizedBox(height: size.height * 0.03),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                Text(
-                  "We sent your code via SMS to",
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  " +20-${response.phoneNumber}.",
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: size.height * 0.01),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Row(
-              children: [
-                Text(
-                  "Please enter this code here",
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.left,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/PhoneNumber');
-                  },
-                  child: Text(
-                    "  Edit number",
-                    style: Theme.of(context).textTheme.subtitle1,
+            SizedBox(height: size.height * 0.03),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "We sent your code via SMS to",
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  Text(
+                    " +20-${response.phoneNumber}.",
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: size.height * 0.03),
-          OtpForm(
-              phoneRequestModel: response.phoneRequestModel,
-              phone_num: response.phoneNumber,
-              scafoldKey: response.scafoldKey),
-          buildTimer(),
-          SizedBox(height: size.height * 0.06),
-        ],
+            SizedBox(height: size.height * 0.01),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Row(
+                children: [
+                  Text(
+                    "Please enter this code here",
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.left,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/PhoneNumber');
+                    },
+                    child: Text(
+                      "  Edit number",
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
+            OtpForm(
+                phoneRequestModel: response.phoneRequestModel,
+                phone_num: response.phoneNumber,
+                scafoldKey: response.scafoldKey),
+            buildTimer(),
+            SizedBox(height: size.height * 0.06),
+          ],
+        ),
       ),
     );
   }

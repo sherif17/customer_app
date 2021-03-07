@@ -4,6 +4,7 @@ import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.d
 import 'package:customer_app/services/car_services/car_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class customerCars extends StatefulWidget {
@@ -23,7 +24,7 @@ class _customerCarsState extends State<customerCars> {
   //     'https://i.pinimg.com/564x/72/a1/88/72a188d519e791179897eb861f720c2a.jpg';
   // String url_4 =
   //     'https://i.pinimg.com/564x/a1/13/ea/a113ead0c8175ad02df43770ee97199a.jpg';
-  var userCarList;
+  List userCarList = [];
   String jwt;
   CarApiService api = new CarApiService();
   List<CarModel> carList = new List<CarModel>();
@@ -51,175 +52,374 @@ class _customerCarsState extends State<customerCars> {
 
   getUserCarList(token) async {
     userCarList = await api.loadUserCars(token);
-    for (var x in userCarList) {
-      //print(x.id);
-      carList.add(new CarModel(url_1, x.carBrand, x.model, x.plates));
-    }
+    setState(() {
+      for (var x in userCarList) {
+        //print(x.id);
+        carList.add(new CarModel(url_1, x.carBrand, x.model, x.plates));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     print("no");
-    /*for (var x in widget.userCarList) {
-      print("hi ${x}");
-    }*/
-    // carList = [];
-    //getUserCarList(jwt);
-    print(carList);
-    // carList.add(new CarModel(url_1, "kia", "rio", "س ص ع  1234"));
-    // carList.add(new CarModel(url_2, "BWM", "X6", "س ق ط  5674"));
-    // carList.add(new CarModel(url_3, "Audi", "A3", "ص ف ي  7921"));
-    // carList.add(new CarModel(url_2, "Seat", "Leon", "ص ف ي  7921"));
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: map<Widget>(carList, (index, url) {
-            return AnimatedContainer(
-              width: _current == index ? 20 : 10,
-              height: 6.0,
-              duration: animationDuration,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(3),
-                color: _current == index ? Colors.redAccent : Colors.grey,
-              ),
-            );
-          }),
-        ),
-        CarouselSlider(
-          options: CarouselOptions(
-            height: size.height * 0.2,
-            aspectRatio: 16 / 9,
-            viewportFraction: 1,
-            initialPage: 0,
-            enableInfiniteScroll: true,
-            reverse: false,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 7),
-            autoPlayAnimationDuration: Duration(milliseconds: 1200),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: true,
-            onPageChanged: (index, a) {
-              setState(() {
-                _current = index;
-              });
-            },
+    print(carList.toString());
+
+    /* if (carList.isEmpty) {
+      if (userCarList.isEmpty) // return buildNoAddedCarsContainer();
+        return CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent));
+      else
+        return buildNoAddedCarsContainer();
+    } else if (userCarList.isEmpty || carList.isEmpty) {
+      return Text(" no"); //buildNoAddedCarsContainer();
+    } else
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: map<Widget>(carList, (index, url) {
+              return AnimatedContainer(
+                width: _current == index ? 20 : 10,
+                height: 6.0,
+                duration: animationDuration,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(3),
+                  color: _current == index ? Colors.redAccent : Colors.grey,
+                ),
+              );
+            }),
           ),
-          items: carList.map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        // margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                        decoration: new BoxDecoration(
-                          image: new DecorationImage(
-                            image: i.carImage == null
-                                ? AssetImage("assets/images/women_truck.jpg")
-                                : new NetworkImage(i.carImage),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius:
-                              BorderRadiusDirectional.all(Radius.circular(10)),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: size.height * 0.5,
-                          // margin: EdgeInsets.symmetric(horizontal: 5.0),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: size.height * 0.2,
+              aspectRatio: 16 / 9,
+              viewportFraction: 1,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              reverse: false,
+              autoPlay: carList.length == 1 ? false : true,
+              autoPlayInterval: Duration(seconds: 7),
+              autoPlayAnimationDuration: Duration(milliseconds: 1200),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              onPageChanged: (index, a) {
+                setState(() {
+                  _current = index;
+                });
+              },
+            ),
+            items: carList.map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Stack(
+                      children: [
+                        Container(
                           width: MediaQuery.of(context).size.width * 0.9,
+                          // margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                           decoration: new BoxDecoration(
-                            gradient: new LinearGradient(
-                              end: Alignment.topCenter,
-                              begin: Alignment.bottomCenter,
-                              colors: <Color>[
-                                const Color(0xFFBD4242),
-                                Colors.black12.withOpacity(0.2)
-                              ],
+                            image: new DecorationImage(
+                              image: i.carImage == null
+                                  ? AssetImage("assets/images/women_truck.jpg")
+                                  : new NetworkImage(i.carImage),
+                              fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadiusDirectional.all(
                                 Radius.circular(10)),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: size.height * 0.1,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.05),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                i.carBrand + "-" + i.carModel,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              //SizedBox(height: size.height * 0.01),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    i.carPlate,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(width: size.width * 0.42),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(width: size.width * 0.01),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            carList.remove(i);
-                                          });
-                                          print(carList.length);
-                                        },
-                                        child: Padding(
-                                            padding: EdgeInsets.all(5),
-                                            child: Icon(Icons.delete,
-                                                color: Colors.white)),
-                                      )
-                                    ],
-                                  )
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: size.height * 0.5,
+                            // margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            decoration: new BoxDecoration(
+                              gradient: new LinearGradient(
+                                end: Alignment.topCenter,
+                                begin: Alignment.bottomCenter,
+                                colors: <Color>[
+                                  const Color(0xFFBD4242),
+                                  Colors.black12.withOpacity(0.2)
                                 ],
                               ),
-                            ],
+                              borderRadius: BorderRadiusDirectional.all(
+                                  Radius.circular(10)),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          top: size.height * 0.1,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.05),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  i.carBrand + "-" + i.carModel,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                //SizedBox(height: size.height * 0.01),
+                                Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      i.carPlate,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(width: size.width * 0.42),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(width: size.width * 0.01),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              carList.remove(i);
+                                            });
+                                            print(carList.length);
+                                          },
+                                          child: Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: Icon(Icons.delete,
+                                                  color: Colors.white)),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          ),
+        ],
+      );*/
+    return carList.isEmpty
+        ? CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent))
+        : userCarList.isEmpty
+            ? buildNoAddedCarsContainer()
+            : Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: map<Widget>(carList, (index, url) {
+                      return AnimatedContainer(
+                        width: _current == index ? 20 : 10,
+                        height: 6.0,
+                        duration: animationDuration,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(3),
+                          color: _current == index
+                              ? Colors.redAccent
+                              : Colors.grey,
+                        ),
+                      );
+                    }),
                   ),
-                );
-              },
-            );
-          }).toList(),
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: size.height * 0.2,
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      enableInfiniteScroll: true,
+                      reverse: false,
+                      autoPlay: carList.length == 1 ? false : true,
+                      autoPlayInterval: Duration(seconds: 7),
+                      autoPlayAnimationDuration: Duration(milliseconds: 1200),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      onPageChanged: (index, a) {
+                        setState(() {
+                          _current = index;
+                        });
+                      },
+                    ),
+                    items: carList.map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.05),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  // margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                                  decoration: new BoxDecoration(
+                                    image: new DecorationImage(
+                                      image: i.carImage == null
+                                          ? AssetImage(
+                                              "assets/images/women_truck.jpg")
+                                          : new NetworkImage(i.carImage),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadiusDirectional.all(
+                                        Radius.circular(10)),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: size.height * 0.5,
+                                    // margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        end: Alignment.topCenter,
+                                        begin: Alignment.bottomCenter,
+                                        colors: <Color>[
+                                          const Color(0xFFBD4242),
+                                          Colors.black12.withOpacity(0.2)
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadiusDirectional.all(
+                                          Radius.circular(10)),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: size.height * 0.1,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: size.width * 0.05),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          i.carBrand + "-" + i.carModel,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        //SizedBox(height: size.height * 0.01),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.baseline,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              i.carPlate,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(width: size.width * 0.42),
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    width: size.width * 0.01),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      carList.remove(i);
+                                                    });
+                                                    print(carList.length);
+                                                  },
+                                                  child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Icon(Icons.delete,
+                                                          color: Colors.white)),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
+              );
+  }
+
+  buildNoAddedCarsContainer() {
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.2,
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+        // margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+        decoration: new BoxDecoration(
+          color: Colors.grey.withOpacity(0.3),
+          borderRadius: BorderRadiusDirectional.all(Radius.circular(10)),
         ),
-      ],
-    );
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(
+              Icons.add_circle_outline_rounded,
+              size: 60,
+            ),
+            Text("No Added Cars",
+                style: TextStyle(fontSize: 25, color: Colors.grey)),
+            Text(
+              "Please add at least one ,to be able to use our services",
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ));
   }
 
   AnimatedContainer DotSweeper({int index}) {
