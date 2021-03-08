@@ -226,10 +226,10 @@ class _customerCarsState extends State<customerCars> {
           ),
         ],
       );*/
-    return carList.isEmpty
+    return userCarList.isEmpty && carList.isEmpty
         ? CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent))
-        : userCarList.isEmpty
+        : carList.isEmpty || userCarList.isEmpty
             ? buildNoAddedCarsContainer()
             : Column(
                 children: [

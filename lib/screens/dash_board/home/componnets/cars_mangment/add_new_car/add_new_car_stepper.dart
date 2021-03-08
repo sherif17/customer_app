@@ -1,4 +1,5 @@
 import 'package:customer_app/models/cars/add_new_car_model.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
@@ -120,7 +121,16 @@ Future buildStepperShowModalBottomSheet(
                               if (value.error == null) {
                                 print(value.id);
                                 print(value.plates);
-                                Navigator.pop(context);
+                                //  Navigator.pop(context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder:
+                                          (context, animation1, animation2) =>
+                                              DashBoard(),
+                                      transitionDuration: Duration(seconds: 0),
+                                    ));
+                                // (route) => false);
                               } else {
                                 print(value.error);
                               }

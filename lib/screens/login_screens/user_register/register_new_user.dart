@@ -2,7 +2,6 @@ import 'package:customer_app/screens/login_screens/user_register/register_body.d
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
 class RegisterNewUser extends StatelessWidget {
   static String routeName = '/RegisterNewUser';
   @override
@@ -17,7 +16,8 @@ class RegisterNewUser extends StatelessWidget {
               color: Theme.of(context).primaryColorDark),
         ),
       ),
-      body: Body(),
+      body: //Text("hi")
+          Body(),
     );
   }
 }

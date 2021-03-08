@@ -173,7 +173,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             setState(() {
                               isApiCallProcess = false;
                             });
-                            Navigator.pushNamed(
+                            Navigator.pushReplacementNamed(
                               context,
                               DashBoard.routeName,
                               /* arguments: otpNavData(

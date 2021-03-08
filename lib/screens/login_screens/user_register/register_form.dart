@@ -125,7 +125,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   setState(() {
                     isApiCallProcess = false;
                   });
-                  Navigator.pushNamed(context, DashBoard.routeName);
+                  Navigator.pushReplacementNamed(context, DashBoard.routeName);
                 } else {
                   setState(() {
                     isApiCallProcess = false;

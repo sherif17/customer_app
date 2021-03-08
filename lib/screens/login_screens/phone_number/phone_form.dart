@@ -64,16 +64,16 @@ class _PhoneFormState extends State<PhoneForm> {
                   child: Column(
                     children: [
                       buildPhoneField(),
-                      FormError(size: size, errors: errors),
                     ],
                   ),
                 ),
+                FormError(size: size, errors: errors),
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.2,
+              top: size.height * 0.1,
             ),
             child: RoundedButton(
               text: "Continue",

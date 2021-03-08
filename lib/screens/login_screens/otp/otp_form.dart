@@ -258,17 +258,17 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         setPrefFirstName(value.firstName);
                         setPrefLastName(value.lastName);
-                        Navigator.pushNamed(
-                          context, ConfirmThisUser.routeName,
-                          // arguments: otpNavData(
-                          //   jwtToken: jwtToken,
-                          //   uID: responseID,
-                          //   FName: value.firstName,
-                          //   LName: value.lastName,
-                          //   iAt: responseIat,
-                          //   Phone: "+20${widget.phone_num}",
-                          // )
-                        );
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, ConfirmThisUser.routeName, (route) => false
+                            // arguments: otpNavData(
+                            //   jwtToken: jwtToken,
+                            //   uID: responseID,
+                            //   FName: value.firstName,
+                            //   LName: value.lastName,
+                            //   iAt: responseIat,
+                            //   Phone: "+20${widget.phone_num}",
+                            // )
+                            );
                         printAllUserCurrentData();
                       } else if (value.firstName == null &&
                           value.lastName == null) {
@@ -276,12 +276,12 @@ class _OtpFormState extends State<OtpForm> {
                           isApiCallProcess = false;
                         });
                         printAllUserCurrentData();
-                        Navigator.pushNamed(
-                          context, RegisterNewUser.routeName,
-                          // arguments: otpNavData(
-                          //     jwtToken: jwtToken,
-                          //     Phone: "+20${widget.phone_num}")
-                        );
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, RegisterNewUser.routeName, (route) => false
+                            // arguments: otpNavData(
+                            //     jwtToken: jwtToken,
+                            //     Phone: "+20${widget.phone_num}")
+                            );
                       } else {
                         setState(() {
                           isApiCallProcess = false;
@@ -301,8 +301,27 @@ class _OtpFormState extends State<OtpForm> {
                   });
                 }
               }),
+          buildTimer(),
         ],
       ),
+    );
+  }
+
+  Row buildTimer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Resend Code "),
+        TweenAnimationBuilder(
+          tween: Tween(begin: 60.0, end: 0.0),
+          duration: Duration(seconds: 60),
+          builder: (context, value, child) => Text(
+            "00:${value.toInt()}",
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          onEnd: () {},
+        ),
+      ],
     );
   }
 

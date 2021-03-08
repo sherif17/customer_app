@@ -54,231 +54,225 @@ class _BodyState extends State<Body> {
     registerRequestModel = new UserRegisterRequestModel();
   }
 
-  Widget build(BuildContext context) {
+  /* Widget build(BuildContext context) {
     return ProgressHUD(
       child: social_build(context),
       inAsyncCall: isApiCallProcess,
       opacity: 0,
     );
   }
-
+*/
   @override
-  Widget social_build(BuildContext context) {
+  Widget build(BuildContext context) {
+    Text("noooooooo");
     Size size = MediaQuery.of(context).size;
     //otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
     final facebookLogin = FacebookLogin();
     Map userProfile;
-    return Background(
-      child: SingleChildScrollView(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
-        child: Column(
-          children: <Widget>[
-            // SizedBox(height: size.height * 0.00005),
-            Text(
-              "What's Your Name",
-              style: Theme.of(context).textTheme.headline1,
-            ),
+    return SingleChildScrollView(
+      //mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: size.height * 0.00005),
+          Text(
+            "What's Your Name ?",
+            style: Theme.of(context).textTheme.headline1,
+          ),
+          SizedBox(height: size.height * 0.07),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: RegisterForm(
+                  /* otpResponse_jwt: otpResponse.jwtToken,
+                  otpResponse_phone: otpResponse.Phone*/
+                  )),
+          SizedBox(height: size.height * 0.02),
+          OrDivider(),
+          SizedBox(height: size.height * 0.02),
+          borderedRoundedButton(
+            text: 'Continue with Facebook',
+            iconSrc: 'assets/icons/facebook.svg',
+            CornerRadius: 29,
+            press: () async {
+              String currentJwtToken = await getPrefJwtToken();
+              final result = await facebookLogin.logIn(['email']);
+              final token = result.accessToken.token;
+              final graphResponse = await http.get(
+                  'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+              final profile = JSON.jsonDecode(graphResponse.body);
+              print(profile);
+              userProfile = profile;
+              faceName = userProfile['name'];
+              faceEmail = userProfile['email'];
+              faceImage = userProfile["picture"]["data"]["url"];
+              List FDecode;
+              if (faceName != null && faceEmail != null && faceImage != null) {
+                FDecode = faceName.split(new RegExp('\\s+'));
+                print(FDecode);
+                setPrefFirstName(FDecode[0]);
+                registerRequestModel.firstName = FDecode[0];
+                registerRequestModel.lastName = FDecode[1];
+                print("Request body: ${registerRequestModel.toJson()}.");
+                setState(() {
+                  isApiCallProcess = true;
+                });
 
-            SizedBox(height: size.height * 0.02),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: RegisterForm(
-                    /* otpResponse_jwt: otpResponse.jwtToken,
-                    otpResponse_phone: otpResponse.Phone*/
-                    )),
-            SizedBox(height: size.height * 0.02),
-            OrDivider(),
-            SizedBox(height: size.height * 0.02),
-            borderedRoundedButton(
-              text: 'Continue with Facebook',
-              iconSrc: 'assets/icons/facebook.svg',
-              CornerRadius: 29,
-              press: () async {
-                String currentJwtToken = await getPrefJwtToken();
-                final result = await facebookLogin.logIn(['email']);
-                final token = result.accessToken.token;
-                final graphResponse = await http.get(
-                    'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
-                final profile = JSON.jsonDecode(graphResponse.body);
-                print(profile);
-                userProfile = profile;
-                faceName = userProfile['name'];
-                faceEmail = userProfile['email'];
-                faceImage = userProfile["picture"]["data"]["url"];
-                List FDecode;
-                if (faceName != null &&
-                    faceEmail != null &&
-                    faceImage != null) {
-                  FDecode = faceName.split(new RegExp('\\s+'));
-                  print(FDecode);
-                  setPrefFirstName(FDecode[0]);
-                  registerRequestModel.firstName = FDecode[0];
-                  registerRequestModel.lastName = FDecode[1];
-                  print("Request body: ${registerRequestModel.toJson()}.");
-                  setState(() {
-                    isApiCallProcess = true;
-                  });
-
-                  ApiService apiService = new ApiService();
-                  apiService
-                      .registerUser(registerRequestModel, currentJwtToken)
-                      .then((value) {
-                    if (value.error == null) {
-                      jwtToken = value.token;
-                      setPrefJwtToken(jwtToken);
-                      Map<String, dynamic> decodedToken =
-                          JwtDecoder.decode(jwtToken);
-                      //responseID = decodedToken["_id"];
-                      setPrefBackendID(decodedToken["_id"]);
-                      setPrefFirstName(FDecode[0]);
-                      setPrefLastName(FDecode[1]);
-                      setPrefSocialEmail(faceEmail);
-                      setPrefSocialImage(faceImage);
-                      // responseFName = decodedToken["firstName"];
-                      // responseLName = decodedToken["lastName"];
-                      // responseIat = decodedToken["iat"];
-                      setPrefIAT(decodedToken["iat"].toString());
-                      // print(jwtToken);
-                      // print(responseID);
-                      // print(responseLName);
-                      // print(responseFName);
-                      // print(responseIat);
-                      printAllUserCurrentData();
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
-                      showRegisterModalBottomSheet(
-                        context,
-                        size.height * 0.4,
-                        true,
-                        "ByFacebook",
-                        /*otpNavData(
-                              jwtToken: jwtToken,
-                              Phone: otpResponse.Phone,
-                              socialEmail: faceEmail,
-                              socialPhoto: faceImage)*/
-                      );
-                    } else {
-                      //response come error msg
-                      print(value.error);
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
-                      showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, " ");
-                    }
-                  });
-                } else {
-                  print("error on loading From facebook");
-                  setState(() {
-                    isApiCallProcess = false;
-                  });
-                  showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byFacebookError");
-                }
-              },
-            ),
-
-            SizedBox(height: size.height * 0.02),
-            borderedRoundedButton(
-              text: 'Continue with Google',
-              iconSrc: 'assets/icons/google_logo.svg',
-              CornerRadius: 29,
-              press: () async {
-                String currentJwtToken = await getPrefJwtToken();
-                try {
-                  await _googleSignIn.signIn();
-                  googleName = _googleSignIn.currentUser.displayName;
-                  googleImage = _googleSignIn.currentUser.photoUrl;
-                  googleEmail = _googleSignIn.currentUser.email;
-                  print(googleName);
-                  print(googleImage);
-                } catch (err) {
-                  print(err);
-                }
-                List Gdecode;
-                if (googleName != null &&
-                    googleImage != null &&
-                    googleEmail != null) {
-                  Gdecode = googleName.split(new RegExp('\\s+'));
-                  print(Gdecode);
-                  registerRequestModel.firstName = Gdecode[0];
-                  registerRequestModel.lastName = Gdecode[1];
-                  print("Request body: ${registerRequestModel.toJson()}.");
-                  setState(() {
-                    isApiCallProcess = true;
-                  });
-                  ApiService apiService = new ApiService();
-                  apiService
-                      .registerUser(registerRequestModel, currentJwtToken)
-                      .then((value) {
-                    if (value.error == null) {
-                      jwtToken = value.token;
-                      setPrefJwtToken(jwtToken);
-                      Map<String, dynamic> decodedToken =
-                          JwtDecoder.decode(jwtToken);
-                      responseID = decodedToken["_id"];
-                      setPrefBackendID(decodedToken["_id"]);
-                      // responseFName = decodedToken["firstName"];
-                      //responseLName = decodedToken["lastName"];
-                      responseIat = decodedToken["iat"];
-                      setPrefIAT(decodedToken["iat"].toString());
-                      setPrefFirstName(Gdecode[0]);
-                      setPrefLastName(Gdecode[1]);
-                      setPrefSocialEmail(googleEmail);
-                      setPrefSocialImage(googleImage);
-                      printAllUserCurrentData();
-                      //print(jwtToken);
-                      // print(responseID);
-                      // print(responseLName);
-                      //print(responseFName);
-                      //print(responseIat);
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
-                      showRegisterModalBottomSheet(
-                        context,
-                        size.height * 0.4,
-                        true,
-                        "byGoogle",
-                        /*otpNavData(
-                              jwtToken: jwtToken,
-                              Phone: otpResponse.Phone,
-                              socialPhoto: googleImage,
-                              socialEmail: googleEmail)*/
-                      );
-                    } else {
-                      //response come error msg
-                      print(value.error);
-                      setState(() {
-                        isApiCallProcess = false;
-                      });
-                      showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false, " ");
-                    }
-                  });
-                } else {
-                  //failing in loading data from google
-                  setState(() {
-                    isApiCallProcess = false;
-                  });
-                  showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byGoogleError");
-                }
-              },
-            ),
-
-            SizedBox(height: size.height * 0.02),
-            borderedRoundedButton(
-              CornerRadius: 29,
-              text: 'Continue with Apple ID',
-              iconSrc: 'assets/icons/apple.svg',
-              press: () {},
-            ),
-            SizedBox(height: size.height * 0.02),
-          ],
-        ),
+                ApiService apiService = new ApiService();
+                apiService
+                    .registerUser(registerRequestModel, currentJwtToken)
+                    .then((value) {
+                  if (value.error == null) {
+                    jwtToken = value.token;
+                    setPrefJwtToken(jwtToken);
+                    Map<String, dynamic> decodedToken =
+                        JwtDecoder.decode(jwtToken);
+                    //responseID = decodedToken["_id"];
+                    setPrefBackendID(decodedToken["_id"]);
+                    setPrefFirstName(FDecode[0]);
+                    setPrefLastName(FDecode[1]);
+                    setPrefSocialEmail(faceEmail);
+                    setPrefSocialImage(faceImage);
+                    // responseFName = decodedToken["firstName"];
+                    // responseLName = decodedToken["lastName"];
+                    // responseIat = decodedToken["iat"];
+                    setPrefIAT(decodedToken["iat"].toString());
+                    // print(jwtToken);
+                    // print(responseID);
+                    // print(responseLName);
+                    // print(responseFName);
+                    // print(responseIat);
+                    printAllUserCurrentData();
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    showRegisterModalBottomSheet(
+                      context,
+                      size.height * 0.4,
+                      true,
+                      "ByFacebook",
+                      /*otpNavData(
+                            jwtToken: jwtToken,
+                            Phone: otpResponse.Phone,
+                            socialEmail: faceEmail,
+                            socialPhoto: faceImage)*/
+                    );
+                  } else {
+                    //response come error msg
+                    print(value.error);
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    showRegisterModalBottomSheet(
+                        context, size.height * 0.4, false, " ");
+                  }
+                });
+              } else {
+                print("error on loading From facebook");
+                setState(() {
+                  isApiCallProcess = false;
+                });
+                showRegisterModalBottomSheet(
+                    context, size.height * 0.4, false, "byFacebookError");
+              }
+            },
+          ),
+          SizedBox(height: size.height * 0.02),
+          borderedRoundedButton(
+            text: 'Continue with Google',
+            iconSrc: 'assets/icons/google_logo.svg',
+            CornerRadius: 29,
+            press: () async {
+              String currentJwtToken = await getPrefJwtToken();
+              try {
+                await _googleSignIn.signIn();
+                googleName = _googleSignIn.currentUser.displayName;
+                googleImage = _googleSignIn.currentUser.photoUrl;
+                googleEmail = _googleSignIn.currentUser.email;
+                print(googleName);
+                print(googleImage);
+              } catch (err) {
+                print(err);
+              }
+              List Gdecode;
+              if (googleName != null &&
+                  googleImage != null &&
+                  googleEmail != null) {
+                Gdecode = googleName.split(new RegExp('\\s+'));
+                print(Gdecode);
+                registerRequestModel.firstName = Gdecode[0];
+                registerRequestModel.lastName = Gdecode[1];
+                print("Request body: ${registerRequestModel.toJson()}.");
+                setState(() {
+                  isApiCallProcess = true;
+                });
+                ApiService apiService = new ApiService();
+                apiService
+                    .registerUser(registerRequestModel, currentJwtToken)
+                    .then((value) {
+                  if (value.error == null) {
+                    jwtToken = value.token;
+                    setPrefJwtToken(jwtToken);
+                    Map<String, dynamic> decodedToken =
+                        JwtDecoder.decode(jwtToken);
+                    responseID = decodedToken["_id"];
+                    setPrefBackendID(decodedToken["_id"]);
+                    // responseFName = decodedToken["firstName"];
+                    //responseLName = decodedToken["lastName"];
+                    responseIat = decodedToken["iat"];
+                    setPrefIAT(decodedToken["iat"].toString());
+                    setPrefFirstName(Gdecode[0]);
+                    setPrefLastName(Gdecode[1]);
+                    setPrefSocialEmail(googleEmail);
+                    setPrefSocialImage(googleImage);
+                    printAllUserCurrentData();
+                    //print(jwtToken);
+                    // print(responseID);
+                    // print(responseLName);
+                    //print(responseFName);
+                    //print(responseIat);
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    showRegisterModalBottomSheet(
+                      context,
+                      size.height * 0.45,
+                      true,
+                      "byGoogle",
+                      /*otpNavData(
+                            jwtToken: jwtToken,
+                            Phone: otpResponse.Phone,
+                            socialPhoto: googleImage,
+                            socialEmail: googleEmail)*/
+                    );
+                  } else {
+                    //response come error msg
+                    print(value.error);
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    showRegisterModalBottomSheet(
+                        context, size.height * 0.45, false, " ");
+                  }
+                });
+              } else {
+                //failing in loading data from google
+                setState(() {
+                  isApiCallProcess = false;
+                });
+                showRegisterModalBottomSheet(
+                    context, size.height * 0.45, false, "byGoogleError");
+              }
+            },
+          ),
+          SizedBox(height: size.height * 0.02),
+          borderedRoundedButton(
+            CornerRadius: 29,
+            text: 'Continue with Apple ID',
+            iconSrc: 'assets/icons/apple.svg',
+            press: () {},
+          ),
+          SizedBox(height: size.height * 0.02),
+        ],
       ),
     );
   }
@@ -337,6 +331,7 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
     context: context,
     isScrollControlled: false,
     enableDrag: true,
+    backgroundColor: Colors.transparent,
     builder: (context) => Container(
       height: container_size,
       decoration: BoxDecoration(
@@ -382,7 +377,7 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
             color: Theme.of(context).primaryColorLight,
             press: () {
               state
-                  ? Navigator.pushNamed(
+                  ? Navigator.pushReplacementNamed(
                       context,
                       DashBoard.routeName,
                       /* arguments: arguments*/

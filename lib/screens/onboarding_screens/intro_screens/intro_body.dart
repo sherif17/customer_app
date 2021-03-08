@@ -58,7 +58,7 @@ class _IntroBodyState extends State<IntroBody> {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                 children: [
                   Padding(
@@ -78,7 +78,8 @@ class _IntroBodyState extends State<IntroBody> {
                     text: 'GET STARTED',
                     color: Theme.of(context).primaryColor,
                     press: () {
-                      Navigator.pushNamed(context, EnterPhoneNumber.routeName);
+                      Navigator.pushReplacementNamed(
+                          context, EnterPhoneNumber.routeName);
                     },
                   ),
                 ],

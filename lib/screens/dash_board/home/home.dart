@@ -32,19 +32,25 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Welcome $userFName,",
-              style: TextStyle(
-                  color: Colors.blueGrey,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w900),
+            Positioned(
+              left: 0,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "Welcome $userFName,",
+                  style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
             ),
-            SizedBox(
-              width: size.width * 0.3,
-            ),
+            /*SizedBox(
+              width: size.width * 0.25,
+            ),*/
             Expanded(
               child: Icon(
                 Icons.notifications_rounded,

@@ -1,6 +1,7 @@
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/otp_form.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,8 @@ class Body extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/PhoneNumber');
+                      Navigator.pushNamedAndRemoveUntil(context,
+                          EnterPhoneNumber.routeName, (route) => false);
                     },
                     child: Text(
                       "  Edit number",
@@ -70,8 +72,9 @@ class Body extends StatelessWidget {
                 phoneRequestModel: response.phoneRequestModel,
                 phone_num: response.phoneNumber,
                 scafoldKey: response.scafoldKey),
-            buildTimer(),
-            SizedBox(height: size.height * 0.06),
+            // SizedBox(height: size.height * 0.01),
+            //buildTimer(),
+            //SizedBox(height: size.height * 0.06),
           ],
         ),
       ),
@@ -84,7 +87,7 @@ class Body extends StatelessWidget {
       children: [
         Text("Resend Code "),
         TweenAnimationBuilder(
-          tween: Tween(begin: 30.0, end: 0.0),
+          tween: Tween(begin: 60.0, end: 0.0),
           duration: Duration(seconds: 60),
           builder: (context, value, child) => Text(
             "00:${value.toInt()}",
