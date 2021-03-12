@@ -1,5 +1,7 @@
 import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/to_winch/search_screen.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
@@ -17,6 +19,28 @@ class ToWinchMap extends StatefulWidget {
 }
 
 class _ToWinchState extends State<ToWinchMap> {
+  String currentLang;
+  String fname;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentPrefData();
+  }
+
+  void getCurrentPrefData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+    getPrefFirstName().then((value) {
+      setState(() {
+        fname = value;
+      });
+    });
+  }
+
   @override
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
@@ -118,9 +142,9 @@ class _ToWinchState extends State<ToWinchMap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: size.height * 0.006),
-                        Text("Hi there,",
-                            style: Theme.of(context).textTheme.bodyText1),
-                        Text("Where to?",
+                        Text(
+                            getTranslated(context, "where you want to go") +
+                                fname,
                             style: Theme.of(context).textTheme.headline2),
                         SizedBox(height: size.height * 0.02),
                         GestureDetector(
@@ -157,18 +181,19 @@ class _ToWinchState extends State<ToWinchMap> {
                               ),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Text(
+                                    getTranslated(
+                                        context, "enter your destination here"),
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
                                   Icon(
                                     Icons.search,
                                     color: Theme.of(context).hintColor,
                                   ),
                                   //SizedBox(width: size.width * 0.0001,),
-                                  Text(
-                                    "Search Drop off",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
                                 ],
                               ),
                             ),
@@ -347,8 +372,9 @@ class _ToWinchState extends State<ToWinchMap> {
 
     showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            ProgressDialog(message: "Please wait.."));
+        builder: (BuildContext context) => ProgressDialog(
+            message:
+                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
     var details = await ApiService.obtainPlaceDirectionDetails(
         pickUpLatLng, dropOffLatLng);
@@ -554,7 +580,8 @@ class _ToWinchState extends State<ToWinchMap> {
                               width: 12.0,
                             ),
                             GestureDetector(
-                              child: Text("Set A location on the map"),
+                              child: Text(getTranslated(
+                                  context, "Set A location on the map")),
                             ),
                           ],
                         ),
@@ -572,12 +599,13 @@ class _ToWinchState extends State<ToWinchMap> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Add Home"),
+                              Text(getTranslated(context, "Add Home")),
                               SizedBox(
                                 height: 4.0,
                               ),
                               Text(
-                                "Your living home address",
+                                getTranslated(
+                                    context, "Your living home address"),
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ],
@@ -599,12 +627,12 @@ class _ToWinchState extends State<ToWinchMap> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Add Work"),
+                              Text(getTranslated(context, "Add Work")),
                               SizedBox(
                                 height: 4.0,
                               ),
                               Text(
-                                "Your office address",
+                                getTranslated(context, "Your office address"),
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ],
@@ -709,20 +737,19 @@ myBottomSheet(context) {
                 SizedBox(height: 24.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 60.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.push_pin,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                      SizedBox(
-                        width: 12.0,
-                      ),
-                      GestureDetector(
-                        child: Text("Set A location on the map"),
-                      ),
-                    ],
-                  ),
+                  child: Row(children: [
+                    Icon(
+                      Icons.push_pin,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    SizedBox(
+                      width: 12.0,
+                    ),
+                    GestureDetector(
+                      child: Text(
+                          getTranslated(context, "Set A location on the map")),
+                    ),
+                  ]),
                 ),
                 SizedBox(height: 24.0),
                 Row(
@@ -740,12 +767,12 @@ myBottomSheet(context) {
                         Text(
                             Provider.of<AppData>(context).pickUpLocation != null
                                 ? Provider.of<AppData>(context).pickUpLocation
-                                : "Add Home"),
+                                : getTranslated(context, "Add Home")),
                         SizedBox(
                           height: 4.0,
                         ),
                         Text(
-                          "Your living home address",
+                          getTranslated(context, "Your living home address"),
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
@@ -767,12 +794,12 @@ myBottomSheet(context) {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Add Work"),
+                        Text(getTranslated(context, "Add Work")),
                         SizedBox(
                           height: 4.0,
                         ),
                         Text(
-                          "Your office address",
+                          getTranslated(context, "Your office address"),
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],

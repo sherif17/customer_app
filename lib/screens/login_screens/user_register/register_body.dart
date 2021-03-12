@@ -1,4 +1,5 @@
 import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -52,6 +53,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     registerRequestModel = new UserRegisterRequestModel();
+    getCurrentPrefData();
   }
 
   /* Widget build(BuildContext context) {
@@ -62,6 +64,16 @@ class _BodyState extends State<Body> {
     );
   }
 */
+  String currentLang;
+
+  void getCurrentPrefData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Text("noooooooo");
@@ -75,22 +87,50 @@ class _BodyState extends State<Body> {
       child: Column(
         children: <Widget>[
           SizedBox(height: size.height * 0.00005),
-          Text(
-            "What's Your Name ?",
-            style: Theme.of(context).textTheme.headline1,
+          Padding(
+            padding: EdgeInsets.only(
+                left: size.width * 0.03, right: size.width * 0.03),
+            child: Align(
+              alignment: currentLang == "en"
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight,
+              child: Text(
+                getTranslated(context, "What's Your Name ?"),
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
           ),
-          SizedBox(height: size.height * 0.07),
+          SizedBox(height: size.height * 0.01),
+          Padding(
+            padding: EdgeInsets.only(
+                left: size.width * 0.04, right: size.width * 0.04),
+            child: Align(
+              alignment: currentLang == "en"
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  getTranslated(context,
+                      "Your name helps Captains to confirm who they 're picking up"),
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: size.height * 0.03),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: RegisterForm(
-                  /* otpResponse_jwt: otpResponse.jwtToken,
+                currentLang: currentLang,
+                /* otpResponse_jwt: otpResponse.jwtToken,
                   otpResponse_phone: otpResponse.Phone*/
-                  )),
+              )),
           SizedBox(height: size.height * 0.02),
-          OrDivider(),
+          OrDivider(currentLang),
           SizedBox(height: size.height * 0.02),
           borderedRoundedButton(
-            text: 'Continue with Facebook',
+            text: getTranslated(context, 'Continue with Facebook'),
             iconSrc: 'assets/icons/facebook.svg',
             CornerRadius: 29,
             press: () async {
@@ -178,7 +218,7 @@ class _BodyState extends State<Body> {
           ),
           SizedBox(height: size.height * 0.02),
           borderedRoundedButton(
-            text: 'Continue with Google',
+            text: getTranslated(context, "Continue with Google"),
             iconSrc: 'assets/icons/google_logo.svg',
             CornerRadius: 29,
             press: () async {
@@ -267,7 +307,7 @@ class _BodyState extends State<Body> {
           SizedBox(height: size.height * 0.02),
           borderedRoundedButton(
             CornerRadius: 29,
-            text: 'Continue with Apple ID',
+            text: getTranslated(context, "Continue with Apple ID"),
             iconSrc: 'assets/icons/apple.svg',
             press: () {},
           ),
@@ -283,46 +323,52 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
   switch (errorCausal) {
     case "byName":
       {
-        processMsg = "You registered by first & last name";
+        processMsg =
+            getTranslated(context, "You registered by first & last name");
       }
       break;
 
     case "byGoogle":
       {
-        processMsg = "You registered by your Google account";
+        processMsg =
+            getTranslated(context, "You registered by your Google account");
       }
       break;
 
     case "ByFacebook":
       {
-        processMsg = "You registered by your Facebook account";
+        processMsg =
+            getTranslated(context, "You registered by your Facebook account");
       }
       break;
 
     case "byNameError":
       {
-        processMsg = "Failed to sync your Data to the server";
+        processMsg =
+            getTranslated(context, "Failed to sync your Data to the server");
       }
       break;
 
     case "byGoogleError":
       {
-        processMsg = "Failed to fetch your Data from google account";
+        processMsg = getTranslated(
+            context, "Failed to fetch your Data from google account");
       }
       break;
     case "byFacebookError":
       {
-        processMsg = "Failed to fetch your Data from your facebook account";
+        processMsg = getTranslated(
+            context, "Failed to fetch your Data from your facebook account");
       }
       break;
     case "InvalidUserToken":
       {
-        processMsg = "Invalid User Token";
+        processMsg = getTranslated(context, "Invalid User Token");
       }
       break;
     default:
       {
-        processMsg = "server response error";
+        processMsg = getTranslated(context, "server response error");
       }
       break;
   }
@@ -355,13 +401,18 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
             ),
           ),
           SizedBox(height: size.height * 0.015),
-          Text(state ? "Successfully Signed Up" : "Getting Your Data Failed ",
+          Text(
+              state
+                  ? getTranslated(context, "Successfully Signed Up")
+                  : getTranslated(context, "Getting Your Data Failed"),
               style: Theme.of(context).textTheme.headline3),
           SizedBox(height: size.height * 0.015),
           Text(
             state
-                ? "You successfully created account in our app"
-                : "There is something wrong while fetching your data",
+                ? getTranslated(
+                    context, "You successfully created account in our app")
+                : getTranslated(context,
+                    "There is something wrong while fetching your data"),
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
           ),
@@ -373,7 +424,9 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
           ),
           SizedBox(height: size.height * 0.02),
           RoundedButton(
-            text: state ? "Go To Home Page" : "Try again",
+            text: state
+                ? getTranslated(context, "Go To Home Page")
+                : getTranslated(context, "Try again"),
             color: Theme.of(context).primaryColorLight,
             press: () {
               state

@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {

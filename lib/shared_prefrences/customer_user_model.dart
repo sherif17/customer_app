@@ -106,7 +106,7 @@ loadPrefIAT() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialImage() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_IMAGE) ?? "";
+  return _prefs.getString(_SOCIAL_IMAGE) ?? null;
 }
 
 Future<String> setPrefSocialImage(String value) async {
@@ -121,7 +121,7 @@ loadPrefGoogleImage() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialEmail() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_EMAIL) ?? "";
+  return _prefs.getString(_SOCIAL_EMAIL) ?? null;
 }
 
 Future<String> setPrefSocialEmail(String value) async {
@@ -145,4 +145,17 @@ printAllUserCurrentData() async {
   print("_IAT : ${await getPrefIAT()}");
   print("_GOOGLE_IMAGE : ${await getPrefSocialImage()}");
   print("_GOOGLE_EMAIL : ${await getPrefSocialEmail()}");
+}
+
+///////////////////////////////////////////
+resetAllUserCurrentData() {
+  setPrefBackendID(null);
+  setPrefJwtToken(null);
+  setPrefFirebaseID(null);
+  setPrefIAT(null);
+  setPrefFirstName(null);
+  setPrefLastName(null);
+  setPrefPhoneNumber(null);
+  setPrefSocialEmail(null);
+  setPrefSocialImage(null);
 }

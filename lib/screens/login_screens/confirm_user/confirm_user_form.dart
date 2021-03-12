@@ -1,4 +1,5 @@
 import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -132,7 +133,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                 width: size.width * 0.5,
                 child: DecoratedPhoneTField()),
             RoundedButton(
-                text: "Edit my info",
+                text: getTranslated(context, "Edit my info"),
                 color: Theme.of(context).primaryColor,
                 press: () {
                   if (confirmValidateAndSave()) {
@@ -215,7 +216,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefFName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'First Name',
+        labelText: widget.currentLang == "en" ? 'First Name' : "الاسم الاول",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
@@ -253,7 +254,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefLName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'Last Name',
+        labelText: widget.currentLang == "en" ? 'Last Name' : "اسم العائله",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
@@ -292,7 +293,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefPhone,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'Phone',
+        labelText: widget.currentLang == "en" ? 'Phone number' : "رقم الهاتف",
         //disabledBorder: disableInputBorder(),
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),

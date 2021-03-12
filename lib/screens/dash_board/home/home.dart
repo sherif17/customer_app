@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Positioned(
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "Welcome $userFName,",
+                  getTranslated(context, "Welcome") + userFName,
                   style: TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 28.0,
@@ -51,12 +52,10 @@ class _HomeState extends State<Home> {
             /*SizedBox(
               width: size.width * 0.25,
             ),*/
-            Expanded(
-              child: Icon(
-                Icons.notifications_rounded,
-                color: Colors.redAccent,
-                size: 30,
-              ),
+            Icon(
+              Icons.notifications_rounded,
+              color: Colors.redAccent,
+              size: 30,
             )
           ],
         ),

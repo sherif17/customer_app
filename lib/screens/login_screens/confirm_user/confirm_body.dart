@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
@@ -42,7 +43,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            prefFName.toUpperCase() + ",Is That You ?",
+            prefFName.toUpperCase() + getTranslated(context, "Is That You ?"),
             style: Theme.of(context).textTheme.headline1,
           ),
           UserAvatar(
@@ -54,7 +55,7 @@ class _BodyState extends State<Body> {
             style: Theme.of(context).textTheme.headline2,
           ),
           RoundedButton(
-              text: 'Yes, its Me',
+              text: getTranslated(context, "Yes, its Me"),
               color: Theme.of(context).primaryColor,
               press: () {
                 Map<String, dynamic> decodedToken =
@@ -73,7 +74,7 @@ class _BodyState extends State<Body> {
           Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
             child: borderedRoundedButton(
-                text: 'No, Edit Info',
+                text: getTranslated(context, "No, Edit Info"),
                 CornerRadius: 10,
                 press: () {
                   _showModalBottomSheet(context, size);
@@ -105,14 +106,18 @@ class _BodyState extends State<Body> {
         prefJwtToken = value;
       });
     });
-    getPrefCurrentLang().then((value) => currentLang = value);
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
   }
 }
 
 _showModalBottomSheet(BuildContext context, Size size) {
   showModalBottomSheet(
     context: context,
-    isScrollControlled: false,
+    isScrollControlled: true,
     enableDrag: true,
     backgroundColor: Colors.transparent,
     builder: (context) => Stack(
@@ -138,6 +143,7 @@ _showModalBottomSheet(BuildContext context, Size size) {
               prefLName: prefLName,
               prefPhone: prefPhone,
               prefJwtToken: prefJwtToken,
+              currentLang: currentLang,
             ),
           ),
           Positioned(

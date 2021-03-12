@@ -1,4 +1,5 @@
 import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -13,7 +14,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../../widgets/form_error.dart';
 
 class RegisterForm extends StatefulWidget {
-  RegisterForm({Key key});
+  String currentLang;
+  RegisterForm({Key key, this.currentLang});
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -90,7 +92,7 @@ class _RegisterFormState extends State<RegisterForm> {
         FormError(size: size, errors: errors),
         SizedBox(height: size.height * 0.03),
         RoundedButton(
-          text: 'Create Account',
+          text: getTranslated(context, "Create Account"),
           color: Theme.of(context).primaryColor,
           press: () async {
             String currentJwtToken = await getPrefJwtToken();
@@ -156,8 +158,8 @@ class _RegisterFormState extends State<RegisterForm> {
     return TextFormField(
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        hintText: 'Your First Name',
-        labelText: 'First Name',
+        hintText: widget.currentLang == "en" ? 'Your First Name' : "اسمك الاول",
+        labelText: widget.currentLang == "en" ? 'First Name' : "الاسم الاول",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       onSaved: (newValue) {
@@ -193,8 +195,8 @@ class _RegisterFormState extends State<RegisterForm> {
     return TextFormField(
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        hintText: 'Your Last Name',
-        labelText: 'Last Name',
+        hintText: widget.currentLang == "en" ? 'Your Last Name' : "اسم عائلتك",
+        labelText: widget.currentLang == "en" ? 'Last Name' : "اسم العائله",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       onSaved: (newValue) {

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/load_user_cars_model.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/customer_cars.dart';
@@ -27,6 +28,7 @@ class _HomeBodyState extends State<HomeBody> {
   int upperBound = 5;
   int x = 1;
   CarApiService api = new CarApiService();
+  String currentLang;
   @override
   void initState() {
     /*WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,6 +40,14 @@ class _HomeBodyState extends State<HomeBody> {
     //getCarList(jwt);
 
     super.initState();
+  }
+
+  void getCurrentPrefData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
   }
 
   @override
@@ -52,7 +62,7 @@ class _HomeBodyState extends State<HomeBody> {
             choosingBetweenServices(context, size),
             SizedBox(height: size.height * 0.02),
             //addNewCar(context),
-            addNewCar(context, size),
+            addNewCar(context, size, currentLang),
             SizedBox(height: size.height * 0.001),
             customerCars(),
           ],
@@ -72,11 +82,11 @@ class _HomeBodyState extends State<HomeBody> {
               WinchMap.routeName,
             );
           },
-          child: buildServices(
-              size, context, "assets/icons/tow-truck.svg", "Winch", 0),
+          child: buildServices(size, context, "assets/icons/tow-truck.svg",
+              getTranslated(context, "Winch"), 0),
         ),
-        buildServices(
-            size, context, "assets/icons/mechanic (1).svg", "Mechanic", 1),
+        buildServices(size, context, "assets/icons/mechanic (1).svg",
+            getTranslated(context, "Mechanic"), 1),
       ],
     );
   }
@@ -187,7 +197,7 @@ class _HomeBodyState extends State<HomeBody> {
   }
 */
   Map<String, List<dynamic>> response = {};
-  Padding addNewCar(BuildContext context, Size size) {
+  Padding addNewCar(BuildContext context, Size size, currentLang) {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03),
@@ -195,7 +205,8 @@ class _HomeBodyState extends State<HomeBody> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.baseline,
         children: [
-          Text("Your Cars", style: Theme.of(context).textTheme.headline2),
+          Text(getTranslated(context, "Your Cars"),
+              style: Theme.of(context).textTheme.headline2),
           GestureDetector(
             onTap: () async {
               var list = await api.loadCarsData();
@@ -210,7 +221,7 @@ class _HomeBodyState extends State<HomeBody> {
                   });
               }
               buildStepperShowModalBottomSheet(context, size, this.activeStep,
-                  this.upperBound, list, response);
+                  this.upperBound, list, response, currentLang);
               response.forEach((key, value) {
                 print('$key: ${value}');
               });
@@ -224,7 +235,7 @@ class _HomeBodyState extends State<HomeBody> {
                     width: MediaQuery.of(context).size.width * 0.01,
                   ),
                   Text(
-                    'Add New',
+                    getTranslated(context, "Add New"),
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ]),

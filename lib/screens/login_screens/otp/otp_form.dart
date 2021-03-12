@@ -1,8 +1,10 @@
 import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/phone_num_model.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/services/api_services.dart';
@@ -13,6 +15,7 @@ import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
@@ -95,9 +98,9 @@ class _OtpFormState extends State<OtpForm> {
       key: _pinKey_two,
       child: Column(
         children: [
-          SizedBox(height: size.height * 0.08),
+          SizedBox(height: size.height * 0.04),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -198,9 +201,9 @@ class _OtpFormState extends State<OtpForm> {
               ],
             ),
           ),
-          SizedBox(height: size.height * 0.07),
+          SizedBox(height: size.height * 0.04),
           RoundedButton(
-              text: "Verify",
+              text: getTranslated(context, "Verify"),
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).accentColor,
               press: () async {
@@ -224,8 +227,8 @@ class _OtpFormState extends State<OtpForm> {
                 } catch (e) {
                   print("invalid otp");
                   checkFirebase = false;
-                  _showModalBottomSheet(context, size.height * 0.4, code,
-                      "failed to get user fire token");
+                  _showModalBottomSheet(context, size.height * 0.45, code,
+                      getTranslated(context, "failed to get user fire token"));
                 }
                 if (checkFirebase == true) {
                   widget.phoneRequestModel.fireBaseId = fireToken;
@@ -288,20 +291,21 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false, " ");
+                            context, size.height * 0.45, false, " ");
                       }
                     } else {
                       print(value.error);
                       setState(() {
                         isApiCallProcess = false;
                       });
-                      showRegisterModalBottomSheet(context, size.height * 0.4,
+                      showRegisterModalBottomSheet(context, size.height * 0.45,
                           false, "InvalidUserToken");
                     }
                   });
                 }
               }),
-          buildTimer(),
+          SizedBox(height: size.height * 0.02),
+          buildTimer()
         ],
       ),
     );
@@ -311,7 +315,7 @@ class _OtpFormState extends State<OtpForm> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Resend Code "),
+        Text(getTranslated(context, "Resend Code")),
         TweenAnimationBuilder(
           tween: Tween(begin: 60.0, end: 0.0),
           duration: Duration(seconds: 60),
@@ -365,6 +369,7 @@ _showModalBottomSheet(context, container_size, otpcode, errorCousal) {
     context: context,
     isScrollControlled: false,
     enableDrag: true,
+    backgroundColor: Colors.transparent,
     builder: (context) => Container(
       height: container_size,
       decoration: BoxDecoration(
@@ -386,13 +391,19 @@ _showModalBottomSheet(context, container_size, otpcode, errorCousal) {
             ),
           ),
           SizedBox(height: size.height * 0.015),
-          Text(x ? "Invalid OTP" : "Empty Fields",
+          Text(
+              x
+                  ? getTranslated(context, "Invalid OTP")
+                  : getTranslated(context, "Empty Fields"),
               style: Theme.of(context).textTheme.headline3),
           SizedBox(height: size.height * 0.015),
           Text(
             x
-                ? "This Code ${otpcode} doesn't match with the code we sent to you"
-                : "Please Enter the Received code",
+                ? getTranslated(context, "This Code") +
+                    otpcode +
+                    getTranslated(
+                        context, "doesn't match with the code we sent to you")
+                : getTranslated(context, "Please Enter the Received code"),
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
           ),
@@ -404,7 +415,7 @@ _showModalBottomSheet(context, container_size, otpcode, errorCousal) {
           ),
           SizedBox(height: size.height * 0.005),
           RoundedButton(
-            text: "Try Again",
+            text: getTranslated(context, "Try Again"),
             color: Theme.of(context).primaryColor,
             press: () {
               Navigator.pop(context);

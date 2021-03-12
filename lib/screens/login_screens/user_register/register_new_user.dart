@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,10 +10,10 @@ class RegisterNewUser extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Register New User',
+          getTranslated(context, "Register New customer"),
           style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.normal,
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
               color: Theme.of(context).primaryColorDark),
         ),
       ),

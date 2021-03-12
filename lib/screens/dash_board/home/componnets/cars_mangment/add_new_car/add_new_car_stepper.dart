@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/add_new_car_model.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -18,8 +19,8 @@ String winchPlatesChar;
 bool isApiCallProcess = false;
 List<dynamic> answer = [0, 0, 0];
 
-Future buildStepperShowModalBottomSheet(
-    BuildContext context, Size size, activeStep, upperBound, list, response) {
+Future buildStepperShowModalBottomSheet(BuildContext context, Size size,
+    activeStep, upperBound, list, response, currentLang) {
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -90,13 +91,15 @@ Future buildStepperShowModalBottomSheet(
                               }
                             },
                       icon: Icon(
-                        Icons.chevron_left_rounded,
+                        currentLang == "en"
+                            ? Icons.chevron_left_rounded
+                            : Icons.chevron_right_rounded,
                         //color: activeStep == 0 ? Colors.grey : Colors.red,
                       ),
                       iconSize: 50,
                       disabledColor: Colors.grey,
                     ),
-                    header(activeStep),
+                    header(activeStep, context),
                     IconButton(
                       onPressed: () async {
                         if (activeStep == 3) {
@@ -153,7 +156,10 @@ Future buildStepperShowModalBottomSheet(
                               Icons.check,
                               color: Colors.red,
                             )
-                          : Icon(Icons.chevron_right_rounded,
+                          : Icon(
+                              currentLang == "en"
+                                  ? Icons.chevron_right_rounded
+                                  : Icons.chevron_left_rounded,
                               color: activeStep < 3 ? Colors.red : Colors.grey),
                       iconSize: 50,
                       disabledColor: Colors.grey,
@@ -178,7 +184,7 @@ bool finalFormValidateAndSave() {
     return false;
 }
 
-Widget header(activeStep) {
+Widget header(activeStep, context) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -186,7 +192,7 @@ Widget header(activeStep) {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            headerText(activeStep),
+            headerText(activeStep, context),
             style: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -198,18 +204,20 @@ Widget header(activeStep) {
   );
 }
 
-String headerText(activeStep) {
+String headerText(activeStep, context) {
   switch (activeStep) {
     case 0:
-      return 'Car Brand';
+      return getTranslated(context, "Car Brand"); //'Car Brand'; //
 
     case 1:
-      return 'Car Modal';
+      return getTranslated(context, "Car Model"); //'Car Model'; //
     case 2:
-      return 'Year of Production';
+      return getTranslated(
+          context, "Year of Production"); //'Year of Production'; //
 
     case 3:
-      return 'Required information';
+      return getTranslated(
+          context, "Required information"); //'Required information'; //
 
     default:
       return 'Introduction';
@@ -320,7 +328,9 @@ class _FinalFormState extends State<FinalForm> {
 
   getCurrentLang() async {
     getPrefCurrentLang().then((value) {
-      Lang = value;
+      setState(() {
+        Lang = value;
+      });
     });
   }
 
@@ -366,6 +376,23 @@ class _FinalFormState extends State<FinalForm> {
             ),
             SizedBox(
               height: size.height * 0.03,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  right: size.width * 0.02, left: size.width * 0.02),
+              child: Align(
+                alignment:
+                    Lang == "en" ? Alignment.centerLeft : Alignment.centerRight,
+                child: Text(
+                  getTranslated(
+                      context, "Please enter selected car plates here"),
+                  style: Theme.of(context).textTheme.bodyText1,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.02,
             ),
             Expanded(
               flex: 4,
@@ -461,7 +488,7 @@ class _FinalFormState extends State<FinalForm> {
       ],
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        labelText: "Characters",
+        labelText: Lang == "en" ? "Characters" : "الحروف",
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2),
           borderRadius: Lang == 'en'
@@ -539,7 +566,7 @@ class _FinalFormState extends State<FinalForm> {
       maxLength: 4,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: "Numbers",
+        labelText: Lang == "en" ? "Numbers" : "الارقام",
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).hintColor,

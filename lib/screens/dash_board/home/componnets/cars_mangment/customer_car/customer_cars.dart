@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/car_model.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
@@ -412,10 +413,11 @@ class _customerCarsState extends State<customerCars> {
               Icons.add_circle_outline_rounded,
               size: 60,
             ),
-            Text("No Added Cars",
+            Text(getTranslated(context, "No Added Cars"),
                 style: TextStyle(fontSize: 25, color: Colors.grey)),
             Text(
-              "Please add at least one ,to be able to use our services",
+              getTranslated(context,
+                  "Please add at least one ,to be able to use our services"),
               style: TextStyle(fontSize: 13),
             ),
           ],
