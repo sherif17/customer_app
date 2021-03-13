@@ -407,14 +407,17 @@ showRegisterModalBottomSheet(context, container_size, bool state, errorCausal) {
                   : getTranslated(context, "Getting Your Data Failed"),
               style: Theme.of(context).textTheme.headline3),
           SizedBox(height: size.height * 0.015),
-          Text(
-            state
-                ? getTranslated(
-                    context, "You successfully created account in our app")
-                : getTranslated(context,
-                    "There is something wrong while fetching your data"),
-            style: Theme.of(context).textTheme.caption,
-            textAlign: TextAlign.center,
+          FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              state
+                  ? getTranslated(
+                      context, "You successfully created account in our app")
+                  : getTranslated(context,
+                      "There is something wrong while fetching your data"),
+              style: Theme.of(context).textTheme.caption,
+              textAlign: TextAlign.center,
+            ),
           ),
           SizedBox(height: size.height * 0.02),
           Text(

@@ -12,15 +12,15 @@ class ProfileBody extends StatefulWidget {
   _ProfileBodyState createState() => _ProfileBodyState();
 }
 
-String token;
-String ID;
-String Fname;
-String Lname;
-String Phone;
-String currentLang;
-String profilePhoto;
-String email;
-String iat;
+String token = " ";
+String ID = " ";
+String Fname = " ";
+String Lname = " ";
+String Phone = " ";
+String currentLang = " ";
+String profilePhoto = " ";
+String email = " ";
+String iat = " ";
 
 class _ProfileBodyState extends State<ProfileBody> {
   @override
@@ -252,18 +252,23 @@ class _ProfileBodyState extends State<ProfileBody> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          ),
-          _greenColors(),
-          _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-          SizedBox(),
-          _userAdress(ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-        ],
-      ),
+      child: Fname == " "
+          ? CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent))
+          : Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                _greenColors(),
+                _getInfo(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+                SizedBox(),
+                _userAdress(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+              ],
+            ),
     );
   }
 

@@ -22,7 +22,7 @@ class _IntroBodyState extends State<IntroBody> {
     List<Map<String, String>> onBoardingData = [
       {
         "text": getTranslated(context, "info 1"),
-        "image": "assets/illustrations/towTruck.svg"
+        "image": "assets/illustrations/AutoInsurance.svg"
       },
       {
         "text": getTranslated(context, "info 2"),
