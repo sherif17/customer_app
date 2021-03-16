@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/size_config.dart';
@@ -14,76 +15,89 @@ class IntroBody extends StatefulWidget {
 
 class _IntroBodyState extends State<IntroBody> {
   int currentPage = 0;
-  List<Map<String, String>> onBoardingData = [
-    {"text": "info 1", "image": "assets/illustrations/towTruck.svg"},
-    {"text": "info 2", "image": "assets/illustrations/womanCar.svg"},
-    {"text": "info 3", "image": "assets/illustrations/boyCar.svg"},
-  ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    List<Map<String, String>> onBoardingData = [
+      {
+        "text": getTranslated(context, "info 1"),
+        "image": "assets/illustrations/AutoInsurance.svg"
+      },
+      {
+        "text": getTranslated(context, "info 2"),
+        "image": "assets/illustrations/womanCar.svg"
+      },
+      {
+        "text": getTranslated(context, "info 3"),
+        "image": "assets/illustrations/boyCar.svg"
+      },
+    ];
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: size.height * 0.05),
-              child: Text(
-                "Rescue My Car\n",
-                style: Theme.of(context).textTheme.headline1,
-                /*style: TextStyle(
-                  fontSize: getProportionateScreenWidth(30),
-                  color: Theme.of(context).primaryColor,
-                ),*/
-              ),
-            ),
-            Text("Customer App ,Let's Start",
-                style: Theme.of(context).textTheme.headline2),
-            Expanded(
-              flex: 4,
-              child: PageView.builder(
-                onPageChanged: (value) {
-                  setState(() {
-                    currentPage = value;
-                  });
-                },
-                itemCount: onBoardingData.length,
-                itemBuilder: (context, index) => onBoardingContent(
-                  image: onBoardingData[index]["image"],
-                  text: onBoardingData[index]['text'],
+        child: SingleChildScrollView(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: size.height * 0),
+                child: Text(
+                  getTranslated(context, "Mechawinch"),
+                  style: Theme.of(context).textTheme.headline1,
+                  /*style: TextStyle(
+                    fontSize: getProportionateScreenWidth(30),
+                    color: Theme.of(context).primaryColor,
+                  ),*/
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        onBoardingData.length,
-                        (index) => DotSweeper(index: index),
+              Text(getTranslated(context, "customer app- let's start"),
+                  style: Theme.of(context).textTheme.headline2),
+              Container(
+                height: size.height * 0.55,
+                child: PageView.builder(
+                  onPageChanged: (value) {
+                    setState(() {
+                      currentPage = value;
+                    });
+                  },
+                  itemCount: onBoardingData.length,
+                  itemBuilder: (context, index) => onBoardingContent(
+                    image: onBoardingData[index]["image"],
+                    text: onBoardingData[index]['text'],
+                  ),
+                ),
+              ),
+              Container(
+                height: size.height * 0.2,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          onBoardingData.length,
+                          (index) => DotSweeper(index: index),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: getProportionateScreenHeight(50),
-                  ),
-                  RoundedButton(
-                    text: 'GET STARTED',
-                    color: Theme.of(context).primaryColor,
-                    press: () {
-                      Navigator.pushNamed(context, EnterPhoneNumber.routeName);
-                    },
-                  ),
-                ],
+                    SizedBox(
+                      height: getProportionateScreenHeight(50),
+                    ),
+                    RoundedButton(
+                      text: getTranslated(context, "GET STARTED"),
+                      color: Theme.of(context).primaryColor,
+                      press: () {
+                        Navigator.pushReplacementNamed(
+                            context, EnterPhoneNumber.routeName);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

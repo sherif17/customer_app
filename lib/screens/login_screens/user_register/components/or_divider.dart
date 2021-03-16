@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
-class OrDivider extends StatelessWidget {
+class OrDivider extends StatefulWidget {
+  String currentLang;
+
+  OrDivider(this.currentLang);
+
+  @override
+  _OrDividerState createState() => _OrDividerState();
+}
+
+class _OrDividerState extends State<OrDivider> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -12,7 +21,7 @@ class OrDivider extends StatelessWidget {
           buildExpanded(context),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text("OR"),
+            child: Text(widget.currentLang == "en" ? "OR" : "او"),
           ),
           buildExpanded(context),
         ],

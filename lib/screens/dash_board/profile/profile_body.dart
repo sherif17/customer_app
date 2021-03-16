@@ -1,4 +1,7 @@
-import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
+import 'package:customer_app/lang/language_list.dart';
+import 'package:customer_app/localization/localization_constants.dart';
+import 'package:customer_app/main.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +12,24 @@ class ProfileBody extends StatefulWidget {
   _ProfileBodyState createState() => _ProfileBodyState();
 }
 
+String token = " ";
+String ID = " ";
+String Fname = " ";
+String Lname = " ";
+String Phone = " ";
+String currentLang = " ";
+String profilePhoto = " ";
+String email = " ";
+String iat = " ";
+
 class _ProfileBodyState extends State<ProfileBody> {
+  @override
+  void initState() {
+    // getCurrentPrefData();
+    super.initState();
+    loadAllWinchUserData();
+  }
+
   Widget _greenColors() {
     return Positioned(
       top: 0,
@@ -43,7 +63,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("User information",
+              Text(getTranslated(context, "Customer Information"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   textAlign: TextAlign.end),
               SizedBox(
@@ -79,7 +99,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Phone ",
+                  Text(getTranslated(context, "Phone"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -107,7 +127,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       top: 300,
       child: Container(
         margin: EdgeInsets.all(20),
-        height: 400,
+        height: 1000,
         width: MediaQuery.of(context).size.width * 0.90,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
@@ -117,25 +137,28 @@ class _ProfileBodyState extends State<ProfileBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Your Detailed Info",
+                getTranslated(context, "Detailed Info"),
                 style: Theme.of(context).textTheme.headline1,
               ),
               SizedBox(
                 height: 40,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("User ID",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          color: Colors.red,
-                          fontSize: 15)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(ID),
-                ],
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(getTranslated(context, "User ID"),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.red,
+                            fontSize: 15)),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(ID),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -151,7 +174,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Email",
+                  Text(getTranslated(context, "Email"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -210,7 +233,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     width: 5,
                   ),
                   Container(
-                      height: 20,
+                      height: 30,
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: Text(
                         token,
@@ -228,53 +251,72 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    otpNavData finalResponse = ModalRoute.of(context).settings.arguments;
-    Map<String, dynamic> decodedToken =
-        JwtDecoder.decode(finalResponse.jwtToken);
-    String token = finalResponse.jwtToken;
-    String ID = decodedToken['_id'];
-    String Fname = decodedToken['firstName'];
-    String Lname = decodedToken['lastName'];
-    String Phone = finalResponse.Phone;
-    dynamic profilePhoto = finalResponse.socialPhoto;
-    dynamic email = finalResponse.socialEmail;
-    String iat = decodedToken['iat'].toString();
-
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        title: Text(
-          "Profile",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
-        ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColorLight,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
-        actions: <Widget>[],
-      ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+    return SingleChildScrollView(
+      child: Fname == " "
+          ? CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent))
+          : Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                _greenColors(),
+                _getInfo(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+                SizedBox(),
+                _userAdress(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+              ],
             ),
-            _greenColors(),
-            _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-            SizedBox(),
-            _userAdress(
-                ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-          ],
-        ),
-      ),
     );
+  }
+
+  loadAllWinchUserData() {
+    getPrefBackendID().then((value) {
+      setState(() {
+        ID = value;
+      });
+    });
+    getPrefFirstName().then((value) {
+      setState(() {
+        Fname = value;
+      });
+    });
+    getPrefLastName().then((value) {
+      setState(() {
+        Lname = value;
+      });
+    });
+    getPrefPhoneNumber().then((value) {
+      setState(() {
+        Phone = value;
+      });
+    });
+    getPrefJwtToken().then((value) {
+      setState(() {
+        token = value;
+      });
+    });
+    getPrefIAT().then((value) {
+      setState(() {
+        iat = value;
+      });
+    });
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+    getPrefSocialImage().then((value) {
+      setState(() {
+        profilePhoto = value;
+      });
+    });
+    getPrefSocialEmail().then((value) {
+      setState(() {
+        email = value;
+      });
+    });
   }
 }

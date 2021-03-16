@@ -1,3 +1,4 @@
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:flutter/material.dart';
 
 class ProgressHUD extends StatelessWidget {
@@ -32,9 +33,34 @@ class ProgressHUD extends StatelessWidget {
                 child: ModalBarrier(dismissible: false, color: color)),
           ),*/
           new Center(
-              child: new CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColorLight),
+              child: Container(
+            height: size.height * 0.1,
+            // margin: EdgeInsets.symmetric(horizontal: 5.0),
+            width: MediaQuery.of(context).size.width * 0.6,
+
+            decoration: new BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).primaryColorDark,
+                width: 2,
+              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                new CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColorLight),
+                ),
+                SizedBox(width: size.width * 0.05),
+                Text(
+                  getTranslated(context, "Please wait"),
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ],
+            ),
           )),
         ],
       );

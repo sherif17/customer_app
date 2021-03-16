@@ -1,6 +1,8 @@
-import 'package:customer_app/models/phone_num_model.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/phone_num_model.dart';
+import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/form_error.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
@@ -18,11 +20,21 @@ class _PhoneFormState extends State<PhoneForm> {
   final List<String> errors = [];
   PhoneRequestModel phoneRequestModel;
   String phone;
+  String currentLang;
 
   @override
   void initState() {
     super.initState();
     phoneRequestModel = new PhoneRequestModel();
+    getCurrentPrefData();
+  }
+
+  void getCurrentPrefData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
   }
 
   void addError({String error}) {
@@ -60,22 +72,20 @@ class _PhoneFormState extends State<PhoneForm> {
                     )),
                 Expanded(
                   flex: 9,
-                  child: Column(
-                    children: [
-                      buildPhoneField(),
-                      FormError(size: size, errors: errors),
-                    ],
-                  ),
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: buildPhoneField()),
                 ),
+                FormError(size: size, errors: errors),
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.2,
+              top: size.height * 0.05,
             ),
             child: RoundedButton(
-              text: "Continue",
+              text: getTranslated(context, "Continue"),
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).accentColor,
               press: () {
@@ -108,13 +118,16 @@ class _PhoneFormState extends State<PhoneForm> {
       keyboardType: TextInputType.phone,
       maxLength: 10,
       decoration: InputDecoration(
-        hintText: "enter Your Phone Number",
+        hintText: currentLang == "en"
+            ? "enter Your Phone Number here "
+            : "أدخل رقم هاتفك هنا ",
         hintStyle: Theme.of(context).textTheme.bodyText2,
         border: OutlineInputBorder(),
       ),
       onSaved: (newValue) {
         String numberCodeFormat = "+20${newValue}";
         phoneRequestModel.phoneNumber = numberCodeFormat;
+        setPrefPhoneNumber(numberCodeFormat);
       },
       onChanged: (value) {
         this.phone = value;

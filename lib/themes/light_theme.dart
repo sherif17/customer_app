@@ -25,7 +25,7 @@ ThemeData lightTheme() {
         fontFamily: 'Lato',
         color: Color(0xFF42BDBD),
       ),
-      headline5: base.headline4.copyWith(
+      headline5: base.headline5.copyWith(
         fontSize: 17.0,
         fontFamily: 'Lato',
         color: Colors.grey[700],
@@ -70,11 +70,11 @@ ThemeData lightTheme() {
     primaryColorLight: Color(0xFFC45555),
     primaryColorDark: Color(0xFF470000),
     accentColor: Colors.white,
-    hintColor: Color(0xFF42BDBD),
+    hintColor: Colors.grey,
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
-    canvasColor: Colors.transparent,
     backgroundColor: Colors.white,
+    dialogBackgroundColor: Colors.white30,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
         color: Colors.white,

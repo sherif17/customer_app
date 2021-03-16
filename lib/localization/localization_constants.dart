@@ -1,26 +1,22 @@
+import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'demo_localization.dart';
 
 String getTranslated(BuildContext context, String key) {
   return DemoLocalization.of(context).getTranslatedValue(key);
 }
 
-const String LAGUAGE_CODE = 'languageCode';
-
 //languages code
 const String ENGLISH = 'en';
 const String ARABIC = 'ar';
 
 Future<Locale> setLocale(String languageCode) async {
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  await _prefs.setString(LAGUAGE_CODE, languageCode);
+  setPrefCurrentLang(languageCode);
   return _locale(languageCode);
 }
 
 Future<Locale> getLocale() async {
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String languageCode = _prefs.getString(LAGUAGE_CODE) ?? "en";
+  String languageCode = await getPrefCurrentLang();
   return _locale(languageCode);
 }
 
