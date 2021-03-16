@@ -36,7 +36,7 @@ class _HomeBodyState extends State<HomeBody> {
         precacheImage(NetworkImage(i.carImage), context);
       });
     });*/
-
+    getCurrentPrefData();
     //getCarList(jwt);
 
     super.initState();

@@ -61,7 +61,7 @@ Future buildStepperShowModalBottomSheet(BuildContext context, Size size,
                   activeStep: activeStep,
 
                   // bound receives value from upperBound.
-                  upperBound: (bound) => upperBound = bound,
+                  //upperBound: (bound) => upperBound = bound,
                   // This ensures step-tapping updates the activeStep.
                   onStepReached: (index) {
                     setState(() {
