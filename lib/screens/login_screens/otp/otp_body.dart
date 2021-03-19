@@ -49,11 +49,14 @@ class _BodyState extends State<Body> {
                 alignment: currentLang == "en"
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
-                child: Text(
-                  getTranslated(context, "Verify This Mobile  Number"),
-                  style: Theme.of(context).textTheme.headline1,
-                  textAlign:
-                      currentLang == "en" ? TextAlign.left : TextAlign.right,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    getTranslated(context, "Verify This Mobile  Number"),
+                    style: Theme.of(context).textTheme.headline1,
+                    textAlign:
+                        currentLang == "en" ? TextAlign.left : TextAlign.right,
+                  ),
                 ),
               ),
             ),

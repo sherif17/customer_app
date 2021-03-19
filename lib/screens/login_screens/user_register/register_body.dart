@@ -86,7 +86,7 @@ class _BodyState extends State<Body> {
       //mainAxisAlignment: MainAxisAlignment.spaceAround,
       child: Column(
         children: <Widget>[
-          SizedBox(height: size.height * 0.00005),
+          SizedBox(height: size.height * 0.05),
           Padding(
             padding: EdgeInsets.only(
                 left: size.width * 0.03, right: size.width * 0.03),
@@ -100,7 +100,7 @@ class _BodyState extends State<Body> {
               ),
             ),
           ),
-          SizedBox(height: size.height * 0.01),
+          SizedBox(height: size.height * 0.02),
           Padding(
             padding: EdgeInsets.only(
                 left: size.width * 0.04, right: size.width * 0.04),
@@ -118,7 +118,7 @@ class _BodyState extends State<Body> {
               ),
             ),
           ),
-          SizedBox(height: size.height * 0.03),
+          SizedBox(height: size.height * 0.05),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: RegisterForm(

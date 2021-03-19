@@ -110,10 +110,10 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
-          initialRoute: //RegisterNewUser.routeName,
-              TOKEN == null || BACKEND_ID == null
+          initialRoute: RegisterNewUser.routeName,
+          /*TOKEN == null || BACKEND_ID == null
                   ? Intro.routeName
-                  : DashBoard.routeName,
+                  : DashBoard.routeName,*/
           routes: routes,
           locale: _locale,
           supportedLocales: [
