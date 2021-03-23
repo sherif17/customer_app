@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           initialRoute: //RegisterNewUser.routeName,
-          TOKEN == null || BACKEND_ID == null
+              TOKEN == null || BACKEND_ID == null
                   ? Intro.routeName
                   : DashBoard.routeName,
           routes: routes,

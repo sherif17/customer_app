@@ -93,7 +93,7 @@ class _ToWinchState extends State<ToWinchMap> {
                   top: size.height * 0.03,
                 ),
                 child: Container(
-                  height: size.height * 0.92,
+                  height: size.height * 0.77,
                   child: GoogleMap(
                       initialCameraPosition: _initialPosition,
                       mapType: MapType.normal,
@@ -118,7 +118,7 @@ class _ToWinchState extends State<ToWinchMap> {
                 right: 0.0,
                 bottom: 0.0,
                 child: Container(
-                  height: size.height * 0.22,
+                  height: size.height * 0.20,
                   width: size.width,
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
