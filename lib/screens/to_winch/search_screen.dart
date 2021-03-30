@@ -1,14 +1,14 @@
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/maps/placePredictions.dart';
+import 'package:customer_app/models/maps/placePredictions.dart';
 import 'package:customer_app/services/RequestAssistant.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/maps/address.dart';
+import 'package:customer_app/models/maps/address.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -83,7 +83,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(height: size.height * 0.016),
                   Row(
                     children: [
-                      //Image.asset("images/pickicon.png", height: 16.0, width: 16.0,),
                       Icon(
                         Icons.location_pin,
                         color: Theme.of(context).primaryColor,
@@ -126,7 +125,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(height: size.height * 0.01),
                   Row(
                     children: [
-                      //Image.asset("images/desticon.png", height: 16.0, width: 16.0,),
                       Icon(
                         Icons.search,
                         color: Theme.of(context).primaryColor,
@@ -408,7 +406,6 @@ class PredictionTile extends StatelessWidget {
 
       Provider.of<AppData>(context, listen: false)
           .updateDropOffLocationAddress(address);
-      //print("This is drop off location :: $address");
       print("Drop off address name :: " + address.placeName);
 
       Navigator.pop(context, "obtainDirection");
