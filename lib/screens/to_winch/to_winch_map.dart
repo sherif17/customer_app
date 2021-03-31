@@ -1,6 +1,7 @@
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/localization/localization_constants.dart';
-import 'package:customer_app/screens/to_winch/search_screen.dart';
+import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/to_winch/distination_search/search_screen.dart';
+import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ class _ToWinchState extends State<ToWinchMap> {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     String address =
-        await ApiService.searchCoordinateAddress(position, context);
+        await MapsApiService.searchCoordinateAddress(position, context);
     print("This is your address:: " + address);
   }
 
@@ -198,7 +199,6 @@ class _ToWinchState extends State<ToWinchMap> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -324,7 +324,7 @@ class _ToWinchState extends State<ToWinchMap> {
             message:
                 currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
-    var details = await ApiService.obtainPlaceDirectionDetails(
+    var details = await MapsApiService.obtainPlaceDirectionDetails(
         pickUpLatLng, dropOffLatLng);
 
     Navigator.pop(context);
@@ -424,7 +424,4 @@ class _ToWinchState extends State<ToWinchMap> {
       circlesSet.add(dropOffLocCircle);
     });
   }
-
 }
-
-
