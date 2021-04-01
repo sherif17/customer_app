@@ -138,8 +138,8 @@ class _BodyState extends State<Body> {
               String currentJwtToken = await getPrefJwtToken();
               final result = await facebookLogin.logIn(['email']);
               final token = result.accessToken.token;
-              final graphResponse = await http.get(
-                  'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+              final graphResponse = await http.get(Uri.parse(
+                  'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}'));
               final profile = JSON.jsonDecode(graphResponse.body);
               print(profile);
               userProfile = profile;

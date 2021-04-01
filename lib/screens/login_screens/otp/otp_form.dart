@@ -105,6 +105,7 @@ class _OtpFormState extends State<OtpForm> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 SizedBox(
                   width: getProportionateScreenWidth(45),

@@ -1,22 +1,12 @@
-import 'package:customer_app/DataHandler/appData.dart';
-import 'package:customer_app/models/cars/app_cars_model.dart';
-import 'package:flutter/foundation.dart';
-import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/models/user_register/phone_num_model.dart';
 import 'package:customer_app/models/user_register/user_register_model.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:geolocator/geolocator.dart';
-import 'package:customer_app/models/maps/address.dart';
-import 'package:customer_app/screens/to_winch/to_winch_map.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/services/maps_services/RequestAssistant.dart';
-import 'package:provider/provider.dart';
 
 class ApiService {
   Future<PhoneResponseModel> phoneCheck(
       PhoneRequestModel phoneRequestModel) async {
-    String url = 'http://161.97.155.244/api/registeration/customer';
+    var url = Uri.parse('https://161.97.155.244/api/registeration/customer');
     final response = await http.post(url,
         headers: {'charset': 'utf-8'}, body: phoneRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
@@ -29,7 +19,7 @@ class ApiService {
 
   Future<UserRegisterResponseModel> registerUser(
       UserRegisterRequestModel userRegisterRequestModel, token) async {
-    String url = 'http://161.97.155.244/api/customer/me/updateprofile';
+    var url = Uri.parse('http://161.97.155.244/api/customer/me/updateprofile');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token"},
         body: userRegisterRequestModel.toJson());

@@ -63,6 +63,7 @@ class _PhoneFormState extends State<PhoneForm> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.ideographic,
               children: <Widget>[
                 Expanded(
                     flex: 3,
