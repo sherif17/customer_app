@@ -10,6 +10,7 @@ import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../widgets/form_error.dart';
@@ -72,6 +73,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
                 child: Column(

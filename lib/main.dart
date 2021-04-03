@@ -8,7 +8,9 @@ import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/screens/to_winch/winch_map.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/routes.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +21,15 @@ import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //Firebase.initializeApp();
-  runApp(App());
+  Firebase.initializeApp();
+  bool devicePreview = false;
+  if (devicePreview == false)
+    return runApp(App());
+  else
+    runApp(DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => App(),
+    ));
 }
 
 class App extends StatelessWidget {
@@ -110,6 +119,7 @@ class _MyAppState extends State<MyApp> {
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
+          builder: DevicePreview.appBuilder,
           initialRoute: //RegisterNewUser.routeName,
               TOKEN == null || BACKEND_ID == null
                   ? Intro.routeName

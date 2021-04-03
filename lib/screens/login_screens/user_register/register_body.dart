@@ -134,6 +134,7 @@ class _BodyState extends State<Body> {
             text: getTranslated(context, 'Continue with Facebook'),
             iconSrc: 'assets/icons/facebook.svg',
             CornerRadius: 29,
+            //size:size.height*0.05 ,
             press: () async {
               String currentJwtToken = await getPrefJwtToken();
               final result = await facebookLogin.logIn(['email']);

@@ -6,7 +6,7 @@ import 'dart:convert';
 class ApiService {
   Future<PhoneResponseModel> phoneCheck(
       PhoneRequestModel phoneRequestModel) async {
-    var url = Uri.parse('https://161.97.155.244/api/registeration/customer');
+    var url = Uri.parse('http://161.97.155.244/api/registeration/customer');
     final response = await http.post(url,
         headers: {'charset': 'utf-8'}, body: phoneRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {

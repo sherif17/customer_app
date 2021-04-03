@@ -7,6 +7,7 @@ import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class customerCars extends StatefulWidget {
   customerCars();
@@ -340,6 +341,7 @@ class _customerCarsState extends State<customerCars> {
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.baseline,
+                                          textBaseline: TextBaseline.alphabetic,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [

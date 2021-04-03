@@ -12,6 +12,7 @@ import 'package:customer_app/widgets/form_error.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -109,6 +110,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 SizedBox(
                     height: size.height * 0.1,

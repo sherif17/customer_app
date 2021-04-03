@@ -13,6 +13,7 @@ import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/utils/customer_app_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
 
@@ -204,6 +205,7 @@ class _HomeBodyState extends State<HomeBody> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
         children: [
           Text(getTranslated(context, "Your Cars"),
               style: Theme.of(context).textTheme.headline2),
