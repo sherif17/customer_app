@@ -1,4 +1,5 @@
 import 'package:customer_app/lang/language_list.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/main.dart';
 import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
@@ -42,6 +43,7 @@ class _ProfileState extends State<Profile> {
               child: Text(getTranslated(context, "Leave")),
               onPressed: () {
                 resetAllUserCurrentData();
+                resetAllCustomerSavedInfoInDB();
                 Navigator.pushNamedAndRemoveUntil(
                     context, Intro.routeName, (route) => false);
               },
@@ -111,6 +113,7 @@ class _ProfileState extends State<Profile> {
   void _changeLanguage(Language language) async {
     Locale _temp = await setLocale(language.languageCode);
     print("current lang: ${await getPrefCurrentLang()}");
+    print(loadCurrentLangFromDB());
     MyApp.setLocale(context, _temp);
   }
 }

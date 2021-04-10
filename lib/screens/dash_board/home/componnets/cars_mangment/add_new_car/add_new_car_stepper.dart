@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/add_new_car_model.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -29,6 +31,7 @@ Future buildStepperShowModalBottomSheet(BuildContext context, Size size,
     builder: (context) {
       return StatefulBuilder(
         builder: (BuildContext context, setState) {
+          print("shoo shoo $currentLang");
           return Container(
             height: size.height * 0.6,
             margin: EdgeInsets.only(
@@ -407,6 +410,7 @@ class _FinalFormState extends State<FinalForm> {
                         children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
                             children: [
                               Expanded(
                                 child: BuildCharPlateTextFormField(),

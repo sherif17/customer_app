@@ -25,7 +25,7 @@ Future<String> setPrefCurrentLang(String value) async {
 //////////////////////////////////////////////////////////////////
 Future<String> getPrefJwtToken() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_JWT_TOKEN) ?? null;
+  return _prefs.getString(_JWT_TOKEN) ?? "";
 }
 
 Future<String> setPrefJwtToken(String value) async {
@@ -36,7 +36,7 @@ Future<String> setPrefJwtToken(String value) async {
 //////////////////////////////////////////////////////////////
 Future<String> getPrefFirebaseID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_FIREBASE_ID) ?? null;
+  return _prefs.getString(_FIREBASE_ID) ?? "";
 }
 
 Future<String> setPrefFirebaseID(String value) async {
@@ -47,7 +47,7 @@ Future<String> setPrefFirebaseID(String value) async {
 ////////////////////////////////////////////////////////////////////
 Future<String> getPrefBackendID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_BACKEND_ID) ?? null;
+  return _prefs.getString(_BACKEND_ID) ?? "";
 }
 
 Future<String> setPrefBackendID(String value) async {
@@ -58,7 +58,7 @@ Future<String> setPrefBackendID(String value) async {
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefFirstName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_FIRST_NAME) ?? null;
+  return _prefs.getString(_FIRST_NAME) ?? "";
 }
 
 Future<String> setPrefFirstName(String value) async {
@@ -69,7 +69,7 @@ Future<String> setPrefFirstName(String value) async {
 //////////////////////////////////////////////////////////////////////
 Future<String> getPrefLastName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_LAST_NAME) ?? null;
+  return _prefs.getString(_LAST_NAME) ?? "";
 }
 
 Future<String> setPrefLastName(String value) async {
@@ -80,7 +80,7 @@ Future<String> setPrefLastName(String value) async {
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefPhoneNumber() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_PHONE_NUMBER) ?? null;
+  return _prefs.getString(_PHONE_NUMBER) ?? "";
 }
 
 Future<String> setPrefPhoneNumber(String value) async {
@@ -91,7 +91,7 @@ Future<String> setPrefPhoneNumber(String value) async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefIAT() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_IAT) ?? null;
+  return _prefs.getString(_IAT) ?? "";
 }
 
 Future<String> setPrefIAT(String value) async {
@@ -106,7 +106,7 @@ loadPrefIAT() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialImage() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_IMAGE) ?? null;
+  return _prefs.getString(_SOCIAL_IMAGE) ?? "";
 }
 
 Future<String> setPrefSocialImage(String value) async {
@@ -121,7 +121,7 @@ loadPrefGoogleImage() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialEmail() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_EMAIL) ?? null;
+  return _prefs.getString(_SOCIAL_EMAIL) ?? "";
 }
 
 Future<String> setPrefSocialEmail(String value) async {
@@ -149,13 +149,13 @@ printAllUserCurrentData() async {
 
 ///////////////////////////////////////////
 resetAllUserCurrentData() {
-  setPrefBackendID(null);
-  setPrefJwtToken(null);
-  setPrefFirebaseID(null);
-  setPrefIAT(null);
-  setPrefFirstName(null);
-  setPrefLastName(null);
-  setPrefPhoneNumber(null);
-  setPrefSocialEmail(null);
-  setPrefSocialImage(null);
+  setPrefBackendID("");
+  setPrefJwtToken("");
+  setPrefFirebaseID("");
+  setPrefIAT("");
+  setPrefFirstName("");
+  setPrefLastName("");
+  setPrefPhoneNumber("");
+  setPrefSocialEmail("");
+  setPrefSocialImage("");
 }

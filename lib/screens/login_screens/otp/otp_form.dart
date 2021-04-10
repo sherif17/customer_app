@@ -1,4 +1,5 @@
 //import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/phone_num_model.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/user_register/phone_num_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
@@ -222,6 +223,7 @@ class _OtpFormState extends State<OtpForm> {
                       fireToken = FirebaseAuth.instance.currentUser.uid;
                       checkFirebase = true;
                       setPrefFirebaseID(fireToken);
+                      saveFirebaseIDInDB(fireToken);
                       print(checkFirebase);
                       print("Firebase Token:${fireToken}");
                     }
@@ -244,6 +246,7 @@ class _OtpFormState extends State<OtpForm> {
                       print("Response:");
                       jwtToken = value.token;
                       setPrefJwtToken(jwtToken);
+                      saveJwtTokenInDB(jwtToken);
                       print(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
@@ -252,6 +255,7 @@ class _OtpFormState extends State<OtpForm> {
                       // responseLName = decodedToken["lastName"];
                       responseIat = decodedToken["iat"];
                       setPrefIAT(responseIat.toString());
+                      saveIATInDB(responseIat.toString());
                       print(responseID);
                       //print(value.firstName);
                       //print(value.lastName);
@@ -263,6 +267,8 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         setPrefFirstName(value.firstName);
                         setPrefLastName(value.lastName);
+                        saveFirstNameInDB(value.firstName);
+                        saveLastNameInDB(value.lastName);
                         Navigator.pushNamedAndRemoveUntil(
                             context, ConfirmThisUser.routeName, (route) => false
                             // arguments: otpNavData(
@@ -275,12 +281,14 @@ class _OtpFormState extends State<OtpForm> {
                             // )
                             );
                         printAllUserCurrentData();
+                        printAllCustomerSavedInfoInDB();
                       } else if (value.firstName == null &&
                           value.lastName == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
                         printAllUserCurrentData();
+                        printAllCustomerSavedInfoInDB();
                         Navigator.pushNamedAndRemoveUntil(
                             context, RegisterNewUser.routeName, (route) => false
                             // arguments: otpNavData(

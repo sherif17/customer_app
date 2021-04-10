@@ -1,3 +1,4 @@
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/common_widgets/background.dart';
@@ -18,18 +19,18 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-String prefFName;
-String prefLName;
-String prefJwtToken;
-String prefPhone;
-String currentLang;
+String prefFName = loadFirstNameFromDB();
+String prefLName = loadLastNameFromDB();
+String prefJwtToken = loadJwtTokenFromDB();
+String prefPhone = loadPhoneNumberFromDB();
+String currentLang = loadCurrentLangFromDB();
 
 class _BodyState extends State<Body> {
   //otpNavData otpResponse;
 
   @override
   void initState() {
-    getCurrentPrefData();
+    //getCurrentPrefData();
     // TODO: implement initState
     super.initState();
   }
@@ -70,6 +71,7 @@ class _BodyState extends State<Body> {
                         socialPhoto: null)*/
                 );
                 printAllUserCurrentData();
+                printAllCustomerSavedInfoInDB();
               }),
           Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.transparent),

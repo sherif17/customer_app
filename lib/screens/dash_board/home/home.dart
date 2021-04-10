@@ -1,3 +1,4 @@
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
@@ -12,10 +13,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String userFName = "user";
+  String userFName = loadFirstNameFromDB();
   @override
   void initState() {
-    getCurrentUserData();
+    //getCurrentUserData();
     super.initState();
   }
 
