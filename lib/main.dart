@@ -120,7 +120,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
-          initialRoute: //RegisterNewUser.routeName,
+          initialRoute: //WinchMap.routeName,
               TOKEN == null || BACKEND_ID == null
                   ? Intro.routeName
                   : DashBoard.routeName,
