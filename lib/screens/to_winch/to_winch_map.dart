@@ -16,6 +16,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:provider/provider.dart';
 
+import 'distination_search/request_screen.dart';
+
 class ToWinchMap extends StatefulWidget {
   @override
   _ToWinchState createState() => _ToWinchState();
@@ -52,15 +54,15 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   DirectionDetails tripDirectionDetails;
 
-  List<LatLng> pLineCoordinates = [];
-  Set<Polyline> polylineSet = {};
+  //List<LatLng> pLineCoordinates = [];
+  //Set<Polyline> polylineSet = {};
 
   Position currentPosition;
   var geoLocator = Geolocator();
   double bottomPaddingOfMap = 0;
 
-  Set<Marker> markersSet = {};
-  Set<Circle> circlesSet = {};
+  //Set<Marker> markersSet = {};
+  //Set<Circle> circlesSet = {};
 
   double rideDetailsContainerHeight = 0;
   double requestRideContainerHeight = 0;
@@ -79,7 +81,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
 
     });
   }
-
+/*
   resetApp()
   {
     setState(() {
@@ -97,12 +99,16 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
     locatePosition(context);
   }
 
+
+
   void displayRideDetailsContainer(context) async
   {
     Size size = MediaQuery.of(context).size;
     await getPlaceDirection(context);
     myBottomSheet(context);
     //rideBottomSheet(context);
+
+
 
 /*
     setState(() {
@@ -111,9 +117,12 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
       bottomPaddingOfMap = 170.0;
       drawerOpen = false;
     });
+
  */
+
   }
 
+ */
   void locatePosition(context) async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -216,9 +225,9 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                       zoomGesturesEnabled: true,
                       zoomControlsEnabled: true,
                       mapToolbarEnabled: true,
-                      polylines: polylineSet,
-                      markers: markersSet,
-                      circles: circlesSet,
+                      //polylines: polylineSet,
+                      //markers: markersSet,
+                      //circles: circlesSet,
                       onMapCreated: (GoogleMapController controller) {
                         _completerGoogleMap.complete(controller);
                         _googleMapController = controller;
@@ -305,9 +314,14 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                                   MaterialPageRoute(
                                       builder: (context) => SearchScreen()));
                               if (res == "obtainDirection") {
+                                var res = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RequestScreen()));
+
                                 //displayRideDetailsContainer(context);
-                                await getPlaceDirection(context);
-                                myBottomSheet(context);
+                                //await getPlaceDirection(context);
+                                //myBottomSheet(context);
                               }
                             },
                             child: Container(
@@ -471,7 +485,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
 
 
  */
-/*
+
               Positioned(
                 bottom: 0.0,
                 left: 0.0,
@@ -536,7 +550,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                 ),
               ),
 
- */
+
 
           //locationBottomSheet(),
         ],
@@ -544,6 +558,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
     );
   }
 
+  /*
   Future<void> getPlaceDirection(context) async {
     var initialPos =
         Provider.of<AppData>(context, listen: false).pickUpLocation;
@@ -664,111 +679,9 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
     });
   }
 
-  Padding rideBottomSheet(context) {
-    Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: DraggableScrollableSheet(
-        builder: (context, controller) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0),),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 16.0,
-                  spreadRadius: 0.5,
-                  offset: Offset(0.7,0.7),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 17.0),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    color: Theme.of(context).hintColor,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Image.asset("assets/images/women_truck.jpg", height: 70.0, width: 80.0,),
-                          SizedBox(width: 16.0,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Winch", style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              Text(
-                                ((tripDirectionDetails != null) ? tripDirectionDetails.distanceText : ''),
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
-                          ),
-                          Expanded(child: Container()),
-                          Text(
-                            ((tripDirectionDetails != null) ? 'EGP ${MapsApiService.calculateFares(tripDirectionDetails)}' : ''),
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
+   */
 
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20.0,),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-                        //Icon(FontAwesomeIcons.moneyCheckAlt, size: 18.0, color: Colors.black54,)
-                        Icon(Icons.money, size: 18.0, color: Colors.black54,),
-                        SizedBox(width: 16.0,),
-                        Text("Cash"),
-                        SizedBox(width: 6.0,),
-                        Icon(Icons.keyboard_arrow_down, size: 16.0, color: Colors.black54,),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 24.0,),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: RaisedButton(
-                      onPressed: ()
-                      {
-                        displayRequestRideContainer();
-                      },
-                      color: Theme.of(context).primaryColor,
-                      child: Padding(
-                        padding: EdgeInsets.all(17.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Request", style: Theme.of(context).textTheme.button,),
-                            Icon(Icons.car_repair, color: Theme.of(context).accentColor, size: 26.0,)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-
+/*
   myBottomSheet(context) {
     Size size = MediaQuery.of(context).size;
     var pickup = Provider.of<AppData>(context, listen: false).pickUpLocation.placeName;
@@ -926,12 +839,12 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
 
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: RaisedButton(
+                      child: OutlinedButton(
                         onPressed: ()
                         {
                           resetApp();
                         },
-                        color: Theme.of(context).accentColor,
+                        //color: Theme.of(context).accentColor,
                         child: Padding(
                           padding: EdgeInsets.all(17.0),
                           child: Row(
@@ -953,7 +866,8 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                       child: RaisedButton(
                         onPressed: ()
                         {
-                          displayRequestRideContainer();
+                          requestingSheet(context);
+                          //displayRequestRideContainer();
                         },
                         color: Theme.of(context).primaryColor,
                         child: Padding(
@@ -967,6 +881,77 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+ */
+  requestingSheet(context) {
+    Size size = MediaQuery.of(context).size;
+    var pickup = Provider.of<AppData>(context, listen: false).pickUpLocation.placeName;
+    var dropoff = Provider.of<AppData>(context, listen: false).dropOffLocation.placeName;
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext c) {
+          return SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0),topRight: Radius.circular(16.0),),
+                color: Theme.of(context).accentColor,
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 0.5,
+                    blurRadius: 16.0,
+                    color: Colors.black54,
+                    offset: Offset(0.7,0.7),
+                  ),
+                ],
+              ),
+
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.0,),
+                    DefaultTextStyle(
+                      style: Theme.of(context).textTheme.headline2,
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          WavyAnimatedText('Requesting.. please wait..'),
+                          WavyAnimatedText('Looking for winch..'),
+                        ],
+                        isRepeatingAnimation: true,
+                        onTap: () {
+                          print("Tap Event");
+                        },
+                      ),
+                    ),
+
+                    SizedBox(height: 22.0,),
+
+                    Container(
+                      height: 60.0,
+                      width: 60.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(26.0),
+                        border: Border.all(width: 2.0, color: Colors.black54),
+                      ),
+                      child: Icon(Icons.close, size: 26.0,),
+                    ),
+
+                    SizedBox(height: 10.0,),
+
+                    Container(
+                      width: double.infinity,
+                      child: Text("Cancel Ride", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1,),
                     ),
 
                   ],
