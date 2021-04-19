@@ -1,18 +1,14 @@
 import 'dart:async';
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
-import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
+import 'package:customer_app/screens/to_winch/confirming_ride _sheet.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
-import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:customer_app/models/maps/address.dart';
-import '../to_winch_map.dart';
 
 class RequestScreen extends StatefulWidget {
   @override
@@ -22,11 +18,16 @@ class RequestScreen extends StatefulWidget {
 class _RequestScreenState extends State<RequestScreen> {
   String currentLang;
   String fname;
+  String jwtToken;
+
 
   @override
   void initState() {
     super.initState();
     getCurrentPrefData();
+
+
+
   }
 
   void getCurrentPrefData() {
@@ -39,6 +40,9 @@ class _RequestScreenState extends State<RequestScreen> {
       setState(() {
         fname = value;
       });
+    });
+    getPrefJwtToken().then((value) {
+      jwtToken=value;
     });
   }
 
@@ -56,22 +60,6 @@ class _RequestScreenState extends State<RequestScreen> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
 
-  resetApp()
-  async {
-    setState(() {
-      polylineSet.clear();
-      markersSet.clear();
-      circlesSet.clear();
-      pLineCoordinates.clear();
-    });
-    var res = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ToWinchMap()));
-
-    //locatePosition(context);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +72,6 @@ class _RequestScreenState extends State<RequestScreen> {
       target: LatLng(initialPos.latitude, initialPos.longitude),
       zoom: 15.4746,
     );
-
 
     return Scaffold(
       key: scaffoldKey,
@@ -123,7 +110,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
     ),
 
-      rideBottomSheet(context),
+      RideBottomSheet(token: jwtToken,tripDirectionDetails: tripDirectionDetails),
 
 
     ],
@@ -136,8 +123,7 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 
   Future<void> getPlaceDirection(context) async {
-    var initialPos =
-        Provider.of<AppData>(context, listen: false).pickUpLocation;
+    var initialPos = Provider.of<AppData>(context, listen: false).pickUpLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOffLocation;
 
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
@@ -253,225 +239,6 @@ class _RequestScreenState extends State<RequestScreen> {
       circlesSet.add(pickUpLocCircle);
       circlesSet.add(dropOffLocCircle);
     });
-  }
-
-  Padding rideBottomSheet(context) {
-    Size size = MediaQuery.of(context).size;
-    var pickUp =
-        Provider.of<AppData>(context, listen: false).pickUpLocation.placeName;
-    var dropOff = Provider.of<AppData>(context, listen: false).dropOffLocation.placeName;
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.4,
-        minChildSize: 0.22,
-        maxChildSize: 1.0,
-        builder: (context, controller) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0),),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 16.0,
-                  spreadRadius: 0.5,
-                  offset: Offset(0.7,0.7),
-                ),
-              ],
-            ),
-            child: ListView.builder(
-                itemCount: 1,
-                controller: controller,
-                itemBuilder: (BuildContext context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 17.0),
-                    child: Column(
-                      children: [
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: size.width * 0.07,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.my_location ,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                              SizedBox(
-                                width: 12.0,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("From:"),
-                                  SizedBox(
-                                    height: 4.0,
-                                  ),
-                                  Text("$pickUp",
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        DividerWidget(),
-                        SizedBox(height: 18.0),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: size.width * 0.07,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_pin,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                              SizedBox(
-                                width: 12.0,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("To:"),
-                                  SizedBox(
-                                    height: 4.0,
-                                  ),
-                                  Text(
-                                    "$dropOff",
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        DividerWidget(),
-                        SizedBox(height: 8.0),
-                        Text(
-                          ((tripDirectionDetails != null) ? tripDirectionDetails.distanceText : ''),
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(height: 12.0,),
-                        Container(
-                          width: double.infinity,
-                          color: Theme.of(context).accentColor,
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Row(
-                              children: [
-                                //SizedBox(width: size.width* 0.12,),
-                                Expanded(child: Container()),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Estimated duration", style: Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                    Text(
-                                      ((tripDirectionDetails != null) ? ' ${tripDirectionDetails.durationText}' : ''),
-                                      style: Theme.of(context).textTheme.bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                Expanded(child: Container()),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Estimated fare", style: Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                    Text(
-                                      ((tripDirectionDetails != null) ? 'EGP ${MapsApiService.calculateFares(tripDirectionDetails)}' : ''),
-                                      style: Theme.of(context).textTheme.bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                Expanded(child: Container()),
-
-
-                              ],
-                            ),
-                          ),
-
-                        ),
-                        SizedBox(height: 20.0,),
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: [
-                              //Icon(FontAwesomeIcons.moneyCheckAlt, size: 18.0, color: Colors.black54,)
-                              Icon(Icons.money, size: 18.0, color: Colors.black54,),
-                              SizedBox(width: 16.0,),
-                              Text("Cash"),
-                              SizedBox(width: 6.0,),
-                              Icon(Icons.keyboard_arrow_down, size: 16.0, color: Colors.black54,),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 24.0,),
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: OutlinedButton(
-                            onPressed: ()
-                            {
-                              resetApp();
-                            },
-                            //color: Theme.of(context).accentColor,
-                            child: Padding(
-                              padding: EdgeInsets.all(17.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Cancel", style: Theme.of(context).textTheme.headline2,),
-                                  Icon(Icons.close, color: Theme.of(context).primaryColorDark, size: 26.0,)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-
-                        SizedBox(height: 24.0,),
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: RaisedButton(
-                            onPressed: ()
-                            {
-                              //requestingSheet(context);
-                              //displayRequestRideContainer();
-                            },
-                            color: Theme.of(context).primaryColor,
-                            child: Padding(
-                              padding: EdgeInsets.all(17.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Confirm Service", style: Theme.of(context).textTheme.button,),
-                                  Icon(Icons.car_repair, color: Theme.of(context).accentColor, size: 26.0,)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-              );
-        },
-            ),
-          );
-        },
-      ),
-    );
   }
 
 
