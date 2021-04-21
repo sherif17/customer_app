@@ -62,6 +62,7 @@ class _BodyState extends State<Body> {
                 Map<String, dynamic> decodedToken =
                     JwtDecoder.decode(prefJwtToken);
                 setPrefBackendID(decodedToken["_id"]);
+                saveBackendIBInDB(decodedToken["_id"]);
                 Navigator.pushReplacementNamed(
                   context,
                   DashBoard.routeName,

@@ -1,8 +1,11 @@
 import 'dart:ui';
 
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/add_new_car_model.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
+import 'package:customer_app/screens/dash_board/home/home.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:provider/provider.dart';
 
 GlobalKey<FormState> finalStepFormKey = GlobalKey<FormState>();
 AddNewCarRequestModel addNewCarRequestModel;
@@ -29,150 +33,171 @@ Future buildStepperShowModalBottomSheet(BuildContext context, Size size,
     enableDrag: true,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      return StatefulBuilder(
-        builder: (BuildContext context, setState) {
-          print("shoo shoo $currentLang");
-          return Container(
-            height: size.height * 0.6,
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+      return Consumer<CustomerCarProvider>(
+        builder: (context, val, child) => StatefulBuilder(
+          builder: (context, setState) {
+            print("shoo shoo $currentLang");
+            return Container(
+              height: size.height * 0.6,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                IconStepper(
-                  icons: [
-                    Icon(Icons.directions_car_outlined),
-                    Icon(Icons.directions_car),
-                    Icon(Icons.date_range_rounded),
-                    Icon(Icons.edit),
-                  ],
-                  activeStepBorderColor: Colors.redAccent,
-                  activeStepColor: Colors.white,
-                  scrollingDisabled: true,
-                  stepColor: Colors.white,
-                  enableNextPreviousButtons: false,
-                  lineColor: Colors.grey,
-                  steppingEnabled: true,
+              child: Column(
+                children: [
+                  IconStepper(
+                    icons: [
+                      Icon(Icons.directions_car_outlined),
+                      Icon(Icons.directions_car),
+                      Icon(Icons.date_range_rounded),
+                      Icon(Icons.edit),
+                    ],
+                    activeStepBorderColor: Colors.redAccent,
+                    activeStepColor: Colors.white,
+                    scrollingDisabled: true,
+                    stepColor: Colors.white,
+                    enableNextPreviousButtons: false,
+                    lineColor: Colors.grey,
+                    steppingEnabled: true,
 
-                  // activeStep property set to activeStep variable defined above.
-                  activeStep: activeStep,
+                    // activeStep property set to activeStep variable defined above.
+                    activeStep: activeStep,
 
-                  // bound receives value from upperBound.
-                  //upperBound: (bound) => upperBound = bound,
-                  // This ensures step-tapping updates the activeStep.
-                  onStepReached: (index) {
-                    setState(() {
-                      activeStep = index;
-                    });
-                  },
-                ),
-                Content(
-                  activeStep: activeStep,
-                  list: list,
-                  response: response,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: activeStep == 0
-                          ? null
-                          : () {
-                              // Decrement activeStep, when the previous button is tapped. However, check for lower bound i.e., must be greater than 0.
-                              if (activeStep > 0) {
-                                setState(() {
-                                  activeStep--;
-                                  print(activeStep);
-                                });
-                              }
-                            },
-                      icon: Icon(
-                        currentLang == "en"
-                            ? Icons.chevron_left_rounded
-                            : Icons.chevron_right_rounded,
-                        //color: activeStep == 0 ? Colors.grey : Colors.red,
+                    // bound receives value from upperBound.
+                    //upperBound: (bound) => upperBound = bound,
+                    // This ensures step-tapping updates the activeStep.
+                    onStepReached: (index) {
+                      setState(() {
+                        activeStep = index;
+                      });
+                    },
+                  ),
+                  Content(
+                    activeStep: activeStep,
+                    list: list,
+                    response: response,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: activeStep == 0
+                            ? null
+                            : () {
+                                // Decrement activeStep, when the previous button is tapped. However, check for lower bound i.e., must be greater than 0.
+                                if (activeStep > 0) {
+                                  setState(() {
+                                    activeStep--;
+                                    print(activeStep);
+                                  });
+                                }
+                              },
+                        icon: Icon(
+                          currentLang == "en"
+                              ? Icons.chevron_left_rounded
+                              : Icons.chevron_right_rounded,
+                          //color: activeStep == 0 ? Colors.grey : Colors.red,
+                        ),
+                        iconSize: 50,
+                        disabledColor: Colors.grey,
                       ),
-                      iconSize: 50,
-                      disabledColor: Colors.grey,
-                    ),
-                    header(activeStep, context),
-                    IconButton(
-                      onPressed: () async {
-                        if (activeStep == 3) {
-                          if (finalFormValidateAndSave()) {
-                            addNewCarRequestModel.carBrand = answer[0];
-                            addNewCarRequestModel.model = answer[1];
-                            addNewCarRequestModel.year = answer[2];
-                            addNewCarRequestModel.plates =
-                                winchPlatesNum + winchPlatesChar;
-                            print(
-                                "Request body: ${addNewCarRequestModel.toJson()}.");
+                      header(activeStep, context),
+                      IconButton(
+                        onPressed: () async {
+                          if (activeStep == 3) {
+                            if (finalFormValidateAndSave()) {
+                              addNewCarRequestModel.carBrand = answer[0];
+                              addNewCarRequestModel.model = answer[1];
+                              addNewCarRequestModel.year = answer[2];
+                              addNewCarRequestModel.plates =
+                                  winchPlatesNum + winchPlatesChar;
+                              print(
+                                  "Request body: ${addNewCarRequestModel.toJson()}.");
 
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              await val.postNewCarToBackend(
+                                  addNewCarRequestModel, loadJwtTokenFromDB());
+                              if (val.loading == false &&
+                                  val.addNewCarResponseModel.error == null) {
+                                print("CARID:${val.addNewCarResponseModel.id}");
+                                print(
+                                    "plates :${val.addNewCarResponseModel.plates}");
+                                val.addNewCarToDB(
+                                    id: val.addNewCarResponseModel.id,
+                                    carBrand: addNewCarRequestModel.carBrand,
+                                    model: addNewCarRequestModel.model,
+                                    year: addNewCarRequestModel.year,
+                                    plates: addNewCarRequestModel.plates,
+                                    ownerId: loadBackendIDFromDB(),
+                                    v: "0");
+                                Navigator.pop(context);
+                              } else
+                                print(val.addNewCarResponseModel.error);
+                              /* CarApiService api = new CarApiService();
+                              api
+                                  .addUserNewCar(addNewCarRequestModel,
+                                      await getPrefJwtToken())
+                                  .then((value) {
+                                if (value.error == null) {
+                                  print(value.id);
+                                  print(value.plates);
+                                  val.getCustomerCars(loadJwtTokenFromDB());
+                                  Navigator.pop(context);
+                                  // Navigator.pushReplacement(
+                                  //     context,
+                                  //     PageRouteBuilder(
+                                  //       pageBuilder:
+                                  //           (context, animation1, animation2) =>
+                                  //               DashBoard(),
+                                  //       transitionDuration: Duration(seconds: 0),
+                                  //     ));
+                                  // (route) => false);
+                                } else {
+                                  print(value.error);
+                                }
+                              });
+                              setState(() {
+                                isApiCallProcess = false;
+                              });*/
+                            }
+                          }
+                          // Increment activeStep, when the next button is tapped. However, check for upper bound.
+                          else if (activeStep < upperBound) {
                             setState(() {
-                              isApiCallProcess = true;
-                            });
-
-                            CarApiService api = new CarApiService();
-                            api
-                                .addUserNewCar(addNewCarRequestModel,
-                                    await getPrefJwtToken())
-                                .then((value) {
-                              if (value.error == null) {
-                                print(value.id);
-                                print(value.plates);
-                                //  Navigator.pop(context);
-                                Navigator.pushReplacement(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder:
-                                          (context, animation1, animation2) =>
-                                              DashBoard(),
-                                      transitionDuration: Duration(seconds: 0),
-                                    ));
-                                // (route) => false);
-                              } else {
-                                print(value.error);
-                              }
-                            });
-                            setState(() {
-                              isApiCallProcess = false;
+                              activeStep++;
+                              print(activeStep);
                             });
                           }
-                        }
-                        // Increment activeStep, when the next button is tapped. However, check for upper bound.
-                        else if (activeStep < upperBound) {
-                          setState(() {
-                            activeStep++;
-                            print(activeStep);
-                          });
-                        }
-                      },
-                      icon: activeStep == 3
-                          ? Icon(
-                              Icons.check,
-                              color: Colors.red,
-                            )
-                          : Icon(
-                              currentLang == "en"
-                                  ? Icons.chevron_right_rounded
-                                  : Icons.chevron_left_rounded,
-                              color: activeStep < 3 ? Colors.red : Colors.grey),
-                      iconSize: 50,
-                      disabledColor: Colors.grey,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+                        },
+                        icon: activeStep == 3
+                            ? Icon(
+                                Icons.check,
+                                color: Colors.red,
+                              )
+                            : Icon(
+                                currentLang == "en"
+                                    ? Icons.chevron_right_rounded
+                                    : Icons.chevron_left_rounded,
+                                color:
+                                    activeStep < 3 ? Colors.red : Colors.grey),
+                        iconSize: 50,
+                        disabledColor: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       );
     },
   );
