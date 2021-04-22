@@ -24,13 +24,19 @@ class WinchRequestProvider with ChangeNotifier {
      isLoading=true;
      requestStatusResponseModel=await api.checkRequestStatus(token);
      isLoading=false;
+     print("status :${requestStatusResponseModel.status}");
+     print("scope :${requestStatusResponseModel.scope}");
      if(requestStatusResponseModel.status=="SEARCHING"){
        Timer.periodic(Duration(seconds: 30), (timer){
+         print(requestStatusResponseModel.status);
+         print(requestStatusResponseModel.scope);
           checkConfirmedWinchServiceStatus(token);
-          print(requestStatusResponseModel.status);
-          if(requestStatusResponseModel.status=="TERMINATED"||requestStatusResponseModel.status=="ACCEPTED")
-            timer.cancel();
        });
+     }
+     if(requestStatusResponseModel.status=="TERMINATED"||requestStatusResponseModel.status=="ACCEPTED")
+     {
+      // timer.cancel();
+       print(requestStatusResponseModel.status);
      }
      notifyListeners();
   }

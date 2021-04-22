@@ -16,7 +16,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:customer_app/services/api_services.dart';
 import 'package:provider/provider.dart';
 
-import 'distination_search/request_screen.dart';
+import 'completing_request/request_screen.dart';
 
 class ToWinchMap extends StatefulWidget {
   @override

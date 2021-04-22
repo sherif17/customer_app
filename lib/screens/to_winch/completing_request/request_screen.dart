@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
-import 'package:customer_app/screens/to_winch/confirming_ride _sheet.dart';
+import 'file:///E:/Engineering/Graduation%20Project/Apps/customer_app/lib/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
+import 'file:///E:/Engineering/Graduation%20Project/Apps/customer_app/lib/screens/to_winch/ongoing_trip/winch_trip_sheet.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
@@ -111,6 +112,7 @@ class _RequestScreenState extends State<RequestScreen> {
     ),
 
       RideBottomSheet(token: jwtToken,tripDirectionDetails: tripDirectionDetails),
+          //WinchTrip(),
 
 
     ],

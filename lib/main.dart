@@ -111,8 +111,8 @@ class _MyAppState extends State<MyApp> {
       // TODO: implement build
       return MultiProvider(
         providers: [
-          Provider<AppData>(create: (_) => AppData()),
-          Provider<WinchRequestProvider>(create: (_) => WinchRequestProvider()),
+          ChangeNotifierProvider<AppData>(create: (_) => AppData()),
+          ChangeNotifierProvider<WinchRequestProvider>(create: (_) => WinchRequestProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

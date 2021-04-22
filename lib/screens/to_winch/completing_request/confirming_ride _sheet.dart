@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'to_winch_map.dart';
+import '../to_winch_map.dart';
 class RideBottomSheet extends StatefulWidget {
   String token;
   DirectionDetails tripDirectionDetails;
@@ -89,6 +89,20 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                       padding: EdgeInsets.symmetric(vertical: 17.0),
                       child: Column(
                         children: [
+
+                          Center(
+                            child: Container(
+                              height: 6,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+
 
                           Padding(
                             padding: EdgeInsets.only(
@@ -232,8 +246,10 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                 requestingSheet(context);
                                 await val.confirmWinchService(winchRequestModel,jwtToken);
                                 if(val.isLoading==false && val.winchResponseModel.status=="SEARCHING"){
-                                  //print(val.winchResponseModel.status);
-                                  val.checkConfirmedWinchServiceStatus(jwtToken);
+                                  print("hi hi$jwtToken");
+                                  print(val.winchResponseModel.error);
+                                  print(val.winchResponseModel.status);
+                                  await val.checkConfirmedWinchServiceStatus(jwtToken);
                                 }
 
                               },
@@ -339,7 +355,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                           border: Border.all(width: 2.0, color: Colors.black54),
                         ),
                         child: Icon(Icons.close, size: 26.0,),
-                      ),
+                     ),
                     ),
 
                     SizedBox(height: 10.0,),
