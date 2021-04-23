@@ -3,7 +3,7 @@ import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
 import 'package:customer_app/models/maps/placePredictions.dart';
 import 'package:customer_app/screens/to_winch/distination_search/places_pridication.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/services/maps_services/RequestAssistant.dart';
+import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
