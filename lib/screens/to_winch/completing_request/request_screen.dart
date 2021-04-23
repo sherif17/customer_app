@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
-import 'file:///E:/Engineering/Graduation%20Project/Apps/customer_app/lib/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
-import 'file:///E:/Engineering/Graduation%20Project/Apps/customer_app/lib/screens/to_winch/ongoing_trip/winch_trip_sheet.dart';
+import 'package:customer_app/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
@@ -21,14 +20,10 @@ class _RequestScreenState extends State<RequestScreen> {
   String fname;
   String jwtToken;
 
-
   @override
   void initState() {
     super.initState();
     getCurrentPrefData();
-
-
-
   }
 
   void getCurrentPrefData() {
@@ -43,15 +38,13 @@ class _RequestScreenState extends State<RequestScreen> {
       });
     });
     getPrefJwtToken().then((value) {
-      jwtToken=value;
+      jwtToken = value;
     });
   }
-
 
   @override
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
-
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   DirectionDetails tripDirectionDetails;
@@ -61,13 +54,11 @@ class _RequestScreenState extends State<RequestScreen> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var initialPos =
         Provider.of<AppData>(context, listen: false).pickUpLocation;
-
 
     final CameraPosition _initialPosition = CameraPosition(
       target: LatLng(initialPos.latitude, initialPos.longitude),
@@ -76,56 +67,47 @@ class _RequestScreenState extends State<RequestScreen> {
 
     return Scaffold(
       key: scaffoldKey,
-
       body: Stack(
         children: [
-      // Map
-      Padding(
-      padding: EdgeInsets.only(
-      top: size.height * 0.04,
-        bottom: 180.0,
-      ),
-      child: Container(
-        //height: size.height * 0.77,
-        height: size.height - ( size.height * 0.04),
-        child: GoogleMap(
-            initialCameraPosition: _initialPosition,
-            mapType: MapType.normal,
-            myLocationButtonEnabled: true,
-            myLocationEnabled: true,
-            zoomGesturesEnabled: true,
-            zoomControlsEnabled: true,
-            mapToolbarEnabled: true,
-            polylines: polylineSet,
-            markers: markersSet,
-            circles: circlesSet,
+          // Map
+          Padding(
+            padding: EdgeInsets.only(
+              top: size.height * 0.04,
+              bottom: 180.0,
+            ),
+            child: Container(
+              //height: size.height * 0.77,
+              height: size.height - (size.height * 0.04),
+              child: GoogleMap(
+                  initialCameraPosition: _initialPosition,
+                  mapType: MapType.normal,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  zoomGesturesEnabled: true,
+                  zoomControlsEnabled: true,
+                  mapToolbarEnabled: true,
+                  polylines: polylineSet,
+                  markers: markersSet,
+                  circles: circlesSet,
+                  onMapCreated: (GoogleMapController controller) {
+                    _completerGoogleMap.complete(controller);
+                    _googleMapController = controller;
+                    getPlaceDirection(context);
+                  }),
+            ),
+          ),
 
-            onMapCreated: (GoogleMapController controller) {
-              _completerGoogleMap.complete(controller);
-              _googleMapController = controller;
-              getPlaceDirection(context);
-            }
-      ),
-
-    ),
-
-    ),
-
-      RideBottomSheet(token: jwtToken,tripDirectionDetails: tripDirectionDetails),
+          RideBottomSheet(
+              token: jwtToken, tripDirectionDetails: tripDirectionDetails),
           //WinchTrip(),
-
-
-    ],
+        ],
       ),
-
-
     );
-
-
   }
 
   Future<void> getPlaceDirection(context) async {
-    var initialPos = Provider.of<AppData>(context, listen: false).pickUpLocation;
+    var initialPos =
+        Provider.of<AppData>(context, listen: false).pickUpLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOffLocation;
 
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
@@ -135,8 +117,7 @@ class _RequestScreenState extends State<RequestScreen> {
         context: context,
         builder: (BuildContext context) => ProgressDialog(
             message:
-            currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
-
+                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
     var details = await MapsApiService.obtainPlaceDirectionDetails(
         pickUpLatLng, dropOffLatLng);
@@ -152,7 +133,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResult =
-    polylinePoints.decodePolyline(details.encodedPoints);
+        polylinePoints.decodePolyline(details.encodedPoints);
 
     pLineCoordinates.clear();
 
@@ -203,14 +184,14 @@ class _RequestScreenState extends State<RequestScreen> {
     Marker pickUpLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
         infoWindow:
-        InfoWindow(title: initialPos.placeName, snippet: "My location"),
+            InfoWindow(title: initialPos.placeName, snippet: "My location"),
         position: pickUpLatLng,
         markerId: MarkerId("pickUpId"));
 
     Marker dropOffLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         infoWindow:
-        InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
+            InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
         position: dropOffLatLng,
         markerId: MarkerId("dropOffId"));
 
@@ -242,6 +223,4 @@ class _RequestScreenState extends State<RequestScreen> {
       circlesSet.add(dropOffLocCircle);
     });
   }
-
-
 }

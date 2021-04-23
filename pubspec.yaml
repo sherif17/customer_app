@@ -47,6 +47,7 @@ dependencies:
   path_provider: ^2.0.1
   hive_generator: ^1.0.1
   build_runner: ^1.12.2
+  animated_text_kit: ^4.1.1
 
   #font_awesome_flutter: ^9.0.0
 
