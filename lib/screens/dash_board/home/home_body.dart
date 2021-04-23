@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/load_user_cars_model.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/customer_cars.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
@@ -16,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:provider/provider.dart';
 
 class HomeBody extends StatefulWidget {
   @override
@@ -29,26 +32,12 @@ class _HomeBodyState extends State<HomeBody> {
   int upperBound = 5;
   int x = 1;
   CarApiService api = new CarApiService();
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
   @override
   void initState() {
-    /*WidgetsBinding.instance.addPostFrameCallback((_) {
-      carList.map((i) {
-        precacheImage(NetworkImage(i.carImage), context);
-      });
-    });*/
-    getCurrentPrefData();
-    //getCarList(jwt);
-
     super.initState();
-  }
-
-  void getCurrentPrefData() {
-    getPrefCurrentLang().then((value) {
-      setState(() {
-        currentLang = value;
-      });
-    });
+    Provider.of<CustomerCarProvider>(context, listen: false)
+        .getCustomerCarsFromBackend(loadJwtTokenFromDB());
   }
 
   @override
@@ -224,6 +213,7 @@ class _HomeBodyState extends State<HomeBody> {
               }
               buildStepperShowModalBottomSheet(context, size, this.activeStep,
                   this.upperBound, list, response, currentLang);
+              print(currentLang);
               response.forEach((key, value) {
                 print('$key: ${value}');
               });

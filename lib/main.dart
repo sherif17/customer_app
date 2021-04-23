@@ -1,4 +1,8 @@
 import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_info_db_model.dart';
+import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
@@ -13,15 +17,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'localization/demo_localization.dart';
 import 'localization/localization_constants.dart';
 import 'themes/light_theme.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp();
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  //Hive.registerAdapter(customerInfoDBAdapter());
+  Hive.registerAdapter(customerOwnedCarsDBAdapter());
+  await Hive.openBox<customerOwnedCarsDB>(
+      "customerCarsDBBox"); // for customer cars
+  await Hive.openBox<String>("customerInfoDBBox"); // for customer info
   bool devicePreview = false;
   if (devicePreview == false)
     return runApp(App());
@@ -74,8 +87,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
-  String TOKEN;
-  String BACKEND_ID;
+  String TOKEN = loadJwtTokenFromDB();
+  String BACKEND_ID = loadBackendIDFromDB();
 
   setLocale(Locale locale) {
     setState(() {
@@ -90,16 +103,6 @@ class _MyAppState extends State<MyApp> {
             _locale = local;
           })
         });
-    getPrefJwtToken().then((value) {
-      setState(() {
-        TOKEN = value;
-      });
-    });
-    getPrefBackendID().then((value) {
-      setState(() {
-        BACKEND_ID = value;
-      });
-    });
     super.didChangeDependencies();
   }
 
@@ -114,14 +117,18 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       // TODO: implement build
-      return ChangeNotifierProvider(
-        create: (context) => AppData(),
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AppData>(create: (_) => AppData()),
+          ChangeNotifierProvider<CustomerCarProvider>(
+              create: (_) => CustomerCarProvider()),
+        ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
           initialRoute: //RegisterNewUser.routeName,
-              TOKEN == null || BACKEND_ID == null
+              TOKEN == "" || BACKEND_ID == ""
                   ? Intro.routeName
                   : DashBoard.routeName,
           routes: routes,

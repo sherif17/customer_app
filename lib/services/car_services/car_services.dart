@@ -24,7 +24,9 @@ class CarApiService {
         headers: {"x-auth-token": "$token"},
         body: addNewCarRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
-      return AddNewCarResponseModel.fromJson(json.decode(response.body));
+      AddNewCarResponseModel result =
+          AddNewCarResponseModel.fromJson(json.decode(response.body));
+      return result;
     }
   }
 

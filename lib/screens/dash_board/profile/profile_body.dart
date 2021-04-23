@@ -1,4 +1,5 @@
 import 'package:customer_app/lang/language_list.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/main.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
@@ -12,22 +13,22 @@ class ProfileBody extends StatefulWidget {
   _ProfileBodyState createState() => _ProfileBodyState();
 }
 
-String token = " ";
-String ID = " ";
-String Fname = " ";
-String Lname = " ";
-String Phone = " ";
-String currentLang = " ";
-String profilePhoto = " ";
-String email = " ";
-String iat = " ";
+String token = loadJwtTokenFromDB();
+String ID = loadBackendIDFromDB();
+String Fname = loadFirstNameFromDB();
+String Lname = loadLastNameFromDB();
+String Phone = loadPhoneNumberFromDB();
+String currentLang = loadCurrentLangFromDB();
+String profilePhoto = loadSocialImageFromDB();
+String email = loadSocialEmailFromDB();
+String iat = loadIATFromDB();
 
 class _ProfileBodyState extends State<ProfileBody> {
   @override
   void initState() {
     // getCurrentPrefData();
     super.initState();
-    loadAllWinchUserData();
+    //loadAllWinchUserData();
   }
 
   Widget _greenColors() {
@@ -43,7 +44,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Widget _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email) {
     bool exist;
-    if (profilePhoto != null)
+    if (profilePhoto != "")
       exist = true;
     else
       exist = false;

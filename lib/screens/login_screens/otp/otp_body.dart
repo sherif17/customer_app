@@ -1,3 +1,4 @@
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:customer_app/screens/login_screens/otp/otp_form.dart';
@@ -15,12 +16,12 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String currentLang;
+  String currentLang=loadCurrentLangFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+   // getCurrentPrefData();
   }
 
   void getCurrentPrefData() {
