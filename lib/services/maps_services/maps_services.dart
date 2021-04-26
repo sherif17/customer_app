@@ -64,7 +64,7 @@ class MapsApiService {
     return directionsDetails;
   }
 
-  static int calculateFares(DirectionDetails directionDetails)
+  static int calculateFares(DirectionDetails directionDetails, context)
   {
     //in terms USD
     double timeTraveledFare = (directionDetails.durationValue / 60) * 0.20;
@@ -74,8 +74,12 @@ class MapsApiService {
     //Local Currency
     //1$ = 16 egp
     double totalLocalAmount = totalFareAmount * 16;
+    int estimatedFare = totalLocalAmount.truncate();
 
-    return totalLocalAmount.truncate();
+
+    Provider.of<AppData>(context, listen: false).updateEstimatedFare(estimatedFare);
+
+    return estimatedFare;
 
 
   }

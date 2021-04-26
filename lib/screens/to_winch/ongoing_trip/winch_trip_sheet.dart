@@ -1,3 +1,4 @@
+import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,8 +19,8 @@ class _WinchTripState extends State<WinchTrip> {
     String carPlates= "حبس 1234";
     String carType= "Chevrolet";
     String estimatedArrivalTime= "12:55";
-    double estimatedFare= 1234.0;
-    String estimatedDuration= "25";
+    int estimatedFare= Provider.of<AppData>(context, listen: false).estimatedFare;
+    String estimatedDuration= Provider.of<AppData>(context, listen: false).tripDirectionDetails.durationText;
 
 
     return Padding(

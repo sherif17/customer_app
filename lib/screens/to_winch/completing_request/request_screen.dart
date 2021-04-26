@@ -126,6 +126,8 @@ class _RequestScreenState extends State<RequestScreen> {
       tripDirectionDetails = details;
     });
 
+    Provider.of<AppData>(context, listen: false).updateTripDirectionDetails(details);
+
     Navigator.pop(context);
 
     print("This is Encoded Points ::");

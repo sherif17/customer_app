@@ -121,6 +121,7 @@ class _MyAppState extends State<MyApp> {
       return MultiProvider(
         providers: [
           ChangeNotifierProvider<AppData>(create: (_) => AppData()),
+          ChangeNotifierProvider<WinchRequestProvider>(create: (_) => WinchRequestProvider()),
           ChangeNotifierProvider<CustomerCarProvider>(
               create: (_) => CustomerCarProvider()),
           ChangeNotifierProvider<WinchRequestProvider>(
