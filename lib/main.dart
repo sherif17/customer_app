@@ -3,6 +3,7 @@ import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/local_db/customer_info_db_model.dart';
 import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
+import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
@@ -122,6 +123,8 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<AppData>(create: (_) => AppData()),
           ChangeNotifierProvider<CustomerCarProvider>(
               create: (_) => CustomerCarProvider()),
+          ChangeNotifierProvider<WinchRequestProvider>(
+              create: (_) => WinchRequestProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/screens/to_winch/distination_search/search_screen.dart';
@@ -19,18 +20,19 @@ import 'package:provider/provider.dart';
 import 'completing_request/request_screen.dart';
 
 class ToWinchMap extends StatefulWidget {
+  static String routeName = '/toWinchMap';
   @override
   _ToWinchState createState() => _ToWinchState();
 }
 
 class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
-  String currentLang;
-  String fname;
+  String currentLang = loadCurrentLangFromDB();
+  String fname = loadFirstNameFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    // getCurrentPrefData();
   }
 
   void getCurrentPrefData() {
@@ -67,20 +69,19 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
   double rideDetailsContainerHeight = 0;
   double requestRideContainerHeight = 0;
   //double searchContainerHeight = size.height * 0.20 ;
-  double searchContainerHeight = 180.0 ;
+  double searchContainerHeight = 180.0;
 
   bool drawerOpen = true;
 
-  void displayRequestRideContainer()
-  {
+  void displayRequestRideContainer() {
     setState(() {
       requestRideContainerHeight = 180.0;
       rideDetailsContainerHeight = 0;
       bottomPaddingOfMap = 170.0;
       drawerOpen = true;
-
     });
   }
+
 /*
   resetApp()
   {
@@ -145,7 +146,6 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
     zoom: 15.4746,
   );
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -208,35 +208,35 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
 
       body: Stack(
         children: [
-              // Map
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.04,
-                  bottom: 180.0,
-                ),
-                child: Container(
-                  //height: size.height * 0.77,
-                  height: size.height - ( size.height * 0.04),
-                  child: GoogleMap(
-                      initialCameraPosition: _initialPosition,
-                      mapType: MapType.normal,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      zoomControlsEnabled: true,
-                      mapToolbarEnabled: true,
-                      //polylines: polylineSet,
-                      //markers: markersSet,
-                      //circles: circlesSet,
-                      onMapCreated: (GoogleMapController controller) {
-                        _completerGoogleMap.complete(controller);
-                        _googleMapController = controller;
-                        locatePosition(context);
-                      }),
-                ),
-              ),
+          // Map
+          Padding(
+            padding: EdgeInsets.only(
+              top: size.height * 0.04,
+              bottom: 180.0,
+            ),
+            child: Container(
+              //height: size.height * 0.77,
+              height: size.height - (size.height * 0.04),
+              child: GoogleMap(
+                  initialCameraPosition: _initialPosition,
+                  mapType: MapType.normal,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  zoomGesturesEnabled: true,
+                  zoomControlsEnabled: true,
+                  mapToolbarEnabled: true,
+                  //polylines: polylineSet,
+                  //markers: markersSet,
+                  //circles: circlesSet,
+                  onMapCreated: (GoogleMapController controller) {
+                    _completerGoogleMap.complete(controller);
+                    _googleMapController = controller;
+                    locatePosition(context);
+                  }),
+            ),
+          ),
 
-              /*
+          /*
               // Drawer Button
               Positioned(
                 top: 38.0,
@@ -266,112 +266,108 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
               ),
               */
 
-
-
-              Positioned(
-                left: 0.0,
-                right: 0.0,
-                bottom: 0.0,
-                child: AnimatedSize(
-                  vsync: this,
-                  curve: Curves.bounceIn,
-                  duration: new Duration(milliseconds: 160),
-                  child: Container(
-                    //height: size.height * 0.20,
-                    height: searchContainerHeight,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(18.0),
-                          topRight: Radius.circular(18.0)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 16.0,
-                          spreadRadius: 0.5,
-                          offset: Offset(0.7, 0.7),
-                        ),
-                      ],
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: AnimatedSize(
+              vsync: this,
+              curve: Curves.bounceIn,
+              duration: new Duration(milliseconds: 160),
+              child: Container(
+                //height: size.height * 0.20,
+                height: searchContainerHeight,
+                width: size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(18.0),
+                      topRight: Radius.circular(18.0)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 16.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.02,
-                          vertical: size.height * 0.02),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: size.height * 0.006),
-                          Text(
-                              getTranslated(context, "where you want to go") +
-                                  fname,
-                              style: Theme.of(context).textTheme.headline2),
-                          SizedBox(height: size.height * 0.02),
-                          GestureDetector(
-                            onTap: () async {
-                              var res = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SearchScreen()));
-                              if (res == "obtainDirection") {
-                                var res = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RequestScreen()));
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.02,
+                      vertical: size.height * 0.02),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: size.height * 0.006),
+                      Text(
+                          getTranslated(context, "where you want to go") +
+                              fname,
+                          style: Theme.of(context).textTheme.headline2),
+                      SizedBox(height: size.height * 0.02),
+                      GestureDetector(
+                        onTap: () async {
+                          var res = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchScreen()));
+                          if (res == "obtainDirection") {
+                            var res = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RequestScreen()));
 
-                                //displayRideDetailsContainer(context);
-                                //await getPlaceDirection(context);
-                                //myBottomSheet(context);
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.08),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: Theme.of(context).accentColor,
-                                borderRadius: BorderRadius.circular(5.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black54,
-                                    blurRadius: 6.0,
-                                    spreadRadius: 0.5,
-                                    offset: Offset(0.7, 0.7),
-                                  ),
-                                ],
+                            //displayRideDetailsContainer(context);
+                            //await getPlaceDirection(context);
+                            //myBottomSheet(context);
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.08),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Theme.of(context).accentColor,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 6.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(0.7, 0.7),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.02,
-                                  vertical: size.height * 0.006,
+                            ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.02,
+                              vertical: size.height * 0.006,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  getTranslated(
+                                      context, "enter your destination here"),
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      getTranslated(
-                                          context, "enter your destination here"),
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                    Icon(
-                                      Icons.search,
-                                      color: Theme.of(context).hintColor,
-                                    ),
-                                    //SizedBox(width: size.width * 0.0001,),
-                                  ],
+                                Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).hintColor,
                                 ),
-                              ),
+                                //SizedBox(width: size.width * 0.0001,),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
+            ),
+          ),
           //myBottomSheet(context),
           //rideBottomSheet(context),
 /*
@@ -486,71 +482,79 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
 
  */
 
-              Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0),topRight: Radius.circular(16.0),),
-                    color: Theme.of(context).accentColor,
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: 0.5,
-                        blurRadius: 16.0,
-                        color: Colors.black54,
-                        offset: Offset(0.7,0.7),
-                      ),
-                      ],
+          Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+                color: Theme.of(context).accentColor,
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 0.5,
+                    blurRadius: 16.0,
+                    color: Colors.black54,
+                    offset: Offset(0.7, 0.7),
                   ),
-
-                  height: requestRideContainerHeight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 12.0,),
-                        DefaultTextStyle(
-                          style: Theme.of(context).textTheme.headline2,
-                          child: AnimatedTextKit(
-                            animatedTexts: [
-                              WavyAnimatedText('Requesting.. please wait..'),
-                              WavyAnimatedText('Looking for winch..'),
-                            ],
-                            isRepeatingAnimation: true,
-                            onTap: () {
-                              print("Tap Event");
-                            },
-                          ),
-                        ),
-
-                        SizedBox(height: 22.0,),
-
-                        Container(
-                          height: 60.0,
-                          width: 60.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.circular(26.0),
-                            border: Border.all(width: 2.0, color: Colors.black54),
-                          ),
-                          child: Icon(Icons.close, size: 26.0,),
-                        ),
-
-                        SizedBox(height: 10.0,),
-
-                        Container(
-                          width: double.infinity,
-                          child: Text("Cancel Ride", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1,),
-                        ),
-
-                      ],
+                ],
+              ),
+              height: requestRideContainerHeight,
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 12.0,
                     ),
-                  ),
+                    DefaultTextStyle(
+                      style: Theme.of(context).textTheme.headline2,
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          WavyAnimatedText('Requesting.. please wait..'),
+                          WavyAnimatedText('Looking for winch..'),
+                        ],
+                        isRepeatingAnimation: true,
+                        onTap: () {
+                          print("Tap Event");
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 22.0,
+                    ),
+                    Container(
+                      height: 60.0,
+                      width: 60.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(26.0),
+                        border: Border.all(width: 2.0, color: Colors.black54),
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        size: 26.0,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        "Cancel Ride",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-
+            ),
+          ),
 
           //locationBottomSheet(),
         ],
@@ -894,8 +898,10 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
  */
   requestingSheet(context) {
     Size size = MediaQuery.of(context).size;
-    var pickup = Provider.of<AppData>(context, listen: false).pickUpLocation.placeName;
-    var dropoff = Provider.of<AppData>(context, listen: false).dropOffLocation.placeName;
+    var pickup =
+        Provider.of<AppData>(context, listen: false).pickUpLocation.placeName;
+    var dropoff =
+        Provider.of<AppData>(context, listen: false).dropOffLocation.placeName;
 
     showModalBottomSheet(
         context: context,
@@ -903,23 +909,27 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
           return SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0),topRight: Radius.circular(16.0),),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
                 color: Theme.of(context).accentColor,
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 0.5,
                     blurRadius: 16.0,
                     color: Colors.black54,
-                    offset: Offset(0.7,0.7),
+                    offset: Offset(0.7, 0.7),
                   ),
                 ],
               ),
-
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
                   children: [
-                    SizedBox(height: 12.0,),
+                    SizedBox(
+                      height: 12.0,
+                    ),
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.headline2,
                       child: AnimatedTextKit(
@@ -933,9 +943,9 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                         },
                       ),
                     ),
-
-                    SizedBox(height: 22.0,),
-
+                    SizedBox(
+                      height: 22.0,
+                    ),
                     Container(
                       height: 60.0,
                       width: 60.0,
@@ -944,16 +954,22 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(26.0),
                         border: Border.all(width: 2.0, color: Colors.black54),
                       ),
-                      child: Icon(Icons.close, size: 26.0,),
+                      child: Icon(
+                        Icons.close,
+                        size: 26.0,
+                      ),
                     ),
-
-                    SizedBox(height: 10.0,),
-
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     Container(
                       width: double.infinity,
-                      child: Text("Cancel Ride", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1,),
+                      child: Text(
+                        "Cancel Ride",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ),
-
                   ],
                 ),
               ),
@@ -961,5 +977,4 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
           );
         });
   }
-
 }

@@ -16,4 +16,5 @@ final Map<String, WidgetBuilder> routes = {
   RegisterNewUser.routeName: (context) => RegisterNewUser(),
   DashBoard.routeName: (context) => DashBoard(),
   WinchMap.routeName: (context) => WinchMap(),
+  ToWinchMap.routeName: (context) => ToWinchMap(),
 };
