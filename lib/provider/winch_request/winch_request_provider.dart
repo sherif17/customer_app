@@ -15,6 +15,7 @@ class WinchRequestProvider with ChangeNotifier {
   bool STATUS_SEARCHING = false;
   bool STATUS_ACCEPTED = false;
   bool STATUS_COMPLETED = false;
+  bool STATUS_HAVE_ACTIVE_RIDE = false;
 
   confirmWinchService(winchRequestModel, token) async {
     isLoading = true;
@@ -29,6 +30,24 @@ class WinchRequestProvider with ChangeNotifier {
     isLoading = true;
     requestStatusResponseModel = await api.checkRequestStatus(token);
     isLoading = false;
+    if (requestStatusResponseModel.status == "TERMINATED") {
+      STATUS_TERMINATED = true;
+      STATUS_SEARCHING = false;
+      notifyListeners();
+    }
+    if (requestStatusResponseModel.status == "ACCEPTED") {
+      STATUS_ACCEPTED = true;
+      STATUS_SEARCHING = false;
+      notifyListeners();
+    }
+    if (requestStatusResponseModel.status == "SEARCHING") {
+      STATUS_SEARCHING = true;
+      requestStatusResponseModel.error ==
+              "This customer has already an active ride."
+          ? STATUS_HAVE_ACTIVE_RIDE = true
+          : print(requestStatusResponseModel.error);
+      notifyListeners();
+    }
     notifyListeners();
   }
 }

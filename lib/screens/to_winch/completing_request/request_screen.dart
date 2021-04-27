@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
@@ -16,14 +17,14 @@ class RequestScreen extends StatefulWidget {
 }
 
 class _RequestScreenState extends State<RequestScreen> {
-  String currentLang;
-  String fname;
-  String jwtToken;
+  String currentLang = loadCurrentLangFromDB();
+  String fname = loadFirstNameFromDB();
+  String jwtToken = loadJwtTokenFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    //getCurrentPrefData();
   }
 
   void getCurrentPrefData() {
@@ -97,8 +98,7 @@ class _RequestScreenState extends State<RequestScreen> {
             ),
           ),
 
-          RideBottomSheet(
-              token: jwtToken, tripDirectionDetails: tripDirectionDetails),
+          RideBottomSheet(context),
           //WinchTrip(),
         ],
       ),
@@ -126,7 +126,8 @@ class _RequestScreenState extends State<RequestScreen> {
       tripDirectionDetails = details;
     });
 
-    Provider.of<AppData>(context, listen: false).updateTripDirectionDetails(details);
+    Provider.of<AppData>(context, listen: false)
+        .updateTripDirectionDetails(details);
 
     Navigator.pop(context);
 
