@@ -1,13 +1,23 @@
 import 'dart:async';
-import 'package:customer_app/models/maps/winch_request/request_status_model.dart';
-import 'package:customer_app/models/maps/winch_request/winch_request_model.dart';
-import 'package:customer_app/services/maps_services/winch_services/winch_request_services.dart';
+
+import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/models/winch_request/cancel_winch_service_model.dart';
+import 'package:customer_app/models/winch_request/check_request_status_model.dart';
+import 'package:customer_app/models/winch_request/confirm_winch_request_model.dart';
+import 'package:customer_app/models/winch_request/rate_winch_driver_model.dart';
+import 'package:customer_app/services/winch_services/winch_request_services.dart';
+
 import 'package:flutter/foundation.dart';
 
 class WinchRequestProvider with ChangeNotifier {
   WinchResponseModel winchResponseModel = WinchResponseModel();
-  RequestStatusResponseModel requestStatusResponseModel =
-      RequestStatusResponseModel();
+  CheckRequestStatusResponseModel checkRequestStatusResponseModel =
+      CheckRequestStatusResponseModel();
+  RatingForWinchDriverResponseModel ratingForWinchDriverResponseModel =
+      RatingForWinchDriverResponseModel();
+  CancellingWinchServiceResponseModel cancellingWinchServiceResponseModel =
+      CancellingWinchServiceResponseModel();
+
   WinchRequestApi api = new WinchRequestApi();
 
   bool isLoading = false;
@@ -26,28 +36,44 @@ class WinchRequestProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  checkConfirmedWinchServiceStatus(token) async {
+  checkStatusForConfirmedWinchService(token) async {
     isLoading = true;
-    requestStatusResponseModel = await api.checkRequestStatus(token);
+    checkRequestStatusResponseModel = await api.checkRequestStatus(token);
     isLoading = false;
-    if (requestStatusResponseModel.status == "TERMINATED") {
+    if (checkRequestStatusResponseModel.status == "TERMINATED") {
       STATUS_TERMINATED = true;
       STATUS_SEARCHING = false;
       notifyListeners();
     }
-    if (requestStatusResponseModel.status == "ACCEPTED") {
+    if (checkRequestStatusResponseModel.status == "ACCEPTED") {
       STATUS_ACCEPTED = true;
       STATUS_SEARCHING = false;
       notifyListeners();
     }
-    if (requestStatusResponseModel.status == "SEARCHING") {
+    if (checkRequestStatusResponseModel.status == "SEARCHING") {
       STATUS_SEARCHING = true;
-      requestStatusResponseModel.error ==
+      checkRequestStatusResponseModel.error ==
               "This customer has already an active ride."
           ? STATUS_HAVE_ACTIVE_RIDE = true
-          : print(requestStatusResponseModel.error);
+          : print(checkRequestStatusResponseModel.error);
       notifyListeners();
     }
+    notifyListeners();
+  }
+
+  rateWinchDriver(ratingForWinchDriverRequestModel) async {
+    isLoading = true;
+    ratingForWinchDriverResponseModel = await api.rateWinchDriver(
+        ratingForWinchDriverRequestModel, loadJwtTokenFromDB());
+    isLoading = false;
+    notifyListeners();
+  }
+
+  cancelWinchDriverRequest() async {
+    isLoading = true;
+    cancellingWinchServiceResponseModel =
+        await api.cancelWinchRequest(loadJwtTokenFromDB());
+    isLoading = false;
     notifyListeners();
   }
 }

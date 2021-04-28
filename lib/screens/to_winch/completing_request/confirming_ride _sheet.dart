@@ -4,7 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
-import 'package:customer_app/models/maps/winch_request/winch_request_model.dart';
+import 'package:customer_app/models/winch_request/confirm_winch_request_model.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/to_winch/ongoing_trip/accepted_winch_driver_sheet.dart';
@@ -275,7 +275,8 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                             timer = Timer.periodic(Duration(seconds: 14),
                                 (timer) async {
                               await WinchRequestProvider
-                                  .checkConfirmedWinchServiceStatus(jwtToken);
+                                  .checkStatusForConfirmedWinchService(
+                                      jwtToken);
                               if (WinchRequestProvider.STATUS_TERMINATED ==
                                   true) {
                                 // Navigator.pushNamedAndRemoveUntil(

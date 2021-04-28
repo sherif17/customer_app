@@ -38,6 +38,9 @@ class _HomeBodyState extends State<HomeBody> {
     super.initState();
     Provider.of<CustomerCarProvider>(context, listen: false)
         .getCustomerCarsFromBackend(loadJwtTokenFromDB());
+    print(
+        "car id: ${Provider.of<CustomerCarProvider>(context, listen: false).customerOwnedCars.getAt(0).key}");
+    print("jwt token: ${loadJwtTokenFromDB()}");
   }
 
   @override
