@@ -1,15 +1,12 @@
-import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/localization/localization_constants.dart';
-import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/models/maps/placePredictions.dart';
 import 'package:customer_app/screens/to_winch/distination_search/places_pridication.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
-import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:customer_app/models/maps/address.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -39,7 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     String placeAddress =
-        Provider.of<AppData>(context).pickUpLocation.placeName ?? "";
+        Provider.of<MapsProvider>(context).pickUpLocation.placeName ?? "";
     pickUpTextEditingController.text = placeAddress;
 
     Size size = MediaQuery.of(context).size;

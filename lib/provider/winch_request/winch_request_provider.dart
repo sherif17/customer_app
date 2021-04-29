@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/winch_request/cancel_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/check_request_status_model.dart';
-import 'package:customer_app/models/winch_request/confirm_winch_request_model.dart';
+import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/rate_winch_driver_model.dart';
 import 'package:customer_app/services/winch_services/winch_request_services.dart';
 
 import 'package:flutter/foundation.dart';
 
 class WinchRequestProvider with ChangeNotifier {
-  WinchResponseModel winchResponseModel = WinchResponseModel();
+  ConfirmWinchServiceResponseModel confirmWinchServiceResponseModel = ConfirmWinchServiceResponseModel();
   CheckRequestStatusResponseModel checkRequestStatusResponseModel =
       CheckRequestStatusResponseModel();
   RatingForWinchDriverResponseModel ratingForWinchDriverResponseModel =
@@ -29,10 +29,10 @@ class WinchRequestProvider with ChangeNotifier {
 
   confirmWinchService(winchRequestModel, token) async {
     isLoading = true;
-    winchResponseModel = await api.findWinchDriver(winchRequestModel, token);
+    confirmWinchServiceResponseModel = await api.findWinchDriver(winchRequestModel, token);
     isLoading = false;
-    if (winchResponseModel.status == "SEARCHING") STATUS_SEARCHING = true;
-    if (winchResponseModel.status == "COMPLETED") STATUS_COMPLETED = true;
+    if (confirmWinchServiceResponseModel.status == "SEARCHING") STATUS_SEARCHING = true;
+    if (confirmWinchServiceResponseModel.status == "COMPLETED") STATUS_COMPLETED = true;
     notifyListeners();
   }
 

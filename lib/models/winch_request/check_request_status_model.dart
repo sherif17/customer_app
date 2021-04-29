@@ -43,7 +43,7 @@ class CheckRequestStatusResponseModel {
       CheckRequestStatusResponseModel(
         status: json["Status"],
         timePassedSinceRequestAcceptance:
-            json["Time Passed Since Request Acceptance"].toDouble(),
+        json["Time Passed Since Request Acceptance"],//.toDouble(),
         firstName: json["firstName"],
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],

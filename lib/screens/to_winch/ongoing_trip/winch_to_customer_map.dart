@@ -2,22 +2,23 @@ import 'dart:async';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
-import 'package:customer_app/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class RequestScreen extends StatefulWidget {
+import 'accepted_winch_driver_sheet.dart';
+
+class WinchToCustomer extends StatefulWidget {
+  static String routeName = '/WinchToCustomer';
   @override
-  _RequestScreenState createState() => _RequestScreenState();
+  _WinchToCustomerState createState() => _WinchToCustomerState();
 }
 
-class _RequestScreenState extends State<RequestScreen> {
+class _WinchToCustomerState extends State<WinchToCustomer> {
   String currentLang = loadCurrentLangFromDB();
   String fname = loadFirstNameFromDB();
   String jwtToken = loadJwtTokenFromDB();
@@ -25,7 +26,6 @@ class _RequestScreenState extends State<RequestScreen> {
   @override
   void initState() {
     super.initState();
-    //setCustomMarker();
     //getCurrentPrefData();
   }
 
@@ -45,7 +45,6 @@ class _RequestScreenState extends State<RequestScreen> {
     });
   }
 
-  @override
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
 
@@ -57,19 +56,10 @@ class _RequestScreenState extends State<RequestScreen> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
 
-/*
-  BitmapDescriptor mapMarker;
-
-  void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/icons/google-maps-car-icon.jpg');
-  }
-
- */
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     var initialPos =
         Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
 
@@ -107,38 +97,37 @@ class _RequestScreenState extends State<RequestScreen> {
                     _googleMapController = controller;
                     getPlaceDirection(context);
                   }),
+
             ),
           ),
 
-          RideBottomSheet(context),
+          AcceptedWinchDriverSheet(),
         ],
       ),
     );
   }
 
+
   Future<void> getPlaceDirection(context) async {
     var initialPos =
-        Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
-    var finalPos = Provider.of<MapsProvider>(context, listen: false).dropOffLocation;
+        Provider.of<MapsProvider>(context, listen: false).dropOffLocation;
+    var finalPos = Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
 
-    var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
-    var dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
+    var winchLatLng = LatLng(initialPos.latitude, initialPos.longitude);
+    var pickUpLatLng = LatLng(finalPos.latitude, finalPos.longitude);
 
     showDialog(
         context: context,
         builder: (BuildContext context) => ProgressDialog(
             message:
-                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
+            currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
     var details = await MapsApiService.obtainPlaceDirectionDetails(
-        pickUpLatLng, dropOffLatLng);
+        winchLatLng, pickUpLatLng);
 
     setState(() {
       tripDirectionDetails = details;
     });
-
-    Provider.of<MapsProvider>(context, listen: false)
-        .updateTripDirectionDetails(details);
 
     Navigator.pop(context);
 
@@ -147,7 +136,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResult =
-        polylinePoints.decodePolyline(details.encodedPoints);
+    polylinePoints.decodePolyline(details.encodedPoints);
 
     pLineCoordinates.clear();
 
@@ -175,68 +164,67 @@ class _RequestScreenState extends State<RequestScreen> {
 
     LatLngBounds latLngBounds;
 
-    if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
-        pickUpLatLng.longitude > dropOffLatLng.longitude) {
+    if (winchLatLng.latitude > pickUpLatLng.latitude &&
+        winchLatLng.longitude > pickUpLatLng.longitude) {
       latLngBounds =
-          LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
-    } else if (pickUpLatLng.longitude > dropOffLatLng.longitude) {
+          LatLngBounds(southwest: pickUpLatLng, northeast: winchLatLng);
+    } else if (winchLatLng.longitude > pickUpLatLng.longitude) {
       latLngBounds = LatLngBounds(
-          southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude),
-          northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
-    } else if (pickUpLatLng.latitude > dropOffLatLng.latitude) {
+          southwest: LatLng(winchLatLng.latitude, pickUpLatLng.longitude),
+          northeast: LatLng(pickUpLatLng.latitude, winchLatLng.longitude));
+    } else if (winchLatLng.latitude > pickUpLatLng.latitude) {
       latLngBounds = LatLngBounds(
-          southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude),
-          northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+          southwest: LatLng(pickUpLatLng.latitude, winchLatLng.longitude),
+          northeast: LatLng(winchLatLng.latitude, pickUpLatLng.longitude));
     } else {
       latLngBounds =
-          LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+          LatLngBounds(southwest: winchLatLng, northeast: pickUpLatLng);
     }
 
     _googleMapController
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
-    Marker pickUpLocMarker = Marker(
+    Marker winchLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
         infoWindow:
-            InfoWindow(title: initialPos.placeName, snippet: "My location"),
+        InfoWindow(title: initialPos.placeName, snippet: "Winch location"),
+        position: winchLatLng,
+        markerId: MarkerId("winchId"));
+
+    Marker pickUpLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        infoWindow:
+        InfoWindow(title: finalPos.placeName, snippet: "PickUp location"),
         position: pickUpLatLng,
         markerId: MarkerId("pickUpId"));
 
-
-    Marker dropOffLocMarker = Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        //icon: mapMarker,
-        infoWindow:
-            InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
-        position: dropOffLatLng,
-        markerId: MarkerId("dropOffId"));
-
     setState(() {
+      markersSet.add(winchLocMarker);
       markersSet.add(pickUpLocMarker);
-      markersSet.add(dropOffLocMarker);
     });
 
-    Circle pickUpLocCircle = Circle(
+    Circle winchLocCircle = Circle(
       fillColor: Colors.blue,
-      center: pickUpLatLng,
+      center: winchLatLng,
       radius: 12.0,
       strokeWidth: 4,
       strokeColor: Colors.blue,
-      circleId: CircleId("pickUpId"),
+      circleId: CircleId("winchId"),
     );
 
-    Circle dropOffLocCircle = Circle(
+    Circle pickUpLocCircle = Circle(
       fillColor: Theme.of(context).hintColor,
-      center: dropOffLatLng,
+      center: pickUpLatLng,
       radius: 12.0,
       strokeWidth: 4,
       strokeColor: Theme.of(context).hintColor,
-      circleId: CircleId("dropOffId"),
+      circleId: CircleId("pickUpId"),
     );
 
     setState(() {
+      circlesSet.add(winchLocCircle);
       circlesSet.add(pickUpLocCircle);
-      circlesSet.add(dropOffLocCircle);
     });
   }
+
 }

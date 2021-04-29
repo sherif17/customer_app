@@ -1,23 +1,15 @@
 import 'dart:ui';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
-import 'package:customer_app/models/cars/load_user_cars_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/customer_cars.dart';
-import 'package:customer_app/screens/to_winch/to_winch_map.dart';
 import 'package:customer_app/screens/to_winch/winch_map.dart';
-import 'package:customer_app/services/api_services.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
-import 'package:customer_app/shared_prefrences/customer_user_model.dart';
-import 'package:customer_app/utils/constants.dart';
-import 'package:customer_app/utils/customer_app_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
 
 class HomeBody extends StatefulWidget {
@@ -26,7 +18,7 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  int _currentstep = 0;
+  //int _currentstep = 0;
   // new stepper
   int activeStep = 0;
   int upperBound = 5;
@@ -38,8 +30,8 @@ class _HomeBodyState extends State<HomeBody> {
     super.initState();
     Provider.of<CustomerCarProvider>(context, listen: false)
         .getCustomerCarsFromBackend(loadJwtTokenFromDB());
-    print(
-        "car id: ${Provider.of<CustomerCarProvider>(context, listen: false).customerOwnedCars.getAt(0).key}");
+    // print(
+    //     "car id: ${Provider.of<CustomerCarProvider>(context, listen: false).customerOwnedCars.getAt(0).key}");
     print("jwt token: ${loadJwtTokenFromDB()}");
   }
 

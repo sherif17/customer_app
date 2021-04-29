@@ -1,17 +1,10 @@
-import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/local_db/customer_info_db.dart';
-import 'package:customer_app/local_db/customer_info_db_model.dart';
 import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
-import 'package:customer_app/screens/login_screens/otp/componants/progress_bar.dart';
-import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
-import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
-import 'package:customer_app/screens/to_winch/to_winch_map.dart';
-import 'package:customer_app/screens/to_winch/winch_map.dart';
-import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +17,6 @@ import 'localization/demo_localization.dart';
 import 'localization/localization_constants.dart';
 import 'themes/light_theme.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:customer_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -120,7 +112,7 @@ class _MyAppState extends State<MyApp> {
       // TODO: implement build
       return MultiProvider(
         providers: [
-          ChangeNotifierProvider<AppData>(create: (_) => AppData()),
+          ChangeNotifierProvider<MapsProvider>(create: (_) => MapsProvider()),
           ChangeNotifierProvider<WinchRequestProvider>(
               create: (_) => WinchRequestProvider()),
           ChangeNotifierProvider<CustomerCarProvider>(
