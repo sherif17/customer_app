@@ -6,8 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class MapsProvider extends ChangeNotifier
-{
+class MapsProvider extends ChangeNotifier {
   Address pickUpLocation;
   Address dropOffLocation;
   DirectionDetails tripDirectionDetails;
@@ -15,26 +14,22 @@ class MapsProvider extends ChangeNotifier
   Position currentPosition;
   GoogleMapController googleMapController;
 
-  void updatePickUpLocationAddress(Address pickUpAddress)
-  {
+  void updatePickUpLocationAddress(Address pickUpAddress) {
     pickUpLocation = pickUpAddress;
     notifyListeners();
   }
 
-  void updateDropOffLocationAddress(Address dropOffAddress)
-  {
+  void updateDropOffLocationAddress(Address dropOffAddress) {
     dropOffLocation = dropOffAddress;
     notifyListeners();
   }
 
-  void updateTripDirectionDetails(DirectionDetails tripDetails)
-  {
+  void updateTripDirectionDetails(DirectionDetails tripDetails) {
     tripDirectionDetails = tripDetails;
     notifyListeners();
   }
 
-  void updateEstimatedFare(int fare)
-  {
+  void updateEstimatedFare(int fare) {
     estimatedFare = fare;
     notifyListeners();
   }
@@ -45,17 +40,17 @@ class MapsProvider extends ChangeNotifier
     currentPosition = position;
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition =
-    new CameraPosition(target: latLatPosition, zoom: 15.5);
+        new CameraPosition(target: latLatPosition, zoom: 15.5);
     googleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     Address pickUpAddress =
-    await MapsApiService.searchCoordinateAddress(position, context);
+        await MapsApiService.searchCoordinateAddress(position, context);
 
     Provider.of<MapsProvider>(context, listen: false)
         .updatePickUpLocationAddress(pickUpAddress);
 
     print("This is your address:: " + pickUpAddress.placeName);
+    notifyListeners();
   }
-
 }

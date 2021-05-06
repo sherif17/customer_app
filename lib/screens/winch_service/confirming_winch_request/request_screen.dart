@@ -1,16 +1,25 @@
 import 'dart:async';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
+import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
-import 'package:customer_app/screens/to_winch/completing_request/confirming_ride%20_sheet.dart';
+import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
+import 'package:customer_app/screens/winch_service/ongoing_trip/winch_to_customer_map.dart';
+import 'package:customer_app/screens/winch_service/to_winch_map.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
+import 'package:customer_app/widgets/divider.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
+import 'confirming_ride _sheet.dart';
 
 class RequestScreen extends StatefulWidget {
   @override
@@ -22,6 +31,12 @@ class _RequestScreenState extends State<RequestScreen> {
   String fname = loadFirstNameFromDB();
   String jwtToken = loadJwtTokenFromDB();
 
+  resetApp() async {
+    var res = await Navigator.pushNamedAndRemoveUntil(context,
+        ToWinchMap.routeName, ModalRoute.withName(DashBoard.routeName));
+  }
+
+  Timer timer;
   @override
   void initState() {
     super.initState();
@@ -77,41 +92,81 @@ class _RequestScreenState extends State<RequestScreen> {
       target: LatLng(initialPos.latitude, initialPos.longitude),
       zoom: 15.4746,
     );
+    return SafeArea(
+      child: Consumer3<MapsProvider, WinchRequestProvider, CustomerCarProvider>(
+        builder: (context, MapsProvider, WinchRequestProvider,
+                CustomerCarProvider, child) =>
+            Scaffold(
+          key: scaffoldKey,
+          body: Stack(
+            children: [
+              // Map
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: 180.0,
+                ),
+                child: Container(
+                  //height: size.height * 0.77,
+                  //  height: size.height - (size.height * 0.04),
+                  child: GoogleMap(
+                      initialCameraPosition: _initialPosition,
+                      mapType: MapType.normal,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapToolbarEnabled: true,
+                      polylines: polylineSet,
+                      markers: markersSet,
+                      circles: circlesSet,
+                      onMapCreated: (GoogleMapController controller) async {
+                        _completerGoogleMap.complete(controller);
+                        _googleMapController = controller;
+                        await getPlaceDirection(context);
+                        // DirectionDetails tripDetails = MapsProvider.tripDirectionDetails;
+                        var pickUpLocation = MapsProvider.pickUpLocation;
+                        var dropOffLocation = MapsProvider.dropOffLocation;
+                        var pickUp = pickUpLocation.placeName;
+                        var pickUpLong = pickUpLocation.longitude.toString();
+                        var pickUpLat = pickUpLocation.latitude.toString();
+                        var dropOff = dropOffLocation.placeName;
+                        var dropOffLong = dropOffLocation.longitude.toString();
+                        var dropOffLat = dropOffLocation.latitude.toString();
 
-    return Scaffold(
-      key: scaffoldKey,
-      body: Stack(
-        children: [
-          // Map
-          Padding(
-            padding: EdgeInsets.only(
-              top: size.height * 0.04,
-              bottom: 180.0,
-            ),
-            child: Container(
-              //height: size.height * 0.77,
-              height: size.height - (size.height * 0.04),
-              child: GoogleMap(
-                  initialCameraPosition: _initialPosition,
-                  mapType: MapType.normal,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  zoomGesturesEnabled: true,
-                  zoomControlsEnabled: true,
-                  mapToolbarEnabled: true,
-                  polylines: polylineSet,
-                  markers: markersSet,
-                  circles: circlesSet,
-                  onMapCreated: (GoogleMapController controller) {
-                    _completerGoogleMap.complete(controller);
-                    _googleMapController = controller;
-                    getPlaceDirection(context);
-                  }),
-            ),
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLat=dropOffLat;
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLong=dropOffLong;
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLat=pickUpLat;
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLong=pickUpLong;
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.carId=CustomerCarProvider.customerOwnedCars.keyAt(0);
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedDistance= MapsProvider.tripDirectionDetails.distanceText;
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedFare= MapsProvider.estimatedFare.toString();
+                        // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedTime=MapsProvider.tripDirectionDetails.durationText;
+                        WinchRequestProvider.confirmWinchServiceRequestModel =
+                            new ConfirmWinchServiceRequestModel(
+                          dropOffLocationLat: dropOffLat,
+                          dropOffLocationLong: dropOffLong,
+                          pickupLocationLat: pickUpLat,
+                          pickupLocationLong: pickUpLong,
+                          carId: CustomerCarProvider.customerOwnedCars.keyAt(0),
+                          estimatedDistance:
+                              MapsProvider.tripDirectionDetails.distanceText,
+                          estimatedFare: MapsApiService.calculateFares(
+                                  MapsProvider.tripDirectionDetails, context)
+                              .toString(), //MapsProvider.estimatedFare.toString(),
+                          estimatedTime:
+                              MapsProvider.tripDirectionDetails.durationText,
+                        );
+                        print(WinchRequestProvider
+                            .confirmWinchServiceRequestModel
+                            .toJson());
+                      }),
+                ),
+              ),
+
+              RideBottomSheet(),
+            ],
           ),
-
-          RideBottomSheet(context),
-        ],
+        ),
       ),
     );
   }
@@ -119,7 +174,8 @@ class _RequestScreenState extends State<RequestScreen> {
   Future<void> getPlaceDirection(context) async {
     var initialPos =
         Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
-    var finalPos = Provider.of<MapsProvider>(context, listen: false).dropOffLocation;
+    var finalPos =
+        Provider.of<MapsProvider>(context, listen: false).dropOffLocation;
 
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
     var dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
@@ -201,7 +257,6 @@ class _RequestScreenState extends State<RequestScreen> {
             InfoWindow(title: initialPos.placeName, snippet: "My location"),
         position: pickUpLatLng,
         markerId: MarkerId("pickUpId"));
-
 
     Marker dropOffLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),

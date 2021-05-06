@@ -1,7 +1,8 @@
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/models/maps/placePredictions.dart';
-import 'package:customer_app/screens/to_winch/distination_search/places_pridication.dart';
+import 'package:customer_app/screens/winch_service/distination_search/places_pridication.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
@@ -17,12 +18,14 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController pickUpTextEditingController = TextEditingController();
   TextEditingController dropOffTextEditingController = TextEditingController();
   List<PlacePredictions> placePredictionList = [];
-  String currentLang;
-
+  String currentLang = loadCurrentLangFromDB();
+  String placeAddress;
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    // placeAddress =
+    //     Provider.of<MapsProvider>(context).pickUpLocation.placeName ?? "";
+    // getCurrentPrefData();
   }
 
   void getCurrentPrefData() {
@@ -38,7 +41,6 @@ class _SearchScreenState extends State<SearchScreen> {
     String placeAddress =
         Provider.of<MapsProvider>(context).pickUpLocation.placeName ?? "";
     pickUpTextEditingController.text = placeAddress;
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(

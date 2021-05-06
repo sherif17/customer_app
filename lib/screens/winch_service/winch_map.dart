@@ -1,4 +1,5 @@
-import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+
+import 'package:customer_app/screens/winch_service/to_winch_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

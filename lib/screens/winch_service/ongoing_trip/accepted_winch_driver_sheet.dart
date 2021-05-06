@@ -1,6 +1,6 @@
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
-import 'package:customer_app/screens/to_winch/to_winch_map.dart';
+import 'package:customer_app/screens/winch_service/to_winch_map.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,43 +16,57 @@ class AcceptedWinchDriverSheet extends StatefulWidget {
 class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
   @override
   Widget build(BuildContext context) {
-    String driverFirstName = Provider.of<WinchRequestProvider>(context, listen: false).checkRequestStatusResponseModel.firstName;
-    String driverLastName = Provider.of<WinchRequestProvider>(context, listen: false).checkRequestStatusResponseModel.lastName;
-    String carPlates = Provider.of<WinchRequestProvider>(context, listen: false).checkRequestStatusResponseModel.winchPlates;
+    String driverFirstName =
+        Provider.of<WinchRequestProvider>(context, listen: false)
+            .checkRequestStatusResponseModel
+            .firstName;
+    String driverLastName =
+        Provider.of<WinchRequestProvider>(context, listen: false)
+            .checkRequestStatusResponseModel
+            .lastName;
+    String carPlates = Provider.of<WinchRequestProvider>(context, listen: false)
+        .checkRequestStatusResponseModel
+        .winchPlates;
 
     LatLng winchPosition = LatLng(
-        (Provider.of<WinchRequestProvider>(context, listen: false).checkRequestStatusResponseModel.driverLocationLat) as double,
-        (Provider.of<WinchRequestProvider>(context, listen: false).checkRequestStatusResponseModel.driverLocationLong) as double,
+      (Provider.of<WinchRequestProvider>(context, listen: false)
+          .checkRequestStatusResponseModel
+          .driverLocationLat) as double,
+      (Provider.of<WinchRequestProvider>(context, listen: false)
+          .checkRequestStatusResponseModel
+          .driverLocationLong) as double,
     );
 
-    
     String carType = "Chevrolet";
     String estimatedArrivalTime;
 
-    int estimatedFare = Provider.of<MapsProvider>(context, listen: false).estimatedFare;
-    String estimatedDuration = Provider.of<MapsProvider>(context, listen: false).tripDirectionDetails.durationText;
-    int estimatedDurationInSec = Provider.of<MapsProvider>(context, listen: false).tripDirectionDetails.durationValue;
+    int estimatedFare =
+        Provider.of<MapsProvider>(context, listen: false).estimatedFare;
+    String estimatedDuration = Provider.of<MapsProvider>(context, listen: false)
+        .tripDirectionDetails
+        .durationText;
+    int estimatedDurationInSec =
+        Provider.of<MapsProvider>(context, listen: false)
+            .tripDirectionDetails
+            .durationValue;
 
     DateTime currentTime = new DateTime.now();
 
-        int estimatedArrivalSec = estimatedDurationInSec + currentTime.second + currentTime.minute * 60 + currentTime.hour * 3600;
-        double hoursDouble = estimatedArrivalSec/3600;
-        int hours = hoursDouble.floor();
-        double minutesDouble = estimatedArrivalSec/60 - (hours*60);
-        int minutes = minutesDouble.floor();
-        if (hours > 23)
-          {
-            hours = hours - 24;
-            estimatedArrivalTime = "Tomorrow " + hours.toString() + ":" + minutes.toString();
-          }
-        else
-          {
-            estimatedArrivalTime = hours.toString() + ":" + minutes.toString();
-        }
-
-
-
-
+    int estimatedArrivalSec = estimatedDurationInSec +
+        currentTime.second +
+        currentTime.minute * 60 +
+        currentTime.hour * 3600;
+    double hoursDouble = estimatedArrivalSec / 3600;
+    int hours = hoursDouble.floor();
+    double minutesDouble = estimatedArrivalSec / 60 - (hours * 60);
+    int minutes = minutesDouble.floor();
+    if (hours > 23) {
+      hours = hours - 24;
+      estimatedArrivalTime =
+          "Tomorrow " + hours.toString() + ":" + minutes.toString();
+    } else {
+      estimatedArrivalTime = hours.toString() + ":" + minutes.toString();
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),

@@ -7,14 +7,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MapsApiService {
-
   static Future<Address> searchCoordinateAddress(
       Position position, context) async {
     String mapKey = "AIzaSyAbT3_43qH7mG81Ufy4xS-GbqDjo9rrPAU";
     String placeName = "";
     Address placeAddress = new Address();
     String st1, st2, st3, st4;
-        String url =
+    String url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$mapKey';
     var response = await RequestAssistant.getRequest(url);
     if (response != "failed") {
@@ -28,7 +27,6 @@ class MapsApiService {
       placeAddress.longitude = position.longitude;
       placeAddress.latitude = position.latitude;
       placeAddress.placeName = placeName;
-
     }
     return placeAddress;
   }
@@ -61,25 +59,20 @@ class MapsApiService {
     return directionsDetails;
   }
 
-  static int calculateFares(DirectionDetails directionDetails, context)
-  {
+  static int calculateFares(DirectionDetails directionDetails, context) {
     //in terms USD
     double timeTraveledFare = (directionDetails.durationValue / 60) * 0.20;
-    double distanceTraveledFare = (directionDetails.distanceValue / 1000) * 0.20;
+    double distanceTraveledFare =
+        (directionDetails.distanceValue / 1000) * 0.20;
     double totalFareAmount = timeTraveledFare + distanceTraveledFare;
 
     //Local Currency
     //1$ = 16 egp
     double totalLocalAmount = totalFareAmount * 16;
     int estimatedFare = totalLocalAmount.truncate();
-
-
-    Provider.of<MapsProvider>(context, listen: false).updateEstimatedFare(estimatedFare);
+    Provider.of<MapsProvider>(context, listen: false)
+        .updateEstimatedFare(estimatedFare);
 
     return estimatedFare;
-
-
   }
-
-
 }

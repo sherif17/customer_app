@@ -10,7 +10,9 @@ import 'package:customer_app/services/winch_services/winch_request_services.dart
 import 'package:flutter/foundation.dart';
 
 class WinchRequestProvider with ChangeNotifier {
-  ConfirmWinchServiceResponseModel confirmWinchServiceResponseModel = ConfirmWinchServiceResponseModel();
+  ConfirmWinchServiceRequestModel confirmWinchServiceRequestModel;
+  ConfirmWinchServiceResponseModel confirmWinchServiceResponseModel =
+      ConfirmWinchServiceResponseModel();
   CheckRequestStatusResponseModel checkRequestStatusResponseModel =
       CheckRequestStatusResponseModel();
   RatingForWinchDriverResponseModel ratingForWinchDriverResponseModel =
@@ -27,36 +29,48 @@ class WinchRequestProvider with ChangeNotifier {
   bool STATUS_COMPLETED = false;
   bool STATUS_HAVE_ACTIVE_RIDE = false;
 
-  confirmWinchService(winchRequestModel, token) async {
+  double sheetHeight = 0.35;
+
+  confirmWinchService() async {
+    print(confirmWinchServiceRequestModel.toJson());
     isLoading = true;
-    confirmWinchServiceResponseModel = await api.findWinchDriver(winchRequestModel, token);
+    confirmWinchServiceResponseModel = await api.findWinchDriver(
+        confirmWinchServiceRequestModel, loadJwtTokenFromDB());
     isLoading = false;
-    if (confirmWinchServiceResponseModel.status == "SEARCHING") STATUS_SEARCHING = true;
-    if (confirmWinchServiceResponseModel.status == "COMPLETED") STATUS_COMPLETED = true;
+    if (confirmWinchServiceResponseModel.status == "SEARCHING"
+        /*confirmWinchServiceResponseModel.requestId == null*/)
+      STATUS_SEARCHING = true;
+    if (confirmWinchServiceResponseModel.status == "COMPLETED")
+      STATUS_COMPLETED = true;
+    if (confirmWinchServiceResponseModel.status == "SEARCHING" &&
+        confirmWinchServiceResponseModel.requestId != null)
+      STATUS_HAVE_ACTIVE_RIDE = true;
     notifyListeners();
   }
 
-  checkStatusForConfirmedWinchService(token) async {
+  checkStatusForConfirmedWinchService() async {
     isLoading = true;
-    checkRequestStatusResponseModel = await api.checkRequestStatus(token);
+    checkRequestStatusResponseModel =
+        await api.checkRequestStatus(loadJwtTokenFromDB());
     isLoading = false;
     if (checkRequestStatusResponseModel.status == "TERMINATED") {
       STATUS_TERMINATED = true;
       STATUS_SEARCHING = false;
-      notifyListeners();
+      //notifyListeners();
     }
     if (checkRequestStatusResponseModel.status == "ACCEPTED") {
       STATUS_ACCEPTED = true;
       STATUS_SEARCHING = false;
-      notifyListeners();
+      // notifyListeners();
     }
     if (checkRequestStatusResponseModel.status == "SEARCHING") {
       STATUS_SEARCHING = true;
+      sheetHeight = 0.25;
       checkRequestStatusResponseModel.error ==
               "This customer has already an active ride."
           ? STATUS_HAVE_ACTIVE_RIDE = true
           : print(checkRequestStatusResponseModel.error);
-      notifyListeners();
+      //notifyListeners();
     }
     notifyListeners();
   }

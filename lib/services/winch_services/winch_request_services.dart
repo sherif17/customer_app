@@ -8,12 +8,14 @@ import 'package:http/http.dart' as http;
 class WinchRequestApi {
   Future<ConfirmWinchServiceResponseModel> findWinchDriver(
       ConfirmWinchServiceRequestModel winchRequestModel, token) async {
+    print(winchRequestModel.toJson());
     var url = Uri.parse('http://161.97.155.244/api/requestwinch/createrequest');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token"}, body: winchRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
       print("response.body:${response.body}");
-      return ConfirmWinchServiceResponseModel.fromJson(json.decode(response.body));
+      return ConfirmWinchServiceResponseModel.fromJson(
+          json.decode(response.body));
     } else {
       throw Exception("Something Wrong happenedd");
     }
