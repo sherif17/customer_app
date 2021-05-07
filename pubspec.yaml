@@ -48,6 +48,7 @@ dependencies:
   hive_generator: ^1.0.1
   build_runner: ^1.12.2
   animated_text_kit: ^4.1.1
+  flutter_advanced_avatar: ^1.0.0+1
 
   #font_awesome_flutter: ^9.0.0
 

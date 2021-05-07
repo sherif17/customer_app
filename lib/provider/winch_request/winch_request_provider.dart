@@ -28,8 +28,8 @@ class WinchRequestProvider with ChangeNotifier {
   bool STATUS_ACCEPTED = false;
   bool STATUS_COMPLETED = false;
   bool STATUS_HAVE_ACTIVE_RIDE = false;
-
-  double sheetHeight = 0.35;
+  bool CANCELING_ADDED_FINE = false;
+  bool CANCLING_RIDE = false;
 
   confirmWinchService() async {
     print(confirmWinchServiceRequestModel.toJson());
@@ -65,7 +65,7 @@ class WinchRequestProvider with ChangeNotifier {
     }
     if (checkRequestStatusResponseModel.status == "SEARCHING") {
       STATUS_SEARCHING = true;
-      sheetHeight = 0.25;
+      STATUS_TERMINATED = false;
       checkRequestStatusResponseModel.error ==
               "This customer has already an active ride."
           ? STATUS_HAVE_ACTIVE_RIDE = true
@@ -88,6 +88,25 @@ class WinchRequestProvider with ChangeNotifier {
     cancellingWinchServiceResponseModel =
         await api.cancelWinchRequest(loadJwtTokenFromDB());
     isLoading = false;
+    if (cancellingWinchServiceResponseModel.status == "CANCELLED") {
+      CANCLING_RIDE = true;
+      if (cancellingWinchServiceResponseModel.details != null)
+        CANCELING_ADDED_FINE = false;
+      else
+        CANCELING_ADDED_FINE = true;
+    }
+    notifyListeners();
+  }
+
+  resetAllFlags() {
+    isLoading = false;
+    STATUS_TERMINATED = false;
+    STATUS_SEARCHING = false;
+    STATUS_ACCEPTED = false;
+    STATUS_COMPLETED = false;
+    STATUS_HAVE_ACTIVE_RIDE = false;
+    CANCELING_ADDED_FINE = false;
+    CANCLING_RIDE = false;
     notifyListeners();
   }
 }

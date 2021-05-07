@@ -29,22 +29,6 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
     //getCurrentPrefData();
   }
 
-  void getCurrentPrefData() {
-    getPrefCurrentLang().then((value) {
-      setState(() {
-        currentLang = value;
-      });
-    });
-    getPrefFirstName().then((value) {
-      setState(() {
-        fname = value;
-      });
-    });
-    getPrefJwtToken().then((value) {
-      jwtToken = value;
-    });
-  }
-
   Completer<GoogleMapController> _completerGoogleMap = Completer();
   GoogleMapController _googleMapController;
 
@@ -55,7 +39,6 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
   Set<Polyline> polylineSet = {};
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,17 +53,13 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
 
     return Scaffold(
       key: scaffoldKey,
-      body: Stack(
-        children: [
-          // Map
-          Padding(
-            padding: EdgeInsets.only(
-              top: size.height * 0.04,
-              bottom: 180.0,
-            ),
-            child: Container(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Map
+            Container(
               //height: size.height * 0.77,
-              height: size.height - (size.height * 0.04),
+              height: size.height,
               child: GoogleMap(
                   initialCameraPosition: _initialPosition,
                   mapType: MapType.normal,
@@ -97,21 +76,20 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                     _googleMapController = controller;
                     getPlaceDirection(context);
                   }),
-
             ),
-          ),
 
-          AcceptedWinchDriverSheet(),
-        ],
+            AcceptedWinchDriverSheet(),
+          ],
+        ),
       ),
     );
   }
 
-
   Future<void> getPlaceDirection(context) async {
     var initialPos =
         Provider.of<MapsProvider>(context, listen: false).dropOffLocation;
-    var finalPos = Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
+    var finalPos =
+        Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
 
     var winchLatLng = LatLng(initialPos.latitude, initialPos.longitude);
     var pickUpLatLng = LatLng(finalPos.latitude, finalPos.longitude);
@@ -120,7 +98,7 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
         context: context,
         builder: (BuildContext context) => ProgressDialog(
             message:
-            currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
+                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
     var details = await MapsApiService.obtainPlaceDirectionDetails(
         winchLatLng, pickUpLatLng);
@@ -136,7 +114,7 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResult =
-    polylinePoints.decodePolyline(details.encodedPoints);
+        polylinePoints.decodePolyline(details.encodedPoints);
 
     pLineCoordinates.clear();
 
@@ -187,14 +165,14 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
     Marker winchLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
         infoWindow:
-        InfoWindow(title: initialPos.placeName, snippet: "Winch location"),
+            InfoWindow(title: initialPos.placeName, snippet: "Winch location"),
         position: winchLatLng,
         markerId: MarkerId("winchId"));
 
     Marker pickUpLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         infoWindow:
-        InfoWindow(title: finalPos.placeName, snippet: "PickUp location"),
+            InfoWindow(title: finalPos.placeName, snippet: "PickUp location"),
         position: pickUpLatLng,
         markerId: MarkerId("pickUpId"));
 
@@ -226,5 +204,4 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
       circlesSet.add(pickUpLocCircle);
     });
   }
-
 }

@@ -53,7 +53,7 @@ class WinchRequestApi {
   }
 
   Future<CancellingWinchServiceResponseModel> cancelWinchRequest(token) async {
-    var url = Uri.parse('http://161.97.155.244/api/requestwinch/checkstatus');
+    var url = Uri.parse('http://161.97.155.244/api/requestwinch/cancelride');
     final response = await http.get(
       url,
       headers: {"x-auth-token": "$token"},

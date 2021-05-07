@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 
 class ToWinchMap extends StatefulWidget {
   static String routeName = '/toWinchMap';
@@ -70,6 +71,10 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                     _completerGoogleMap.complete(controller);
                     val.googleMapController = controller;
                     val.locatePosition(context);
+                    Provider.of<WinchRequestProvider>(context, listen: false)
+                        .resetAllFlags();
+                    print(
+                        "shearching Status :${Provider.of<WinchRequestProvider>(context, listen: false).STATUS_SEARCHING}");
                   }),
               Align(
                 alignment: Alignment.topCenter,
