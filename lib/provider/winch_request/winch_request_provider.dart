@@ -22,6 +22,8 @@ class WinchRequestProvider with ChangeNotifier {
 
   WinchRequestApi api = new WinchRequestApi();
 
+  Timer trackWinchDriverTimer;
+
   bool isLoading = false;
   bool STATUS_TERMINATED = false;
   bool STATUS_SEARCHING = false;
@@ -30,6 +32,8 @@ class WinchRequestProvider with ChangeNotifier {
   bool STATUS_HAVE_ACTIVE_RIDE = false;
   bool CANCELING_ADDED_FINE = false;
   bool CANCLING_RIDE = false;
+  bool STATUS_ARRIVED = false;
+  bool STATUS_STARTED = false;
 
   confirmWinchService() async {
     print(confirmWinchServiceRequestModel.toJson());
@@ -53,16 +57,6 @@ class WinchRequestProvider with ChangeNotifier {
     checkRequestStatusResponseModel =
         await api.checkRequestStatus(loadJwtTokenFromDB());
     isLoading = false;
-    if (checkRequestStatusResponseModel.status == "TERMINATED") {
-      STATUS_TERMINATED = true;
-      STATUS_SEARCHING = false;
-      //notifyListeners();
-    }
-    if (checkRequestStatusResponseModel.status == "ACCEPTED") {
-      STATUS_ACCEPTED = true;
-      STATUS_SEARCHING = false;
-      // notifyListeners();
-    }
     if (checkRequestStatusResponseModel.status == "SEARCHING") {
       STATUS_SEARCHING = true;
       STATUS_TERMINATED = false;
@@ -70,8 +64,54 @@ class WinchRequestProvider with ChangeNotifier {
               "This customer has already an active ride."
           ? STATUS_HAVE_ACTIVE_RIDE = true
           : print(checkRequestStatusResponseModel.error);
-      //notifyListeners();
     }
+
+    if (checkRequestStatusResponseModel.status == "ACCEPTED") {
+      STATUS_ACCEPTED = true;
+      STATUS_SEARCHING = false;
+      print(
+          "timePassedSinceRequestAcceptance: ${checkRequestStatusResponseModel.timePassedSinceRequestAcceptance}");
+    }
+    if (checkRequestStatusResponseModel.status == "ARRIVED") {
+      STATUS_SEARCHING = false;
+      STATUS_ARRIVED = true;
+      STATUS_TERMINATED = false;
+      print(
+          "timePassedSinceDriverArrival: ${checkRequestStatusResponseModel.timePassedSinceDriverArrival}");
+    }
+    if (checkRequestStatusResponseModel.status == "Service STARTED") {
+      STATUS_STARTED = true;
+      print(
+          "timePassedSinceServiceStart:${checkRequestStatusResponseModel.timePassedSinceServiceStart}");
+    }
+
+    if (checkRequestStatusResponseModel.status == "TERMINATED") {
+      STATUS_TERMINATED = true;
+      STATUS_SEARCHING = false;
+    }
+    notifyListeners();
+  }
+
+  trackWinchDriver() {
+    if (STATUS_ACCEPTED == true) {
+      trackWinchDriverTimer =
+          Timer.periodic(Duration(seconds: 10), (timer) async {
+        print("Driver Tracking........");
+        await checkStatusForConfirmedWinchService();
+        if (STATUS_ACCEPTED == true ||
+            STATUS_ARRIVED == true ||
+            STATUS_STARTED == true) {
+          print(
+              "Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
+          print(
+              "Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
+          print("locations must be updated in provider");
+        } else
+          print("Status now : ${checkRequestStatusResponseModel.status}");
+      });
+    } else
+      print("your request didn't accepted yet");
+
     notifyListeners();
   }
 

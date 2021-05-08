@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
+import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
@@ -26,7 +27,8 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
   @override
   void initState() {
     super.initState();
-    //getCurrentPrefData();
+    Provider.of<WinchRequestProvider>(context, listen: false)
+        .trackWinchDriver();
   }
 
   Completer<GoogleMapController> _completerGoogleMap = Completer();

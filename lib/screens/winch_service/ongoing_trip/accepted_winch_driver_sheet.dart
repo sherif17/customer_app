@@ -319,9 +319,11 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                             horizontal: size.width * 0.01,
                             vertical: size.height * 0.025),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              flex: 6,
+                              flex: 16,
                               child: Row(
                                 children: [
                                   Icon(
@@ -339,23 +341,23 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                                 ],
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "drop off by",
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  Text("$estimatedArrivalTime",
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.normal))
-                                ],
-                              ),
-                            )
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Column(
+                            //     children: [
+                            //       Text(
+                            //         "drop off by",
+                            //         style: TextStyle(
+                            //             color: Colors.blue,
+                            //             fontWeight: FontWeight.normal),
+                            //       ),
+                            //       Text("$estimatedArrivalTime",
+                            //           style: TextStyle(
+                            //               color: Colors.blue,
+                            //               fontWeight: FontWeight.normal))
+                            //     ],
+                            //   ),
+                            // )
                           ],
                         ),
                       ),

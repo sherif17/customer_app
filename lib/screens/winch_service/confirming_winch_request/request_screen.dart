@@ -92,13 +92,13 @@ class _RequestScreenState extends State<RequestScreen> {
       target: LatLng(initialPos.latitude, initialPos.longitude),
       zoom: 15.4746,
     );
-    return SafeArea(
-      child: Consumer3<MapsProvider, WinchRequestProvider, CustomerCarProvider>(
-        builder: (context, MapsProvider, WinchRequestProvider,
-                CustomerCarProvider, child) =>
-            Scaffold(
-          key: scaffoldKey,
-          body: Stack(
+    return Consumer3<MapsProvider, WinchRequestProvider, CustomerCarProvider>(
+      builder: (context, MapsProvider, WinchRequestProvider,
+              CustomerCarProvider, child) =>
+          Scaffold(
+        key: scaffoldKey,
+        body: SafeArea(
+          child: Stack(
             children: [
               // Map
               GoogleMap(

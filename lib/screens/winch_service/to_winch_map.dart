@@ -50,10 +50,10 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Consumer<MapsProvider>(
-      builder: (context, val, child) => SafeArea(
-        child: Scaffold(
-          key: scaffoldKey,
-          body: Stack(
+      builder: (context, val, child) => Scaffold(
+        key: scaffoldKey,
+        body: SafeArea(
+          child: Stack(
             children: [
               // Map
               GoogleMap(

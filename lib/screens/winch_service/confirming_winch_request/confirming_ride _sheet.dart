@@ -364,13 +364,13 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                                   print(DateTime.now());
                                                   print(
                                                       "still searching for nearest driver");
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                      context,
-                                                      WinchToCustomer
-                                                          .routeName,
-                                                          (route) => false);
-                                                  timer.cancel();
+                                                  // Navigator
+                                                  //     .pushNamedAndRemoveUntil(
+                                                  //     context,
+                                                  //     WinchToCustomer
+                                                  //         .routeName,
+                                                  //         (route) => false);
+                                                  // timer.cancel();
                                                 }
                                               });
                                             } else
@@ -442,14 +442,14 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
             DraggableScrollableSheet(
                 initialChildSize: 0.27,
                 minChildSize: 0.23,
-                maxChildSize: 0.45,
+                maxChildSize: 0.5,
                 builder: (context, myController) {
                   Box<customerOwnedCarsDB> selectedCar =
                       CustomerCarProvider.customerOwnedCars;
                   return SingleChildScrollView(
                     controller: myController,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.47,
                       decoration: BoxDecoration(
                         color: Theme.of(context).accentColor,
                       ),
@@ -566,7 +566,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                   MediaQuery.of(context).size.height * 0.017),
                           DividerWidget(),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
                                 Expanded( flex :6,
@@ -580,10 +580,10 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                           ),
                           ]),
                                 ),
-                              Expanded(
-                                flex: 3,
-                                 child:Text(MapsProvider.tripDirectionDetails.durationText,style:TextStyle(color: Colors.blue,fontWeight:FontWeight.normal)),
-                              )
+                              // Expanded(
+                              //   flex: 3,
+                              //    child:Text(MapsProvider.tripDirectionDetails.durationText,style:TextStyle(color: Colors.blue,fontWeight:FontWeight.normal)),
+                              // )
                               ],
                             ),
                           ),
