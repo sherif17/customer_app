@@ -1,6 +1,6 @@
 import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/localization/localization_constants.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/to_winch/distination_search/search_screen.dart';
+import 'distination_search/search_screen.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
@@ -55,17 +55,13 @@ class _ToWinchState extends State<ToWinchMap> {
   Set<Circle> circlesSet = {};
 
   void locatePosition(context) async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latLatPosition, zoom: 15.5);
-    _googleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 15.5);
+    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    String address =
-        await MapsApiService.searchCoordinateAddress(position, context);
+    String address = await MapsApiService.searchCoordinateAddress(position, context);
     print("This is your address:: " + address);
   }
 
@@ -123,8 +119,7 @@ class _ToWinchState extends State<ToWinchMap> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(18.0),
-                        topRight: Radius.circular(18.0)),
+                        topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black54,
@@ -136,30 +131,24 @@ class _ToWinchState extends State<ToWinchMap> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.02,
-                        vertical: size.height * 0.02),
+                        horizontal: size.width * 0.02, vertical: size.height * 0.02),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: size.height * 0.006),
-                        Text(
-                            getTranslated(context, "where you want to go") +
-                                fname,
+                        Text(getTranslated(context, "where you want to go") + fname,
                             style: Theme.of(context).textTheme.headline2),
                         SizedBox(height: size.height * 0.02),
                         GestureDetector(
                           onTap: () async {
                             var res = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchScreen()));
+                                context, MaterialPageRoute(builder: (context) => SearchScreen()));
                             if (res == "obtainDirection") {
                               await getPlaceDirection(context);
                             }
                           },
                           child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.08),
+                            margin: EdgeInsets.symmetric(horizontal: size.width * 0.08),
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
@@ -180,14 +169,11 @@ class _ToWinchState extends State<ToWinchMap> {
                                 vertical: size.height * 0.006,
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(
-                                        context, "enter your destination here"),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    getTranslated(context, "enter your destination here"),
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                   Icon(
                                     Icons.search,
@@ -311,8 +297,7 @@ class _ToWinchState extends State<ToWinchMap> {
   }
 
   Future<void> getPlaceDirection(context) async {
-    var initialPos =
-        Provider.of<AppData>(context, listen: false).pickUpLocation;
+    var initialPos = Provider.of<AppData>(context, listen: false).pickUpLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOffLocation;
 
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
@@ -320,12 +305,10 @@ class _ToWinchState extends State<ToWinchMap> {
 
     showDialog(
         context: context,
-        builder: (BuildContext context) => ProgressDialog(
-            message:
-                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
+        builder: (BuildContext context) =>
+            ProgressDialog(message: currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
-    var details = await MapsApiService.obtainPlaceDirectionDetails(
-        pickUpLatLng, dropOffLatLng);
+    var details = await MapsApiService.obtainPlaceDirectionDetails(pickUpLatLng, dropOffLatLng);
 
     Navigator.pop(context);
 
@@ -340,8 +323,7 @@ class _ToWinchState extends State<ToWinchMap> {
 
     if (decodedPolylinePointsResult.isNotEmpty) {
       decodedPolylinePointsResult.forEach((PointLatLng pointLatLng) {
-        pLineCoordinates
-            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+        pLineCoordinates.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
       });
     }
     polylineSet.clear();
@@ -364,8 +346,7 @@ class _ToWinchState extends State<ToWinchMap> {
 
     if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
         pickUpLatLng.longitude > dropOffLatLng.longitude) {
-      latLngBounds =
-          LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+      latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
     } else if (pickUpLatLng.longitude > dropOffLatLng.longitude) {
       latLngBounds = LatLngBounds(
           southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude),
@@ -375,24 +356,20 @@ class _ToWinchState extends State<ToWinchMap> {
           southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude),
           northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
     } else {
-      latLngBounds =
-          LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+      latLngBounds = LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
     }
 
-    _googleMapController
-        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     Marker pickUpLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
-        infoWindow:
-            InfoWindow(title: initialPos.placeName, snippet: "My location"),
+        infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My location"),
         position: pickUpLatLng,
         markerId: MarkerId("pickUpId"));
 
     Marker dropOffLocMarker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        infoWindow:
-            InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
+        infoWindow: InfoWindow(title: finalPos.placeName, snippet: "DropOff location"),
         position: dropOffLatLng,
         markerId: MarkerId("dropOffId"));
 

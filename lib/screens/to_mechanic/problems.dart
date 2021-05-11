@@ -32,62 +32,55 @@ class _MyHomePageState extends State<MyHomePage> {
     List<dynamic> responseList = FOOD_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(Container(
-          height: 130,
-          width: 400,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      post["name"],
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.blue.withOpacity(0.5),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      " ${post["price"]}",
-                      style: const TextStyle(
-                          fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        )),
-                    child: FlatButton(
-                      onPressed: () {
-                        /*...*/
-                        Text(
-                          "selected",
-                          style: TextStyle(fontSize: 22, color: Colors.blue),
-                        );
-                      },
-                      child: Text(
-                        "select",
-                        style: TextStyle(fontSize: 22, color: Colors.blue),
-                      ),
+      listItems.add(Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue,
+                    offset: Offset(
+                      2.0, // Move to right 10  horizontally
+                      2.0,
                     ),
                   ),
-                ),
-              ],
-            ),
-          )));
+                ],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                )),
+            height: 70,
+            width: 400,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        post["name"],
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blue.withOpacity(0.6),
+                        ),
+                      ),
+                      Text(
+                        " ${post["text"]}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blue.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )),
+      ));
     });
     setState(() {
       itemsData = listItems;
@@ -123,8 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0, top: 30.0),
                   child: Text(
-                    "Select the services you need:",
-                    style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 30),
+                    "What is the wrong with you car ?",
+                    style: TextStyle(color: Colors.blue, fontSize: 28),
                   ),
                 ),
               ],
@@ -188,7 +181,7 @@ class CategoriesScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
+    final double categoryHeight = MediaQuery.of(context).size.height * 0.22 - 50;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
@@ -200,7 +193,7 @@ class CategoriesScroller extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                width: 150,
+                width: 130,
                 margin: EdgeInsets.only(right: 20),
                 height: categoryHeight,
                 decoration: BoxDecoration(
@@ -214,17 +207,23 @@ class CategoriesScroller extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        "Instant repair",
-                        style: TextStyle(
-                            fontSize: 25, color: Colors.blue, fontWeight: FontWeight.bold),
+                      CircleAvatar(
+                        minRadius: 30,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0, left: 9.0),
+                        child: Text(
+                          "Exterior",
+                          style: TextStyle(
+                              fontSize: 23, color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: 150,
+                width: 130,
                 margin: EdgeInsets.only(right: 20),
                 height: categoryHeight,
                 decoration: BoxDecoration(
@@ -239,10 +238,16 @@ class CategoriesScroller extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Oil Replacement ",
-                          style: TextStyle(
-                              fontSize: 20, color: Colors.blue, fontWeight: FontWeight.bold),
+                        CircleAvatar(
+                          minRadius: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0, left: 13.0),
+                          child: Text(
+                            "Engine",
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
@@ -252,7 +257,7 @@ class CategoriesScroller extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    width: 150,
+                    width: 130,
                     margin: EdgeInsets.only(right: 20),
                     height: categoryHeight,
                     decoration: BoxDecoration(
@@ -266,17 +271,23 @@ class CategoriesScroller extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            "Schedule repair",
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.blue, fontWeight: FontWeight.bold),
+                          CircleAvatar(
+                            minRadius: 30,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0, left: 8.0),
+                            child: Text(
+                              "interior",
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.blue, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
                   Container(
-                    width: 150,
+                    width: 130,
                     margin: EdgeInsets.only(right: 20),
                     height: categoryHeight,
                     decoration: BoxDecoration(
@@ -291,13 +302,49 @@ class CategoriesScroller extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Help me to diagnose my car",
-                              style: TextStyle(
-                                  fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold),
+                            CircleAvatar(
+                              minRadius: 30,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0, left: 8.0),
+                              child: Text(
+                                "Chasis",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.blue, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 130,
+                    margin: EdgeInsets.only(right: 20),
+                    height: categoryHeight,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CircleAvatar(
+                            minRadius: 30,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0, left: 12.0),
+                            child: Text(
+                              "Help me",
+                              style: TextStyle(
+                                  fontSize: 23, color: Colors.blue, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
