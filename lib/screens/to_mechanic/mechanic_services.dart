@@ -1,109 +1,56 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'constants.dart';
+import 'problems.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      title: 'flutterTabs',
+      home: tabs(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class tabs extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _tabsState createState() => _tabsState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final CategoriesScroller categoriesScroller = CategoriesScroller();
-  ScrollController controller = ScrollController();
-  bool closeTopContainer = false;
-  double topContainer = 0;
+class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
+  List list_name = ["Exterior", "Interior", "Engine", "Chasis", "Help me"];
 
+  SwiperController _scrollController = new SwiperController();
+
+  TabController tabController;
   List<Widget> itemsData = [];
 
-  void getPostsData() {
-    List<dynamic> responseList = FOOD_DATA;
-    List<Widget> listItems = [];
-    responseList.forEach((post) {
-      listItems.add(Container(
-          height: 130,
-          width: 400,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      post["name"],
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.blue.withOpacity(0.5),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      " ${post["price"]}",
-                      style: const TextStyle(
-                          fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        )),
-                    child: FlatButton(
-                      onPressed: () {
-                        /*...*/
-                        Text(
-                          "selected",
-                          style: TextStyle(fontSize: 22, color: Colors.blue),
-                        );
-                      },
-                      child: Text(
-                        "select",
-                        style: TextStyle(fontSize: 22, color: Colors.blue),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )));
-    });
-    setState(() {
-      itemsData = listItems;
-    });
-  }
+  int currentindex2 = 0; // for swiper index initial
+
+  int selectedIndex = 0; // for tab
 
   @override
   void initState() {
     super.initState();
-    getPostsData();
-    controller.addListener(() {
-      double value = controller.offset / 119;
 
+    tabController = TabController(
+      initialIndex: selectedIndex,
+      length: list_name.length,
+      vsync: this,
+    );
+
+    tabController.addListener(() {
       setState(() {
-        topContainer = value;
-        closeTopContainer = controller.offset > 50;
+        print(tabController.index);
+        _scrollController.move(tabController.index);
       });
     });
   }
@@ -111,197 +58,121 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final double categoryHeight = size.height * 0.30;
-    return Scaffold(
-      body: Container(
-        height: size.height,
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, top: 30.0),
-                  child: Text(
-                    "Select the services you need:",
-                    style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 30),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: 20, color: Colors.blue),
-              decoration: InputDecoration(
-                  hintText: "Enter Car-Type Model",
-                  hintStyle: TextStyle(fontSize: 20.0, color: Colors.blue)),
-            ),
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: closeTopContainer ? 0 : 1,
-              child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: size.width,
-                  alignment: Alignment.topCenter,
-                  height: closeTopContainer ? 0 : categoryHeight,
-                  child: categoriesScroller),
-            ),
-            Expanded(
-                child: ListView.builder(
-                    controller: controller,
-                    itemCount: itemsData.length,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      double scale = 1.0;
-                      if (topContainer > 0.5) {
-                        scale = index + 0.5 - topContainer;
-                        if (scale < 0) {
-                          scale = 0;
-                        } else if (scale > 1) {
-                          scale = 1;
-                        }
-                      }
-                      return Opacity(
-                        opacity: scale,
-                        child: Transform(
-                          transform: Matrix4.identity()..scale(scale, scale),
-                          alignment: Alignment.bottomCenter,
-                          child: Align(
-                              heightFactor: 0.7,
-                              alignment: Alignment.topCenter,
-                              child: itemsData[index]),
-                        ),
-                      );
-                    })),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CategoriesScroller extends StatelessWidget {
-  const CategoriesScroller();
-
-  @override
-  Widget build(BuildContext context) {
-    final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: FittedBox(
-          fit: BoxFit.fill,
-          alignment: Alignment.topCenter,
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 150,
-                margin: EdgeInsets.only(right: 20),
-                height: categoryHeight,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    )),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+    final double categoryHeight = size.height * 0.15;
+    return DefaultTabController(
+      length: list_name.length,
+      child: Scaffold(
+        body: Container(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  height: categoryHeight,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        "Instant repair",
-                        style: TextStyle(
-                            fontSize: 25, color: Colors.blue, fontWeight: FontWeight.bold),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                EdgeInsets.only(left: size.width * 0.1, top: size.height * 0.1),
+                            child: Text(
+                              "What is the wrong with you car ?",
+                              style: TextStyle(color: Colors.blue, fontSize: 20),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(fontSize: 20, color: Colors.blue),
+                        decoration: InputDecoration(
+                            hintText: "Enter Car-Type Model",
+                            hintStyle: TextStyle(fontSize: 20.0, color: Colors.blue)),
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(
+                            top: size.height * 0.02,
+                          ),
+                          height: categoryHeight,
+                          child: DefaultTabController(
+                            length: list_name.length,
+                            child: Container(
+                              constraints: BoxConstraints(maxHeight: 35.0),
+                              child: Material(
+                                child: TabBar(
+                                  onTap: (index) => _scrollController.move(index),
+                                  controller: tabController,
+                                  isScrollable: true,
+                                  indicatorColor: Color.fromRGBO(0, 202, 157, 1),
+                                  labelColor: Colors.black,
+                                  labelStyle: TextStyle(fontSize: 17),
+                                  unselectedLabelColor: Colors.black,
+                                  tabs: List<Widget>.generate(list_name.length, (int index) {
+                                    return new Tab(text: list_name[index]);
+                                  }),
+                                ),
+                              ),
+                            ),
+                          )),
+                      SizedBox(
+                        height: categoryHeight,
+                      ),
+                      Expanded(
+                        child: new Swiper(
+                          onIndexChanged: (index) {
+                            setState(() {
+                              selectedIndex = index;
+                              tabController.animateTo(index);
+                              currentindex2 = index;
+                              print(index);
+                            });
+                          },
+                          onTap: (index) {
+                            setState(() {
+                              selectedIndex = index;
+                              tabController.animateTo(index);
+                              currentindex2 = index;
+                              print(index);
+                            });
+                          },
+                          duration: 2,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Swiper(
+                              duration: 2,
+                              controller: _scrollController,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (BuildContext context, int index) {
+                                return VisibilityDetector(
+                                  key: Key(index.toString()),
+                                  child: Container(
+                                    child: problems(),
+                                  ),
+                                  onVisibilityChanged: (VisibilityInfo info) {
+                                    if (info.visibleFraction == 1)
+                                      setState(() {
+                                        selectedIndex = index;
+                                        tabController.animateTo(index);
+                                        currentindex2 = index;
+                                        print(index);
+                                      });
+                                  },
+                                );
+                              },
+                              itemCount: list_name.length,
+                            );
+                          },
+                          itemCount: list_name.length,
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                width: 150,
-                margin: EdgeInsets.only(right: 20),
-                height: categoryHeight,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    )),
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Oil Replacement ",
-                          style: TextStyle(
-                              fontSize: 20, color: Colors.blue, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 150,
-                    margin: EdgeInsets.only(right: 20),
-                    height: categoryHeight,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Schedule repair",
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.blue, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 150,
-                    margin: EdgeInsets.only(right: 20),
-                    height: categoryHeight,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        )),
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Help me to diagnose my car",
-                              style: TextStyle(
-                                  fontSize: 22, color: Colors.blue, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
