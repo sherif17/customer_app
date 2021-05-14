@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'constants.dart';
+import 'helpme.dart';
 import 'problems.dart';
 
 void main() {
@@ -102,6 +102,32 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                           child: DefaultTabController(
                             length: list_name.length,
                             child: Container(
+                              width: 510,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 4,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blue,
+                                    offset: const Offset(
+                                      5.0,
+                                      5.0,
+                                    ), //Offset
+                                    blurRadius: 10.0,
+                                    spreadRadius: 2.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: const Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ), //BoxShadow
+                                ],
+                              ),
                               constraints: BoxConstraints(maxHeight: 35.0),
                               child: Material(
                                 child: TabBar(
@@ -151,7 +177,7 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                                 return VisibilityDetector(
                                   key: Key(index.toString()),
                                   child: Container(
-                                    child: problems(),
+                                    child: selectedIndex == 4 ? helpme() : problems(),
                                   ),
                                   onVisibilityChanged: (VisibilityInfo info) {
                                     if (info.visibleFraction == 1)
