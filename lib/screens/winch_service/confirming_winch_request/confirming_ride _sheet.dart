@@ -2,23 +2,22 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
-import 'package:customer_app/models/maps/direction_details.dart';
-import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
-import 'package:customer_app/screens/winch_service/ongoing_trip/winch_to_customer_map.dart';
+import 'package:customer_app/screens/winch_service/ongoing_trip/accepted_winch_trip_map.dart';
 import 'package:customer_app/screens/winch_service/to_winch_map.dart';
 import 'package:customer_app/services/maps_services/maps_services.dart';
-import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+
 
 class RideBottomSheet extends StatefulWidget {
   // RideBottomSheet(this.context); //DirectionDetails tripDirectionDetails;
@@ -35,6 +34,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
 
   }
 
+  BitmapDescriptor mapMarker;
   MapsProvider appDataObject;
   @override
   void initState() {

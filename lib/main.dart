@@ -2,6 +2,7 @@ import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
+import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
@@ -117,6 +118,8 @@ class _MyAppState extends State<MyApp> {
               create: (_) => WinchRequestProvider()),
           ChangeNotifierProvider<CustomerCarProvider>(
               create: (_) => CustomerCarProvider()),
+          ChangeNotifierProvider<PolyLineProvider>(
+              create: (_) => PolyLineProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

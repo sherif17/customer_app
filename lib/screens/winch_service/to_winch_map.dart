@@ -1,10 +1,9 @@
 import 'dart:ui';
-
 import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
-import 'package:customer_app/screens/winch_service/confirming_winch_request/request_screen.dart';
+import 'package:customer_app/screens/winch_service/confirming_winch_request/confirming_ride_map.dart';
 import 'package:customer_app/screens/winch_service/distination_search/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';

@@ -95,7 +95,7 @@ class WinchRequestProvider with ChangeNotifier {
   trackWinchDriver() {
     if (STATUS_ACCEPTED == true) {
       trackWinchDriverTimer =
-          Timer.periodic(Duration(seconds: 10), (timer) async {
+          Timer.periodic(Duration(seconds: 5), (timer) async {
         print("Driver Tracking........");
         await checkStatusForConfirmedWinchService();
         if (STATUS_ACCEPTED == true ||

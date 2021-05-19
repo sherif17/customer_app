@@ -3,6 +3,7 @@ import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
+import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/winch_service/to_winch_map.dart';
@@ -100,8 +101,8 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
     }
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: Consumer<WinchRequestProvider>(
-        builder: (context, val, child) => DraggableScrollableSheet(
+      child: Consumer2<WinchRequestProvider, PolyLineProvider>(
+        builder: (context, WinchRequestProvider, PolyLineProvider, child) => DraggableScrollableSheet(
           initialChildSize: 0.4,
           minChildSize: 0.4,
           maxChildSize: 0.72,
@@ -179,7 +180,7 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "2 Min",
+                                                PolyLineProvider.tripDirectionDetails.durationText,
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 20),
@@ -442,9 +443,9 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                       DividerWidget(),
                       GestureDetector(
                         onTap: () async {
-                          await val.cancelWinchDriverRequest();
-                          if (val.isLoading == false &&
-                              val.CANCELING_ADDED_FINE == true) {
+                          await WinchRequestProvider.cancelWinchDriverRequest();
+                          if (WinchRequestProvider.isLoading == false &&
+                              WinchRequestProvider.CANCELING_ADDED_FINE == true) {
                             Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 ToWinchMap.routeName,

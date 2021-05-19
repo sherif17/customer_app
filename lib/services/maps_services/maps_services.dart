@@ -1,10 +1,8 @@
 import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
-import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class MapsApiService {
   static Future<Address> searchCoordinateAddress(
@@ -70,8 +68,7 @@ class MapsApiService {
     //1$ = 16 egp
     double totalLocalAmount = totalFareAmount * 16;
     int estimatedFare = totalLocalAmount.truncate();
-    Provider.of<MapsProvider>(context, listen: false)
-        .updateEstimatedFare(estimatedFare);
+    //Provider.of<MapsProvider>(context, listen: false).updateEstimatedFare(estimatedFare);
 
     return estimatedFare;
   }
