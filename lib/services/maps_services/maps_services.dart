@@ -1,8 +1,10 @@
 import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class MapsApiService {
   static Future<Address> searchCoordinateAddress(
@@ -55,6 +57,36 @@ class MapsApiService {
         res["routes"][0]["legs"][0]["duration"]["value"];
 
     return directionsDetails;
+  }
+
+
+  static String calculateArrivalTime(context)
+  {
+    int estimatedDurationInSec =
+        Provider.of<MapsProvider>(context, listen: false)
+            .tripDirectionDetails
+            .durationValue;
+
+    DateTime currentTime = new DateTime.now();
+    String estimatedArrivalTime;
+
+    int estimatedArrivalSec = estimatedDurationInSec +
+        currentTime.second +
+        currentTime.minute * 60 +
+        currentTime.hour * 3600;
+    double hoursDouble = estimatedArrivalSec / 3600;
+    int hours = hoursDouble.floor();
+    double minutesDouble = estimatedArrivalSec / 60 - (hours * 60);
+    int minutes = minutesDouble.floor();
+    if (hours > 23) {
+      hours = hours - 24;
+      estimatedArrivalTime =
+          "Tomorrow " + hours.toString() + ":" + minutes.toString();
+    } else {
+      estimatedArrivalTime = hours.toString() + ":" + minutes.toString();
+    }
+
+    return estimatedArrivalTime;
   }
 
   static int calculateFares(DirectionDetails directionDetails, context) {

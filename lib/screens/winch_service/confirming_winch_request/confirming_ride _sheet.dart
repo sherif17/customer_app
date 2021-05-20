@@ -435,6 +435,12 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
   }
 
   searchForNearestWinchSheet(context) {
+    String estimatedArrivalTime = MapsApiService.calculateArrivalTime(context);
+    LatLng pickUpLatLng = LatLng(
+      Provider.of<MapsProvider>(context, listen: false).pickUpLocation.latitude,
+      Provider.of<MapsProvider>(context, listen: false).pickUpLocation.longitude,
+    );
+    Provider.of<MapsProvider>(context, listen: false).googleMapController.animateCamera(CameraUpdate.newLatLngZoom(pickUpLatLng, 16.47));
     return Align(
       alignment: Alignment.bottomCenter,
       child: Consumer3<MapsProvider, WinchRequestProvider,CustomerCarProvider>(
@@ -558,7 +564,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                 ),
                               ),
                               Text(
-                                  "Drop-off by${MapsProvider.tripDirectionDetails != null ? ' ${MapsProvider.tripDirectionDetails.durationText}' : ''}"),
+                                  "Drop-off by ${estimatedArrivalTime != null ? '$estimatedArrivalTime' : ''}"),
                             ],
                           ),
                           SizedBox(

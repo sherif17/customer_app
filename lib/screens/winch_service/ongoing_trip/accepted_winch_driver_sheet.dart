@@ -60,17 +60,13 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
     );
 
     String carType = "Chevrolet";
-    String estimatedArrivalTime;
+
 
     int estimatedFare =
         Provider.of<MapsProvider>(context, listen: false).estimatedFare;
     String estimatedDuration = Provider.of<MapsProvider>(context, listen: false)
         .tripDirectionDetails
         .durationText;
-    int estimatedDurationInSec =
-        Provider.of<MapsProvider>(context, listen: false)
-            .tripDirectionDetails
-            .durationValue;
 
     String dropOffLocationPlaceName =
         Provider.of<MapsProvider>(context, listen: false)
@@ -81,24 +77,9 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
             .pickUpLocation
             .placeName
             .substring(0, 30);
-    // DirectionDetails estimatedFare =Provider.of<MapsProvider>(context, listen: false).tripDirectionDetails;
-    DateTime currentTime = new DateTime.now();
 
-    int estimatedArrivalSec = estimatedDurationInSec +
-        currentTime.second +
-        currentTime.minute * 60 +
-        currentTime.hour * 3600;
-    double hoursDouble = estimatedArrivalSec / 3600;
-    int hours = hoursDouble.floor();
-    double minutesDouble = estimatedArrivalSec / 60 - (hours * 60);
-    int minutes = minutesDouble.floor();
-    if (hours > 23) {
-      hours = hours - 24;
-      estimatedArrivalTime =
-          "Tomorrow " + hours.toString() + ":" + minutes.toString();
-    } else {
-      estimatedArrivalTime = hours.toString() + ":" + minutes.toString();
-    }
+    String estimatedArrivalTime = MapsApiService.calculateArrivalTime(context);
+
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Consumer2<WinchRequestProvider, PolyLineProvider>(
