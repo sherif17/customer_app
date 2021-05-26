@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 class MapsProvider extends ChangeNotifier {
   Address pickUpLocation;
   Address dropOffLocation;
-  Address winchLocation;
   DirectionDetails tripDirectionDetails;
   int estimatedFare;
   Position currentPosition;
@@ -27,10 +26,6 @@ class MapsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateWinchLocationAddress(Address winchPosition) {
-    winchLocation = winchPosition;
-    notifyListeners();
-  }
 
   void updateTripDirectionDetails(DirectionDetails tripDetails) {
     tripDirectionDetails = tripDetails;

@@ -66,8 +66,8 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
     Size size = MediaQuery.of(context).size;
     var initialPos =
         Provider.of<MapsProvider>(context, listen: false).pickUpLocation;
-    Provider.of<MapsProvider>(context, listen: false)
-        .updateWinchLocationAddress(winchPosition);
+    // Provider.of<WinchRequestProvider>(context, listen: false)
+    //     .updateWinchLocationAddress(winchPosition);
 
 
     final CameraPosition _initialPosition = CameraPosition(
@@ -102,7 +102,7 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                       _completerGoogleMap.complete(controller);
                       MapsProvider.googleMapController = controller;
 
-                      await PolyLineProvider.getPlaceDirection(context, MapsProvider.winchLocation, MapsProvider.pickUpLocation, MapsProvider.googleMapController, startMapMarker, destinationMapMarker);
+                      await PolyLineProvider.getPlaceDirection(context, WinchRequestProvider.winchLocation, MapsProvider.pickUpLocation, MapsProvider.googleMapController, startMapMarker, destinationMapMarker);
 
                       int i = 5;
                       timer = Timer.periodic(
@@ -114,9 +114,7 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                             print(i);
                             if (i == 5)
                             {
-                              lat = 31.205563;
-                              lng = 29.925792;
-                              latLng = LatLng(lat, lng);
+                              latLng = LatLng(WinchRequestProvider.winchLocation.latitude, WinchRequestProvider.winchLocation.longitude);
 
                              PolyLineProvider.updateMarkerPos(context, latLng, startMapMarker, MapsProvider.pickUpLocation);
 
@@ -125,9 +123,11 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                             }
                             else if (i == 4)
                               {
-                                lat = 31.206949;
-                                lng = 29.928185;
-                                latLng = LatLng(lat, lng);
+                                // lat = 31.206949;
+                                // lng = 29.928185;
+                                // latLng = LatLng(lat, lng);
+
+                                latLng = LatLng(WinchRequestProvider.winchLocation.latitude, WinchRequestProvider.winchLocation.longitude);
 
                                 PolyLineProvider.updateMarkerPos(context, latLng, startMapMarker, MapsProvider.pickUpLocation);
 
@@ -136,20 +136,24 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                               }
                             else if (i == 3)
                               {
+                                //
+                                // lat = 31.210219;
+                                // lng = 29.936829;
+                                // latLng = LatLng(lat, lng);
 
-                                lat = 31.210219;
-                                lng = 29.936829;
-                                latLng = LatLng(lat, lng);
 
+                                latLng = LatLng(WinchRequestProvider.winchLocation.latitude, WinchRequestProvider.winchLocation.longitude);
                                 PolyLineProvider.updateMarkerPos(context, latLng, startMapMarker, MapsProvider.pickUpLocation);
 
                                 i = i - 1;
                               }
                             else if (i == 2)
                               {
-                                lat = 31.217418;
-                                lng = 29.946520;
-                                latLng = LatLng(lat, lng);
+                                // lat = 31.217418;
+                                // lng = 29.946520;
+                                // latLng = LatLng(lat, lng);
+
+                                latLng = LatLng(WinchRequestProvider.winchLocation.latitude, WinchRequestProvider.winchLocation.longitude);
 
                                 PolyLineProvider.updateMarkerPos(context, latLng, startMapMarker, MapsProvider.pickUpLocation);
 

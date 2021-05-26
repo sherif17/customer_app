@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/winch_request/cancel_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/check_request_status_model.dart';
 import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
@@ -23,6 +24,8 @@ class WinchRequestProvider with ChangeNotifier {
   WinchRequestApi api = new WinchRequestApi();
 
   Timer trackWinchDriverTimer;
+
+  Address winchLocation;
 
   bool isLoading = false;
   bool STATUS_TERMINATED = false;
@@ -101,11 +104,14 @@ class WinchRequestProvider with ChangeNotifier {
         if (STATUS_ACCEPTED == true ||
             STATUS_ARRIVED == true ||
             STATUS_STARTED == true) {
-          print(
-              "Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
-          print(
-              "Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
-          print("locations must be updated in provider");
+
+          winchLocation.latitude = double.parse(checkRequestStatusResponseModel.driverLocationLat);
+          winchLocation.longitude = double.parse(checkRequestStatusResponseModel.driverLocationLong);
+          winchLocation.placeName = "Winch driver current Location";
+
+          print("Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
+          print("Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
+
         } else
           print("Status now : ${checkRequestStatusResponseModel.status}");
       });
@@ -149,4 +155,10 @@ class WinchRequestProvider with ChangeNotifier {
     CANCLING_RIDE = false;
     notifyListeners();
   }
+
+  void updateWinchLocationAddress(Address winchPosition) {
+    winchLocation = winchPosition;
+    notifyListeners();
+  }
+
 }

@@ -312,6 +312,15 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                                       BorderSide(color: Colors.green)))),
                                           onPressed: () async {
                                             print("bye bye");
+
+
+                                            // Navigator
+                                            //     .pushNamedAndRemoveUntil(
+                                            //     context,
+                                            //     WinchToCustomer
+                                            //         .routeName,
+                                            //         (route) => false);
+
                                             await WinchRequestProvider
                                                 .confirmWinchService(
                                                     /*WinchRequestProvider

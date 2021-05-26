@@ -29,7 +29,7 @@ class PolyLineProvider extends ChangeNotifier {
   }
 
 
-  Future<void> getPlaceDirection(context, Address initialPosition, Address finalPosition, GoogleMapController _googleMapController, BitmapDescriptor startMapMarker, destinationMapMarker ) async {
+  Future<void> getPlaceDirection(context, Address initialPosition, Address finalPosition, GoogleMapController _googleMapController, BitmapDescriptor startMapMarker, BitmapDescriptor destinationMapMarker) async {
 
 
     print("initial position descriptor:: " + initialPosition.descriptor + "initial position name" + initialPosition.placeName);
