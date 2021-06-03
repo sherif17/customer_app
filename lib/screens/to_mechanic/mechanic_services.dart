@@ -4,23 +4,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'helpme.dart';
 import 'problems.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'flutterTabs',
-      home: tabs(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class tabs extends StatefulWidget {
+
   @override
   _tabsState createState() => _tabsState();
 }
@@ -75,11 +60,12 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                EdgeInsets.only(left: size.width * 0.1, top: size.height * 0.1),
+                            padding: EdgeInsets.only(
+                                left: size.width * 0.1, top: size.height * 0.1),
                             child: Text(
                               "What is the wrong with you car ?",
-                              style: TextStyle(color: Colors.blue, fontSize: 20),
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 20),
                             ),
                           ),
                         ],
@@ -92,7 +78,8 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                         style: TextStyle(fontSize: 20, color: Colors.blue),
                         decoration: InputDecoration(
                             hintText: "Enter Car-Type Model",
-                            hintStyle: TextStyle(fontSize: 20.0, color: Colors.blue)),
+                            hintStyle:
+                                TextStyle(fontSize: 20.0, color: Colors.blue)),
                       ),
                       Container(
                           padding: EdgeInsets.only(
@@ -131,14 +118,17 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                               constraints: BoxConstraints(maxHeight: 35.0),
                               child: Material(
                                 child: TabBar(
-                                  onTap: (index) => _scrollController.move(index),
+                                  onTap: (index) =>
+                                      _scrollController.move(index),
                                   controller: tabController,
                                   isScrollable: true,
-                                  indicatorColor: Color.fromRGBO(0, 202, 157, 1),
+                                  indicatorColor:
+                                      Color.fromRGBO(0, 202, 157, 1),
                                   labelColor: Colors.black,
                                   labelStyle: TextStyle(fontSize: 17),
                                   unselectedLabelColor: Colors.black,
-                                  tabs: List<Widget>.generate(list_name.length, (int index) {
+                                  tabs: List<Widget>.generate(list_name.length,
+                                      (int index) {
                                     return new Tab(text: list_name[index]);
                                   }),
                                 ),
@@ -177,7 +167,9 @@ class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
                                 return VisibilityDetector(
                                   key: Key(index.toString()),
                                   child: Container(
-                                    child: selectedIndex == 4 ? helpme() : problems(),
+                                    child: selectedIndex == 4
+                                        ? helpme()
+                                        : problems(),
                                   ),
                                   onVisibilityChanged: (VisibilityInfo info) {
                                     if (info.visibleFraction == 1)

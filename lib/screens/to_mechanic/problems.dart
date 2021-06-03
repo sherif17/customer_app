@@ -77,7 +77,6 @@ class _problemsState extends State<problems> {
           ),
         ),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
