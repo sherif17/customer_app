@@ -127,7 +127,8 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
-          initialRoute: ChoosingMechanicServices.routeName, //RegisterNewUser.routeName,
+          initialRoute:
+              ChoosingMechanicServices.routeName, //RegisterNewUser.routeName,
           // TOKEN == "" || BACKEND_ID == ""
           //     ? Intro.routeName
           //     : DashBoard.routeName,
