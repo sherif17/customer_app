@@ -1,8 +1,11 @@
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:provider/provider.dart';
 
 import 'home_body.dart';
 
@@ -12,10 +15,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String userFName = "user";
+  String userFName = loadFirstNameFromDB();
   @override
   void initState() {
-    getCurrentUserData();
+    //getCurrentUserData();
     super.initState();
   }
 

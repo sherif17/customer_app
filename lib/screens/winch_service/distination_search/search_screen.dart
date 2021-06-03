@@ -1,16 +1,13 @@
-import 'package:customer_app/DataHandler/appData.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
-import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/models/maps/placePredictions.dart';
-import 'package:customer_app/screens/to_winch/distination_search/places_pridication.dart';
+import 'package:customer_app/screens/winch_service/distination_search/places_pridication.dart';
+import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/widgets/divider.dart';
-import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:customer_app/models/maps/address.dart';
-
-import '../../../services/maps_services/RequestAssistant.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -21,12 +18,14 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController pickUpTextEditingController = TextEditingController();
   TextEditingController dropOffTextEditingController = TextEditingController();
   List<PlacePredictions> placePredictionList = [];
-  String currentLang;
-
+  String currentLang = loadCurrentLangFromDB();
+  String placeAddress;
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    // placeAddress =
+    //     Provider.of<MapsProvider>(context).pickUpLocation.placeName ?? "";
+    // getCurrentPrefData();
   }
 
   void getCurrentPrefData() {
@@ -39,9 +38,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String placeAddress = Provider.of<AppData>(context).pickUpLocation.placeName ?? "";
+    String placeAddress =
+        Provider.of<MapsProvider>(context).pickUpLocation.placeName ?? "";
     pickUpTextEditingController.text = placeAddress;
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -62,7 +61,8 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.02, vertical: size.height * 0.02),
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.02),
                 child: Column(children: [
                   SizedBox(height: size.height * 0.05),
                   Stack(
@@ -95,14 +95,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           decoration: BoxDecoration(
                             //color: Colors.grey[400],
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+                                topLeft: Radius.circular(18.0),
+                                topRight: Radius.circular(18.0)),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
                               controller: pickUpTextEditingController,
                               decoration: InputDecoration(
-                                hintText: currentLang == "en" ? "Pickup Location" : "موقعك",
+                                hintText: currentLang == "en"
+                                    ? "Pickup Location"
+                                    : "موقعك",
                                 fillColor: Theme.of(context).accentColor,
                                 filled: true,
                                 border: InputBorder.none,
@@ -134,7 +137,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           decoration: BoxDecoration(
                             //color: Colors.grey[400],
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+                                topLeft: Radius.circular(18.0),
+                                topRight: Radius.circular(18.0)),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
@@ -144,7 +148,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               },
                               controller: dropOffTextEditingController,
                               decoration: InputDecoration(
-                                hintText: currentLang == "en" ? "Where to?" : "الي اين ؟",
+                                hintText: currentLang == "en"
+                                    ? "Where to?"
+                                    : "الي اين ؟",
                                 fillColor: Theme.of(context).accentColor,
                                 filled: true,
                                 border: InputBorder.none,
@@ -181,7 +187,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           currentLang: currentLang,
                         );
                       },
-                      separatorBuilder: (BuildContext context, int index) => DividerWidget(),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          DividerWidget(),
                       itemCount: placePredictionList.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
@@ -201,7 +208,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     width: 12.0,
                   ),
                   GestureDetector(
-                    child: Text(getTranslated(context, "Set A location on the map")),
+                    child: Text(
+                        getTranslated(context, "Set A location on the map")),
                   ),
                 ],
               ),
@@ -290,7 +298,9 @@ class _SearchScreenState extends State<SearchScreen> {
       if (res["status"] == "OK") {
         var predictions = res["predictions"];
 
-        var placeList = (predictions as List).map((e) => PlacePredictions.fromJson(e)).toList();
+        var placeList = (predictions as List)
+            .map((e) => PlacePredictions.fromJson(e))
+            .toList();
         setState(() {
           placePredictionList = placeList;
         });

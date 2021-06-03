@@ -1,6 +1,6 @@
-import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/maps/placePredictions.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +104,7 @@ class PredictionTile extends StatelessWidget {
       print("Drop Off Address Longitude::");
       print(address.longitude);
 
-      Provider.of<AppData>(context, listen: false)
+      Provider.of<MapsProvider>(context, listen: false)
           .updateDropOffLocationAddress(address);
       print("Drop off address name :: " + address.placeName);
 

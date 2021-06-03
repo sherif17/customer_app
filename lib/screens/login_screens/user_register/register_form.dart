@@ -1,4 +1,5 @@
 //import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/local_db/customer_info_db.dart';
 import 'package:customer_app/models/user_register/user_register_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -111,17 +112,23 @@ class _RegisterFormState extends State<RegisterForm> {
                 if (value.error == null) {
                   jwtToken = value.token;
                   setPrefJwtToken(jwtToken);
+                  saveJwtTokenInDB(jwtToken);
                   Map<String, dynamic> decodedToken =
                       JwtDecoder.decode(jwtToken);
                   responseID = decodedToken["_id"];
                   setPrefBackendID(decodedToken["_id"]);
+                  saveBackendIBInDB(decodedToken["_id"]);
                   // responseFName = decodedToken["firstName"];
                   //responseLName = decodedToken["lastName"];
                   responseIat = decodedToken["iat"];
                   setPrefIAT(decodedToken["iat"].toString());
+                  saveIATInDB(decodedToken["iat"].toString());
                   setPrefFirstName(userRegisterRequestModel.firstName);
+                  saveFirstNameInDB(userRegisterRequestModel.firstName);
                   setPrefLastName(userRegisterRequestModel.lastName);
+                  saveLastNameInDB(userRegisterRequestModel.lastName);
                   printAllUserCurrentData();
+                  printAllCustomerSavedInfoInDB();
                   // print(responseID);
                   // print(responseLName);
                   // print(responseFName);
