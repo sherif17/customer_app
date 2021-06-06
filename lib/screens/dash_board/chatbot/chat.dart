@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatBot extends StatefulWidget {
+  static String routeName = '/ChatBot';
   @override
   _ChatBotState createState() => _ChatBotState();
 }

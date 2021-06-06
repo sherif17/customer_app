@@ -7,7 +7,7 @@ import 'package:customer_app/provider/winch_request/winch_request_provider.dart'
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_mechanic/choosing_mechanic_services.dart';
-import 'package:customer_app/screens/to_mechanic/mechanic_services.dart';
+import 'package:customer_app/screens/to_mechanic/break_down_services.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';

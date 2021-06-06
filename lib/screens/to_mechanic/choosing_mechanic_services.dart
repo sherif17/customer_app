@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ChoosingMechanicServices extends StatelessWidget {
-  static String routeName = '/MechanicService';
+  static String routeName = '/ChoosingMechanicServices';
   const ChoosingMechanicServices({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

@@ -4,13 +4,14 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'helpme.dart';
 import 'problems.dart';
 
-class tabs extends StatefulWidget {
-
+class BreakDownServices extends StatefulWidget {
+  static String routeName = '/BreakDownServices';
   @override
-  _tabsState createState() => _tabsState();
+  _BreakDownServicesState createState() => _BreakDownServicesState();
 }
 
-class _tabsState extends State<tabs> with SingleTickerProviderStateMixin {
+class _BreakDownServicesState extends State<BreakDownServices>
+    with SingleTickerProviderStateMixin {
   List list_name = ["Exterior", "Interior", "Engine", "Chasis", "Help me"];
 
   SwiperController _scrollController = new SwiperController();

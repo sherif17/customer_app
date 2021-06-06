@@ -64,4 +64,14 @@ class CustomerCarProvider extends ChangeNotifier {
     customerOwnedCars.delete(id);
     notifyListeners();
   }
+
+  String selectedItem;
+
+  List<customerOwnedCarsDB> get items => customerOwnedCars.values.toList();
+  String get selected => selectedItem;
+
+  void setSelectedItem(String s) {
+    selectedItem = s;
+    notifyListeners();
+  }
 }
