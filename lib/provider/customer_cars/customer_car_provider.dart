@@ -1,4 +1,4 @@
-import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/local_db/customer_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/models/cars/add_new_car_model.dart';
 import 'package:customer_app/models/cars/load_user_cars_model.dart';
 import 'package:customer_app/services/car_services/car_services.dart';

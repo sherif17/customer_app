@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';

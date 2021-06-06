@@ -1,4 +1,4 @@
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/utils/constants.dart';

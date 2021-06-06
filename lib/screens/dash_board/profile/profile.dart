@@ -1,5 +1,5 @@
 import 'package:customer_app/lang/language_list.dart';
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/main.dart';
 import 'package:customer_app/screens/dash_board/profile/profile_body.dart';

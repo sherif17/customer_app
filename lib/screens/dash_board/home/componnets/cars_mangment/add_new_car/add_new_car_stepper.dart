@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/models/cars/add_new_car_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';

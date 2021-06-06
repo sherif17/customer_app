@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:customer_app/screens/to_mechanic/break_down_services.dart';
 import 'package:customer_app/screens/to_mechanic/routine_maintenance_services.dart';
-import '../../local_db/cutomer_owned_cars_model.dart';
+import '../../local_db/customer_db/cutomer_owned_cars_model.dart';
 import '../../provider/customer_cars/customer_car_provider.dart';
 import '../dash_board/chatbot/chat.dart';
 

@@ -1,4 +1,4 @@
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:flutter/material.dart';
 import 'demo_localization.dart';

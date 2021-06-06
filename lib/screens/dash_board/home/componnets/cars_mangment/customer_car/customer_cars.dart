@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:customer_app/local_db/customer_info_db.dart';
-import 'package:customer_app/local_db/customer_info_db_model.dart';
-import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db_model.dart';
+import 'package:customer_app/local_db/customer_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/services/car_services/car_services.dart';

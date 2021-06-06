@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:customer_app/local_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
 import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';

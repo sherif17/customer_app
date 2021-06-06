@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:customer_app/local_db/customer_info_db.dart';
-import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
+import 'package:customer_app/local_db/customer_db/cutomer_owned_cars_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';

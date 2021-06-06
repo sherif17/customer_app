@@ -1,4 +1,4 @@
-import 'package:customer_app/local_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/local_db/customer_db/cutomer_owned_cars_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
