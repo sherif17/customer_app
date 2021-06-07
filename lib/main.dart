@@ -1,8 +1,10 @@
 import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/local_db/customer_db/cutomer_owned_cars_model.dart';
+import 'package:customer_app/local_db/mechanic_services_db/break_down_model.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
+import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
@@ -28,8 +30,10 @@ void main() async {
   Hive.init(appDocumentDir.path);
   //Hive.registerAdapter(customerInfoDBAdapter());
   Hive.registerAdapter(customerOwnedCarsDBAdapter());
+  Hive.registerAdapter(BreakDownDBAdapter());
   await Hive.openBox<customerOwnedCarsDB>(
       "customerCarsDBBox"); // for customer cars
+  await Hive.openBox<BreakDownDBAdapter>("BreakDownDBBox");
   await Hive.openBox<String>("customerInfoDBBox"); // for customer info
   bool devicePreview = false;
   if (devicePreview == false)
@@ -122,6 +126,8 @@ class _MyAppState extends State<MyApp> {
               create: (_) => CustomerCarProvider()),
           ChangeNotifierProvider<PolyLineProvider>(
               create: (_) => PolyLineProvider()),
+          ChangeNotifierProvider<MechanicServiceProvider>(
+              create: (_) => MechanicServiceProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

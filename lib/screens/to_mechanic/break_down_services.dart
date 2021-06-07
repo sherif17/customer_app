@@ -1,3 +1,4 @@
+import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -30,7 +31,6 @@ class _BreakDownServicesState extends State<BreakDownServices>
   @override
   void initState() {
     super.initState();
-
     tabController = TabController(
       initialIndex: selectedIndex,
       length: list_name.length,
@@ -47,6 +47,8 @@ class _BreakDownServicesState extends State<BreakDownServices>
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<MechanicServiceProvider>(context, listen: false)
+        .getBreakDownListFromBackend();
     final Size size = MediaQuery.of(context).size;
     final double categoryHeight = size.height * 0.15;
     return Scaffold(
