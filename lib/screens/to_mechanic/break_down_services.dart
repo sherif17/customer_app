@@ -1,5 +1,10 @@
+import 'dart:ui';
+
 import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -18,125 +23,210 @@ class BreakDownServices extends StatefulWidget {
 class _BreakDownServicesState extends State<BreakDownServices>
     with SingleTickerProviderStateMixin {
   List list_name = ["Exterior", "Interior", "Engine", "Chasis", "Help me"];
-
-  SwiperController _scrollController = new SwiperController();
-
-  TabController tabController;
-  List<Widget> itemsData = [];
-
-  int currentindex2 = 0; // for swiper index initial
-
-  int selectedIndex = 0; // for tab
-
   @override
   void initState() {
     super.initState();
-    tabController = TabController(
-      initialIndex: selectedIndex,
+    final mechanicServiceProviderObj =
+        Provider.of<MechanicServiceProvider>(context, listen: false);
+    mechanicServiceProviderObj.getBreakDownListFromBackend();
+    mechanicServiceProviderObj.tabController = TabController(
+      initialIndex: Provider.of<MechanicServiceProvider>(context, listen: false)
+          .selectedIndex,
       length: list_name.length,
       vsync: this,
     );
 
-    tabController.addListener(() {
-      setState(() {
-        print(tabController.index);
-        _scrollController.move(tabController.index);
-      });
+    mechanicServiceProviderObj.tabController.addListener(() {
+      mechanicServiceProviderObj.scrollController
+          .move(mechanicServiceProviderObj.tabController.index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<MechanicServiceProvider>(context, listen: false)
-        .getBreakDownListFromBackend();
     final Size size = MediaQuery.of(context).size;
     final double categoryHeight = size.height * 0.15;
+    print("sherif");
     return Scaffold(
-        body: Consumer<CustomerCarProvider>(
-      builder: (context, CustomerCarProvider, child) => Stack(
-        children: [
-          Container(
-            height: size.height,
-            width: size.width,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.05, horizontal: size.width * 0.02),
-              child: Text(
-                "what's wrong with your car ?",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+        body: Consumer2<CustomerCarProvider, MechanicServiceProvider>(
+      builder: (context, CustomerCarProvider, MechanicServiceProvider, child) =>
+          SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              height: size.height,
+              width: size.width,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: size.height * 0.015,
+                        horizontal: size.width * 0),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        "Break Downs",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.01),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.directions_car_rounded,
+                          color: Colors.white,
+                          size: size.height * 0.035,
+                        ),
+                        SizedBox(
+                          width: size.width * 0.02,
+                        ),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            dropdownColor: Colors.grey.withOpacity(0.5),
+                            style: TextStyle(color: Colors.black),
+                            iconEnabledColor: Colors.white,
+                            hint: Text(
+                                CustomerCarProvider.selectedItem ??
+                                    "Select One Of Your Cars",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                            value: CustomerCarProvider.selectedItem,
+                            onChanged: (String newValue) {
+                              CustomerCarProvider.setSelectedItem(newValue);
+                            },
+                            items: CustomerCarProvider.items
+                                .map<DropdownMenuItem<String>>(
+                                    (customerOwnedCarsDB value) {
+                              return DropdownMenuItem<String>(
+                                value: value.id,
+                                child: Text(
+                                  value.CarBrand +
+                                      " " +
+                                      value.Model +
+                                      "-" +
+                                      value.Year,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              decoration: new BoxDecoration(
+                color: Colors.redAccent,
+                image: new DecorationImage(
+                    alignment: Alignment.topCenter,
+                    colorFilter: new ColorFilter.mode(
+                        Colors.black.withOpacity(0.3), BlendMode.dstATop),
+                    image: AssetImage(
+                        "assets/images/Car Inspection, Online Used Car Inspection Services in India.png")),
               ),
             ),
-            decoration: new BoxDecoration(
-              color: Colors.redAccent,
-              image: new DecorationImage(
-                  alignment: Alignment.topCenter,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  image: AssetImage(
-                      "assets/images/Car Inspection, Online Used Car Inspection Services in India.png")),
-            ),
-          ),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    )),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.015),
-                      child: Container(
-                        height: 5,
-                        width: size.width * 0.5,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+            Positioned(
+                top: MediaQuery.of(context).size.height * 0.15,
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      )),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.015,
                       ),
-                    ),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        hint: Text(
-                            CustomerCarProvider.selectedItem ??
-                                "Select One Of Your Cars",
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 20)),
-                        value: CustomerCarProvider.selectedItem,
-                        onChanged: (String newValue) {
-                          CustomerCarProvider.setSelectedItem(newValue);
+                      // Padding(
+                      //   padding: EdgeInsets.only(
+                      //       top: MediaQuery.of(context).size.height * 0.015),
+                      //   child: Container(
+                      //     height: 5,
+                      //     width: size.width * 0.5,
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.grey.withOpacity(0.2),
+                      //       borderRadius: BorderRadius.circular(5),
+                      //     ),
+                      //   ),
+                      // ),
+                      TabBar(
+                        onTap: (index) {
+                          MechanicServiceProvider.selectedIndex = index;
+                          return MechanicServiceProvider.getCurrentTab(index);
                         },
-                        items: CustomerCarProvider.items
-                            .map<DropdownMenuItem<String>>(
-                                (customerOwnedCarsDB value) {
-                          return DropdownMenuItem<String>(
-                            value: value.id,
-                            child: Text(
-                              value.CarBrand +
-                                  " " +
-                                  value.Model +
-                                  "-" +
-                                  value.Year,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                        controller: MechanicServiceProvider.tabController,
+                        isScrollable: true,
+
+                        indicatorColor:
+                            Colors.white, //Color.fromRGBO(0, 202, 157, 1),
+                        labelColor: Colors.white,
+                        labelStyle: TextStyle(fontSize: 17),
+                        unselectedLabelColor: Colors.black54,
+                        tabs: List<Widget>.generate(list_name.length,
+                            (int index) {
+                          return Tab(
+                            // text: list_name[index],
+                            child: Container(
+                              //height: size.height * 0.5,
+                              width: size.width * 0.2,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: index ==
+                                        MechanicServiceProvider.selectedIndex
+                                    ? Colors.redAccent.withOpacity(0.8)
+                                    : Colors.grey.withOpacity(0.15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(""),
+                                  Text(
+                                    list_name[index],
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
-                        }).toList(),
+                        }),
                       ),
-                    ),
-                  ],
-                ),
-              ))
-        ],
+                      Expanded(
+                        child: new Swiper(
+                          onIndexChanged: (index) {
+                            MechanicServiceProvider.getCurrentIndex(index);
+                            MechanicServiceProvider.tabController
+                                .animateTo(index);
+                          },
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return MechanicServiceProvider.selectedIndex == 4
+                                ? helpme()
+                                : problems();
+                          },
+                          itemCount: list_name.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+          ],
+        ),
       ),
     ));
   }
@@ -216,7 +306,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
 //                                 ), //BoxShadow
 //                               ],
 //                             ),
-//                             constraints: BoxConstraints(maxHeight: 35.0),
+// //                             constraints: BoxConstraints(maxHeight: 35.0),
 //                             child: Material(
 //                               child: TabBar(
 //                                 onTap: (index) =>
