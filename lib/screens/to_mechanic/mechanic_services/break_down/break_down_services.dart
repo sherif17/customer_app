@@ -8,11 +8,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import '../../local_db/customer_db/cutomer_owned_cars_model.dart';
-import '../../provider/customer_cars/customer_car_provider.dart';
-import '../../provider/customer_cars/customer_car_provider.dart';
-import 'helpme.dart';
-import 'problems.dart';
+import '../../../../local_db/customer_db/cutomer_owned_cars_model.dart';
+import '../../../../provider/customer_cars/customer_car_provider.dart';
+import '../../../../provider/customer_cars/customer_car_provider.dart';
+import '../../helpme.dart';
+import '../../problems.dart';
 
 class BreakDownServices extends StatefulWidget {
   static String routeName = '/BreakDownServices';

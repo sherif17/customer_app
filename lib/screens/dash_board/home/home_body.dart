@@ -4,6 +4,7 @@ import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/add_new_car/add_new_car_stepper.dart';
 import 'package:customer_app/screens/dash_board/home/componnets/cars_mangment/customer_car/customer_cars.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/choosing_mechanic_services.dart';
 import 'package:customer_app/screens/winch_service/winch_map.dart';
 import 'package:customer_app/services/car_services/car_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,8 +71,16 @@ class _HomeBodyState extends State<HomeBody> {
           child: buildServices(size, context, "assets/icons/tow-truck.svg",
               getTranslated(context, "Winch"), 0),
         ),
-        buildServices(size, context, "assets/icons/mechanic (1).svg",
-            getTranslated(context, "Mechanic"), 1),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              ChoosingMechanicServices.routeName,
+            );
+          },
+          child: buildServices(size, context, "assets/icons/mechanic (1).svg",
+              getTranslated(context, "Mechanic"), 1),
+        ),
       ],
     );
   }

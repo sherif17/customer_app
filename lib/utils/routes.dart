@@ -4,15 +4,14 @@ import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:customer_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
-import 'package:customer_app/screens/to_mechanic/choosing_mechanic_services.dart';
-import 'package:customer_app/screens/to_mechanic/break_down_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/break_down/break_down_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/choosing_mechanic_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/routine_maintenance/routine_maintenance_services.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/accepted_winch_driver_sheet.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/accepted_winch_trip_map.dart';
 import 'package:customer_app/screens/winch_service/to_winch_map.dart';
 import 'package:customer_app/screens/winch_service/winch_map.dart';
 import 'package:flutter/widgets.dart';
-
-import 'package:customer_app/screens/to_mechanic/routine_maintenance_services.dart';
 
 import '../screens/dash_board/chatbot/chat.dart';
 
