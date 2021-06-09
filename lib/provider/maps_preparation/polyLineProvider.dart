@@ -10,7 +10,6 @@ import 'package:customer_app/screens/dash_board/profile/profile_body.dart';
 import 'package:customer_app/widgets/progress_Dialog.dart';
 
 class PolyLineProvider extends ChangeNotifier {
-
   DirectionDetails tripDirectionDetails;
   List<LatLng> pLineCoordinates = [];
   Set<Polyline> polylineSet = {};
@@ -28,25 +27,34 @@ class PolyLineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future<void> getPlaceDirection(context, Address initialPosition, Address finalPosition, GoogleMapController _googleMapController, BitmapDescriptor startMapMarker, BitmapDescriptor destinationMapMarker) async {
-
-
-    print("initial position descriptor:: " + initialPosition.descriptor + "initial position name" + initialPosition.placeName);
-    print("final position:: " + finalPosition.descriptor + finalPosition.placeName);
-    var initialLatLng = LatLng(initialPosition.latitude, initialPosition.longitude);
+  Future<void> getPlaceDirection(
+      {context,
+      Address initialPosition,
+      Address finalPosition,
+      GoogleMapController googleMapController,
+      BitmapDescriptor startMapMarker,
+      BitmapDescriptor destinationMapMarker}) async {
+    // print("initial position descriptor:: " +
+    //     initialPosition.descriptor +
+    //     "initial position name" +
+    //     initialPosition.placeName);
+    // print("final position:: " +
+    //     finalPosition.descriptor +
+    //     finalPosition.placeName);
+    var initialLatLng =
+        LatLng(initialPosition.latitude, initialPosition.longitude);
     var finalLatLng = LatLng(finalPosition.latitude, finalPosition.longitude);
 
     showDialog(
         context: context,
         builder: (BuildContext context) => ProgressDialog(
             message:
-            currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
+                currentLang == "en" ? "Please wait.." : "انتظر قليلا...."));
 
     var details = await MapsApiService.obtainPlaceDirectionDetails(
         initialLatLng, finalLatLng);
 
-      tripDirectionDetails = details;
+    tripDirectionDetails = details;
 
     Navigator.pop(context);
 
@@ -55,7 +63,7 @@ class PolyLineProvider extends ChangeNotifier {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResult =
-    polylinePoints.decodePolyline(details.encodedPoints);
+        polylinePoints.decodePolyline(details.encodedPoints);
 
     pLineCoordinates.clear();
 
@@ -67,17 +75,17 @@ class PolyLineProvider extends ChangeNotifier {
     }
     polylineSet.clear();
 
-      Polyline polyline = Polyline(
-        color: Theme.of(context).primaryColor,
-        polylineId: PolylineId("PolylineID"),
-        jointType: JointType.round,
-        points: pLineCoordinates,
-        width: 5,
-        startCap: Cap.roundCap,
-        endCap: Cap.roundCap,
-        geodesic: true,
-      );
-      polylineSet.add(polyline);
+    Polyline polyline = Polyline(
+      color: Theme.of(context).primaryColor,
+      polylineId: PolylineId("PolylineID"),
+      jointType: JointType.round,
+      points: pLineCoordinates,
+      width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      geodesic: true,
+    );
+    polylineSet.add(polyline);
 
     LatLngBounds latLngBounds;
 
@@ -98,28 +106,28 @@ class PolyLineProvider extends ChangeNotifier {
           LatLngBounds(southwest: initialLatLng, northeast: finalLatLng);
     }
 
-    _googleMapController
+    googleMapController
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     //String initialSnippet = initialPosition.descriptor + " location";
     initialLocMarker = Marker(
         icon: startMapMarker,
-        infoWindow:
-        InfoWindow(title: initialPosition.placeName,
-            //snippet: initialSnippet
+        infoWindow: InfoWindow(
+          title: initialPosition.placeName,
+          //snippet: initialSnippet
         ),
         position: initialLatLng,
         markerId: MarkerId("winchId"));
 
-   Marker finalLocMarker = Marker(
+    Marker finalLocMarker = Marker(
         icon: destinationMapMarker,
-        infoWindow:
-        InfoWindow(title: finalPosition.placeName, snippet: "PickUp location"),
+        infoWindow: InfoWindow(
+            title: finalPosition.placeName, snippet: "PickUp location"),
         position: finalLatLng,
         markerId: MarkerId("pickUpId"));
 
-      markersSet.add(initialLocMarker);
-      markersSet.add(finalLocMarker);
+    markersSet.add(initialLocMarker);
+    markersSet.add(finalLocMarker);
 
     Circle startLocCircle = Circle(
       fillColor: Colors.blue,
@@ -139,16 +147,15 @@ class PolyLineProvider extends ChangeNotifier {
       circleId: CircleId("endId"),
     );
 
-      circlesSet.add(startLocCircle);
-      circlesSet.add(endLocCircle);
+    circlesSet.add(startLocCircle);
+    circlesSet.add(endLocCircle);
 
-      print("polyline");
-      notifyListeners();
-
+    print("polyline");
+    notifyListeners();
   }
 
-
-  Future<void> updateMarkerPos(context, LatLng newLatLngPos, BitmapDescriptor updateMapMarker, Address finalPos ) async {
+  Future<void> updateMarkerPos(context, LatLng newLatLngPos,
+      BitmapDescriptor updateMapMarker, Address finalPos) async {
     markersSet.remove(initialLocMarker);
     var finalLatLng = LatLng(finalPos.latitude, finalPos.longitude);
     var details = await MapsApiService.obtainPlaceDirectionDetails(
@@ -163,8 +170,6 @@ class PolyLineProvider extends ChangeNotifier {
 
     markersSet.add(initialLocMarker);
 
-
     notifyListeners();
   }
-
-  }
+}

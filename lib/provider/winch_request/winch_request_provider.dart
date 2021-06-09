@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/winch_request/cancel_winch_service_model.dart';
@@ -7,8 +6,12 @@ import 'package:customer_app/models/winch_request/check_request_status_model.dar
 import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/rate_winch_driver_model.dart';
 import 'package:customer_app/services/winch_services/winch_request_services.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
+
+import '../customer_cars/customer_car_provider.dart';
+import '../maps_preparation/mapsProvider.dart';
+import '../maps_preparation/polyLineProvider.dart';
 
 class WinchRequestProvider with ChangeNotifier {
   ConfirmWinchServiceRequestModel confirmWinchServiceRequestModel;
@@ -25,7 +28,7 @@ class WinchRequestProvider with ChangeNotifier {
 
   Timer trackWinchDriverTimer;
 
-  Address winchLocation;
+  Address winchLocation = Address();
 
   bool isLoading = false;
   bool STATUS_TERMINATED = false;
@@ -38,24 +41,29 @@ class WinchRequestProvider with ChangeNotifier {
   bool STATUS_ARRIVED = false;
   bool STATUS_STARTED = false;
 
-  confirmWinchService() async {
+  confirmWinchService(context) async {
+    confirmWinchServiceRequestModel.carId =
+        Provider.of<CustomerCarProvider>(context, listen: false).selectedItem;
     print(confirmWinchServiceRequestModel.toJson());
     isLoading = true;
     confirmWinchServiceResponseModel = await api.findWinchDriver(
         confirmWinchServiceRequestModel, loadJwtTokenFromDB());
     isLoading = false;
     if (confirmWinchServiceResponseModel.status == "SEARCHING"
-        /*confirmWinchServiceResponseModel.requestId == null*/)
+        /*confirmWinchServiceResponseModel.requestId == null*/) {
       STATUS_SEARCHING = true;
-    if (confirmWinchServiceResponseModel.status == "COMPLETED")
+      // Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
+    }
+    if (confirmWinchServiceResponseModel.status == "COMPLETED") {
       STATUS_COMPLETED = true;
+    }
     if (confirmWinchServiceResponseModel.status == "SEARCHING" &&
         confirmWinchServiceResponseModel.requestId != null)
       STATUS_HAVE_ACTIVE_RIDE = true;
     notifyListeners();
   }
 
-  checkStatusForConfirmedWinchService() async {
+  checkStatusForConfirmedWinchService(context) async {
     isLoading = true;
     checkRequestStatusResponseModel =
         await api.checkRequestStatus(loadJwtTokenFromDB());
@@ -72,6 +80,11 @@ class WinchRequestProvider with ChangeNotifier {
     if (checkRequestStatusResponseModel.status == "ACCEPTED") {
       STATUS_ACCEPTED = true;
       STATUS_SEARCHING = false;
+      winchLocation.latitude =
+          double.parse(checkRequestStatusResponseModel.driverLocationLat);
+      winchLocation.longitude =
+          double.parse(checkRequestStatusResponseModel.driverLocationLong);
+      winchLocation.placeName = "Winch driver current Location";
       print(
           "timePassedSinceRequestAcceptance: ${checkRequestStatusResponseModel.timePassedSinceRequestAcceptance}");
     }
@@ -84,8 +97,17 @@ class WinchRequestProvider with ChangeNotifier {
     }
     if (checkRequestStatusResponseModel.status == "Service STARTED") {
       STATUS_STARTED = true;
+      Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
       print(
           "timePassedSinceServiceStart:${checkRequestStatusResponseModel.timePassedSinceServiceStart}");
+      Provider.of<PolyLineProvider>(context, listen: false).getPlaceDirection(
+          context: context,
+          initialPosition:
+              Provider.of<MapsProvider>(context, listen: false).pickUpLocation,
+          finalPosition:
+              Provider.of<MapsProvider>(context, listen: false).dropOffLocation,
+          googleMapController: Provider.of<MapsProvider>(context, listen: false)
+              .googleMapController);
     }
 
     if (checkRequestStatusResponseModel.status == "TERMINATED") {
@@ -95,29 +117,31 @@ class WinchRequestProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  trackWinchDriver() {
+  trackWinchDriver(context) async {
     if (STATUS_ACCEPTED == true) {
       trackWinchDriverTimer =
           Timer.periodic(Duration(seconds: 5), (timer) async {
         print("Driver Tracking........");
-        await checkStatusForConfirmedWinchService();
+        await checkStatusForConfirmedWinchService(context);
         if (STATUS_ACCEPTED == true ||
             STATUS_ARRIVED == true ||
             STATUS_STARTED == true) {
-
-          winchLocation.latitude = double.parse(checkRequestStatusResponseModel.driverLocationLat);
-          winchLocation.longitude = double.parse(checkRequestStatusResponseModel.driverLocationLong);
+          winchLocation.latitude =
+              double.parse(checkRequestStatusResponseModel.driverLocationLat);
+          winchLocation.longitude =
+              double.parse(checkRequestStatusResponseModel.driverLocationLong);
           winchLocation.placeName = "Winch driver current Location";
 
-          print("Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
-          print("Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
-
+          print(
+              "Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
+          print(
+              "Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
         } else
           print("Status now : ${checkRequestStatusResponseModel.status}");
+        notifyListeners();
       });
     } else
       print("your request didn't accepted yet");
-
     notifyListeners();
   }
 
@@ -134,7 +158,9 @@ class WinchRequestProvider with ChangeNotifier {
     cancellingWinchServiceResponseModel =
         await api.cancelWinchRequest(loadJwtTokenFromDB());
     isLoading = false;
+    if (STATUS_ACCEPTED == true) trackWinchDriverTimer.cancel();
     if (cancellingWinchServiceResponseModel.status == "CANCELLED") {
+      print("Driver live location tracking timer cancelled");
       CANCLING_RIDE = true;
       if (cancellingWinchServiceResponseModel.details != null)
         CANCELING_ADDED_FINE = false;
@@ -160,5 +186,4 @@ class WinchRequestProvider with ChangeNotifier {
     winchLocation = winchPosition;
     notifyListeners();
   }
-
 }

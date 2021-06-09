@@ -18,17 +18,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
-class AcceptedWinchDriverSheet extends StatefulWidget {
-  static String routeName = '/AcceptedWinchDriverSheet';
+class AcceptedWinchServiceSheet extends StatefulWidget {
+  static String routeName = '/AcceptedWinchServiceSheet';
   @override
-  _AcceptedWinchDriverSheetState createState() =>
-      _AcceptedWinchDriverSheetState();
+  _AcceptedWinchServiceSheetState createState() =>
+      _AcceptedWinchServiceSheetState();
 }
 
 String driverFirstName;
 String driverLastName;
 
-class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
+class _AcceptedWinchServiceSheetState extends State<AcceptedWinchServiceSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -61,7 +61,6 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
 
     String carType = "Chevrolet";
 
-
     int estimatedFare =
         Provider.of<MapsProvider>(context, listen: false).estimatedFare;
     String estimatedDuration = Provider.of<MapsProvider>(context, listen: false)
@@ -82,8 +81,11 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
 
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: Consumer2<WinchRequestProvider, PolyLineProvider>(
-        builder: (context, WinchRequestProvider, PolyLineProvider, child) => DraggableScrollableSheet(
+      child: Consumer3<WinchRequestProvider, PolyLineProvider,
+          CustomerCarProvider>(
+        builder: (context, WinchRequestProvider, PolyLineProvider,
+                CustomerCarProvider, child) =>
+            DraggableScrollableSheet(
           initialChildSize: 0.4,
           minChildSize: 0.4,
           maxChildSize: 0.72,
@@ -161,7 +163,9 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                PolyLineProvider.tripDirectionDetails.durationText,
+                                                PolyLineProvider
+                                                    .tripDirectionDetails
+                                                    .durationText,
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 20),
@@ -400,9 +404,15 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                                     width: size.width * 0.01,
                                   ),
                                   Text(
-                                    selectedCar.getAt(0).CarBrand +
+                                    selectedCar
+                                            .get(CustomerCarProvider
+                                                .selectedItem)
+                                            .CarBrand +
                                         " " +
-                                        selectedCar.getAt(0).Model,
+                                        selectedCar
+                                            .get(CustomerCarProvider
+                                                .selectedItem)
+                                            .Model,
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
@@ -410,9 +420,11 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                               ),
                             ),
                             Expanded(
-                              flex: 3,
+                              flex: 4,
                               child: Text(
-                                selectedCar.getAt(0).Plates,
+                                selectedCar
+                                    .get(CustomerCarProvider.selectedItem)
+                                    .Plates,
                                 style: TextStyle(
                                     color: Colors.blue,
                                     fontWeight: FontWeight.normal),
@@ -426,7 +438,10 @@ class _AcceptedWinchDriverSheetState extends State<AcceptedWinchDriverSheet> {
                         onTap: () async {
                           await WinchRequestProvider.cancelWinchDriverRequest();
                           if (WinchRequestProvider.isLoading == false &&
-                              WinchRequestProvider.CANCELING_ADDED_FINE == true) {
+                                  WinchRequestProvider.CANCELING_ADDED_FINE ==
+                                      true ||
+                              WinchRequestProvider.CANCELING_ADDED_FINE ==
+                                  false) {
                             Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 ToWinchMap.routeName,

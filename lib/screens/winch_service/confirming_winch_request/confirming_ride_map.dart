@@ -66,10 +66,11 @@ class _RequestScreenState extends State<RequestScreen> {
   BitmapDescriptor destinationMapMarker;
 
   void setCustomMarker() async {
-    startMapMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/icons/Car.png');
-    destinationMapMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
+    startMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/Car.png');
+    destinationMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,68 +83,82 @@ class _RequestScreenState extends State<RequestScreen> {
       target: LatLng(initialPos.latitude, initialPos.longitude),
       zoom: 15.4746,
     );
-    return Consumer4<MapsProvider, WinchRequestProvider, CustomerCarProvider, PolyLineProvider>(
+    return Consumer4<MapsProvider, WinchRequestProvider, CustomerCarProvider,
+        PolyLineProvider>(
       builder: (context, MapsProvider, WinchRequestProvider,
-              CustomerCarProvider, PolyLineProvider, child) =>
+              customerCarProvider, PolyLineProvider, child) =>
           Scaffold(
         key: scaffoldKey,
         body: SafeArea(
           child: Stack(
             children: [
               // Map
-              GoogleMap(
-                  initialCameraPosition: _initialPosition,
-                  mapType: MapType.normal,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  zoomGesturesEnabled: true,
-                  zoomControlsEnabled: true,
-                  mapToolbarEnabled: true,
-                  polylines: PolyLineProvider.polylineSet,
-                  markers: PolyLineProvider.markersSet,
-                  circles: PolyLineProvider.circlesSet,
-                  onMapCreated: (GoogleMapController controller) async {
-                    _completerGoogleMap.complete(controller);
-                    MapsProvider.googleMapController = controller;
-                    await PolyLineProvider.getPlaceDirection(context, MapsProvider.pickUpLocation, MapsProvider.dropOffLocation, MapsProvider.googleMapController, startMapMarker, destinationMapMarker);
-                    // DirectionDetails tripDetails = MapsProvider.tripDirectionDetails;
-                    MapsProvider.tripDirectionDetails = PolyLineProvider.tripDirectionDetails;
-                    var pickUpLocation = MapsProvider.pickUpLocation;
-                    var dropOffLocation = MapsProvider.dropOffLocation;
-                    var pickUp = pickUpLocation.placeName;
-                    var pickUpLong = pickUpLocation.longitude.toString();
-                    var pickUpLat = pickUpLocation.latitude.toString();
-                    var dropOff = dropOffLocation.placeName;
-                    var dropOffLong = dropOffLocation.longitude.toString();
-                    var dropOffLat = dropOffLocation.latitude.toString();
+              Container(
+                height: size.height * 0.75,
+                child: GoogleMap(
+                    initialCameraPosition: _initialPosition,
+                    mapType: MapType.normal,
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
+                    zoomGesturesEnabled: true,
+                    zoomControlsEnabled: true,
+                    mapToolbarEnabled: true,
+                    polylines: PolyLineProvider.polylineSet,
+                    markers: PolyLineProvider.markersSet,
+                    circles: PolyLineProvider.circlesSet,
+                    onMapCreated: (GoogleMapController controller) async {
+                      _completerGoogleMap.complete(controller);
+                      MapsProvider.googleMapController = controller;
+                      await PolyLineProvider.getPlaceDirection(
+                        context: context,
+                        initialPosition: MapsProvider.pickUpLocation,
+                        finalPosition: MapsProvider.dropOffLocation,
+                        googleMapController: MapsProvider.googleMapController,
+                        startMapMarker: startMapMarker,
+                        destinationMapMarker: destinationMapMarker,
+                      );
+                      // DirectionDetails tripDetails = MapsProvider.tripDirectionDetails;
+                      MapsProvider.tripDirectionDetails =
+                          PolyLineProvider.tripDirectionDetails;
+                      var pickUpLocation = MapsProvider.pickUpLocation;
+                      var dropOffLocation = MapsProvider.dropOffLocation;
+                      var pickUp = pickUpLocation.placeName;
+                      var pickUpLong = pickUpLocation.longitude.toString();
+                      var pickUpLat = pickUpLocation.latitude.toString();
+                      var dropOff = dropOffLocation.placeName;
+                      var dropOffLong = dropOffLocation.longitude.toString();
+                      var dropOffLat = dropOffLocation.latitude.toString();
 
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLat=dropOffLat;
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLong=dropOffLong;
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLat=pickUpLat;
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLong=pickUpLong;
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.carId=CustomerCarProvider.customerOwnedCars.keyAt(0);
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedDistance= MapsProvider.tripDirectionDetails.distanceText;
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedFare= MapsProvider.estimatedFare.toString();
-                    // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedTime=MapsProvider.tripDirectionDetails.durationText;
-                    WinchRequestProvider.confirmWinchServiceRequestModel =
-                        new ConfirmWinchServiceRequestModel(
-                      dropOffLocationLat: dropOffLat,
-                      dropOffLocationLong: dropOffLong,
-                      pickupLocationLat: pickUpLat,
-                      pickupLocationLong: pickUpLong,
-                      carId: CustomerCarProvider.customerOwnedCars.keyAt(0),
-                      estimatedDistance:
-                          MapsProvider.tripDirectionDetails.distanceText,
-                      estimatedFare: MapsApiService.calculateFares(
-                              MapsProvider.tripDirectionDetails, context)
-                          .toString(),
-                          //MapsProvider.estimatedFare.toString(),
-                      estimatedTime:
-                          MapsProvider.tripDirectionDetails.durationText,
-                    );
-                    print(WinchRequestProvider.confirmWinchServiceRequestModel
-                        .toJson());
-                  }),
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLat=dropOffLat;
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.dropOffLocationLong=dropOffLong;
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLat=pickUpLat;
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.pickupLocationLong=pickUpLong;
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.carId=CustomerCarProvider.customerOwnedCars.keyAt(0);
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedDistance= MapsProvider.tripDirectionDetails.distanceText;
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedFare= MapsProvider.estimatedFare.toString();
+                      // WinchRequestProvider.confirmWinchServiceRequestModel.estimatedTime=MapsProvider.tripDirectionDetails.durationText;
+                      WinchRequestProvider.confirmWinchServiceRequestModel =
+                          new ConfirmWinchServiceRequestModel(
+                        dropOffLocationLat: dropOffLat,
+                        dropOffLocationLong: dropOffLong,
+                        pickupLocationLat: pickUpLat,
+                        pickupLocationLong: pickUpLong,
+                        // carId: Provider.of<CustomerCarProvider>(context,
+                        //         listen: true)
+                        //     .selectedItem,
+                        estimatedDistance:
+                            MapsProvider.tripDirectionDetails.distanceText,
+                        estimatedFare: MapsApiService.calculateFares(
+                                MapsProvider.tripDirectionDetails, context)
+                            .toString(),
+                        //MapsProvider.estimatedFare.toString(),
+                        estimatedTime:
+                            MapsProvider.tripDirectionDetails.durationText,
+                      );
+                      print(WinchRequestProvider.confirmWinchServiceRequestModel
+                          .toJson());
+                    }),
+              ),
 
               RideBottomSheet(),
             ],
@@ -152,5 +167,4 @@ class _RequestScreenState extends State<RequestScreen> {
       ),
     );
   }
-
 }

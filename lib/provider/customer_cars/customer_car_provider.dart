@@ -72,6 +72,7 @@ class CustomerCarProvider extends ChangeNotifier {
 
   void setSelectedItem(String s) {
     selectedItem = s;
+    print("selected car Id $selectedItem");
     notifyListeners();
   }
 }

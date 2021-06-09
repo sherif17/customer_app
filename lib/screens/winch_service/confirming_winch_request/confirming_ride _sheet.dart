@@ -63,7 +63,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                     ? DraggableScrollableSheet(
                         initialChildSize: 0.4,
                         minChildSize: 0.25,
-                        maxChildSize: 0.65,
+                        maxChildSize: 0.8,
                         builder: (ctx, myController) {
                           return SingleChildScrollView(
                             controller: myController,
@@ -248,28 +248,70 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                       height: size.height * 0.04,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.0),
+                                      padding:EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.02),
                                       child: Row(
                                         children: [
-                                          //Icon(FontAwesomeIcons.moneyCheckAlt, size: 18.0, color: Colors.black54,)
-                                          Icon(
-                                            Icons.money,
-                                            size: 18.0,
-                                            color: Colors.black54,
+                                          Icon(Icons.directions_car_rounded),
+                                          SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                                          DropdownButtonHideUnderline(
+                                            child: DropdownButton<String>(
+                                              hint: Text(
+                                                "Select One Of Your Cars",
+                                                style: TextStyle(
+                                                    color: Colors.black54, fontSize: 15),
+                                              ),
+                                              value: CustomerCarProvider.selectedItem,
+                                              onChanged: (String newValue) {
+                                                CustomerCarProvider.setSelectedItem(newValue);
+                                              },
+                                              items: CustomerCarProvider.items
+                                                  .map<DropdownMenuItem<String>>(
+                                                      (customerOwnedCarsDB value) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: value.id,
+                                                      child: Text(
+                                                        value.CarBrand +
+                                                            " " +
+                                                            value.Model +
+                                                            "-" +
+                                                            value.Year,
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Colors.black38,
+                                                            fontWeight: FontWeight.w600),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                            ),
                                           ),
                                           SizedBox(
-                                            width: 16.0,
+                                            height: size.width * 0.1,
                                           ),
-                                          Text("Cash"),
-                                          SizedBox(
-                                            width: 6.0,
-                                          ),
-                                          Icon(
-                                            Icons.keyboard_arrow_down,
-                                            size: 16.0,
-                                            color: Colors.black54,
-                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 40),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.money,
+                                                  size: 18.0,
+                                                  color: Colors.black54,
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text("Cash"),
+                                                SizedBox(
+                                                  width: 6.0,
+                                                ),
+                                                Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  size: 16.0,
+                                                  color: Colors.black54,
+                                                ),
+                                              ],
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
@@ -322,10 +364,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                             //         (route) => false);
 
                                             await WinchRequestProvider
-                                                .confirmWinchService(
-                                                    /*WinchRequestProvider
-                                          .confirmWinchServiceRequestModel*/
-                                                    );
+                                                .confirmWinchService(context);
                                             print("hi hi");
                                             if (WinchRequestProvider.isLoading ==
                                                     false &&
@@ -346,7 +385,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                                   (timer) async {
                                                 print("timer loop");
                                                 await WinchRequestProvider
-                                                    .checkStatusForConfirmedWinchService();
+                                                    .checkStatusForConfirmedWinchService(context);
                                                 if (WinchRequestProvider
                                                         .STATUS_TERMINATED ==
                                                     true) {
@@ -455,7 +494,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
       child: Consumer3<MapsProvider, WinchRequestProvider,CustomerCarProvider>(
         builder: (ctx, MapsProvider, WinchRequestProvider,CustomerCarProvider, child) =>
             DraggableScrollableSheet(
-                initialChildSize: 0.27,
+                initialChildSize: 0.25,
                 minChildSize: 0.23,
                 maxChildSize: 0.5,
                 builder: (context, myController) {
@@ -647,9 +686,9 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                         width:  MediaQuery.of(context).size.width * 0.01,
                                       ),
                                       Text(
-                                        selectedCar.getAt(0).CarBrand +
+                                        selectedCar.get(CustomerCarProvider.selectedItem).CarBrand +
                                             " " +
-                                            selectedCar.getAt(0).Model,
+                                            selectedCar.get(CustomerCarProvider.selectedItem).Model,
                                         style:
                                         Theme.of(context).textTheme.headline5,
                                       ),
@@ -657,9 +696,9 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 3,
+                                  flex: 4,
                                   child: Text(
-                                    selectedCar.getAt(0).Plates,
+                                    selectedCar.get(CustomerCarProvider.selectedItem).Plates,
                                     style: TextStyle(color: Colors.blue,fontWeight:FontWeight.normal),
                                   ),
                                 )
