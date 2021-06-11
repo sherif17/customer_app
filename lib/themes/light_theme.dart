@@ -35,6 +35,7 @@ ThemeData lightTheme() {
         fontSize: 21.0,
         fontFamily: 'Lato',
         fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
       bodyText1: base.bodyText1.copyWith(
         color: Colors.grey[800],

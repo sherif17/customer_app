@@ -27,8 +27,8 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
   @override
   void initState() {
     super.initState();
+    //Provider.of<WinchRequestProvider>(context, listen: false).setCustomMarker();
     Tracking(context);
-    setCustomMarker();
   }
 
   Tracking(context) async {
@@ -45,10 +45,12 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
   Timer timer;
   double lat, lng;
   LatLng latLng;
-  BitmapDescriptor startMapMarker;
-  BitmapDescriptor destinationMapMarker;
-  BitmapDescriptor secondMapStartMarker;
-  BitmapDescriptor secondMapDestinationMarker;
+
+  // BitmapDescriptor startMapMarker;
+  // BitmapDescriptor destinationMapMarker;
+  // BitmapDescriptor secondMapStartMarker;
+  // BitmapDescriptor secondMapDestinationMarker;
+
   //Address winchPosition = Address(latitude: 31.236110220827165 , longitude: 29.948748010875686, descriptor: "winch location", placeName: "Allah a3lm");
   // Address winchPosition = Address(
   //     latitude: 31.20684069999999,
@@ -57,19 +59,19 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
   //     placeName: "Winch current Location");
   //LatLng winchPosition = LatLng(31.20684069999999, 29.9237711);
 
-  void setCustomMarker() async {
-    startMapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(0.1, 0.1)),
-        'assets/icons/empty_winch.png');
-    destinationMapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/icons/Car.png');
-
-    secondMapDestinationMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
-    secondMapStartMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(0.1, 0.1)),
-        'assets/icons/winch_with_car.png');
-  }
+  // void setCustomMarker() async {
+  //   startMapMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(size: Size(0.1, 0.1)),
+  //       'assets/icons/empty_winch.png');
+  //   destinationMapMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(), 'assets/icons/Car.png');
+  //
+  //   secondMapDestinationMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
+  //   secondMapStartMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(size: Size(0.1, 0.1)),
+  //       'assets/icons/winch_with_car.png');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,101 +116,103 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                       _completerGoogleMap.complete(controller);
                       MapsProvider.googleMapController = controller;
                       await PolyLineProvider.getPlaceDirection(
-                        destinationMapMarker: destinationMapMarker,
-                        startMapMarker: startMapMarker,
+                        destinationMapMarker:
+                            WinchRequestProvider.destinationMapMarker,
+                        startMapMarker: WinchRequestProvider.startMapMarker,
                         context: context,
                         finalPosition: MapsProvider.pickUpLocation,
                         googleMapController: MapsProvider.googleMapController,
                         initialPosition: WinchRequestProvider.winchLocation,
                       );
 
-                      int i = 5;
-                      timer =
-                          Timer.periodic(Duration(seconds: 5), (timer) async {
-                        print("timer loop");
-
-                        print(i);
-                        if (i == 5) {
-                          latLng = LatLng(
-                              WinchRequestProvider.winchLocation.latitude,
-                              WinchRequestProvider.winchLocation.longitude);
-
-                          PolyLineProvider.updateMarkerPos(context, latLng,
-                              startMapMarker, MapsProvider.pickUpLocation);
-
-                          print("hi");
-                          i = i - 1;
-                        } else if (i == 4) {
-                          // lat = 31.206949;
-                          // lng = 29.928185;
-                          // latLng = LatLng(lat, lng);
-
-                          latLng = LatLng(
-                              WinchRequestProvider.winchLocation.latitude,
-                              WinchRequestProvider.winchLocation.longitude);
-
-                          PolyLineProvider.updateMarkerPos(context, latLng,
-                              startMapMarker, MapsProvider.pickUpLocation);
-
-                          i = i - 1;
-                        } else if (i == 3) {
-                          //
-                          // lat = 31.210219;
-                          // lng = 29.936829;
-                          // latLng = LatLng(lat, lng);
-
-                          latLng = LatLng(
-                              WinchRequestProvider.winchLocation.latitude,
-                              WinchRequestProvider.winchLocation.longitude);
-                          PolyLineProvider.updateMarkerPos(context, latLng,
-                              startMapMarker, MapsProvider.pickUpLocation);
-
-                          i = i - 1;
-                        } else if (i == 2) {
-                          // lat = 31.217418;
-                          // lng = 29.946520;
-                          // latLng = LatLng(lat, lng);
-
-                          latLng = LatLng(
-                              WinchRequestProvider.winchLocation.latitude,
-                              WinchRequestProvider.winchLocation.longitude);
-
-                          PolyLineProvider.updateMarkerPos(context, latLng,
-                              startMapMarker, MapsProvider.pickUpLocation);
-
-                          i = i - 1;
-                        } else if (i == 1) {
-                          lat = 31.224193;
-                          lng = 29.949566;
-                          latLng = LatLng(lat, lng);
-
-                          PolyLineProvider.updateMarkerPos(context, latLng,
-                              startMapMarker, MapsProvider.pickUpLocation);
-
-                          i = i - 1;
-                        } else if (i == 0) {
-                          PolyLineProvider.resetPolyLine();
-                          await PolyLineProvider.getPlaceDirection(
-                            destinationMapMarker: secondMapDestinationMarker,
-                            startMapMarker: secondMapStartMarker,
-                            context: context,
-                            finalPosition: MapsProvider.dropOffLocation,
-                            googleMapController:
-                                MapsProvider.googleMapController,
-                            initialPosition: WinchRequestProvider.winchLocation,
-                          );
-
-                          timer.cancel();
-                        }
-                      });
+                      // int i = 5;
+                      // timer =
+                      //     Timer.periodic(Duration(seconds: 5), (timer) async {
+                      //   print("timer loop");
+                      //
+                      //   print(i);
+                      //   if (i == 5) {
+                      //     latLng = LatLng(
+                      //         WinchRequestProvider.winchLocation.latitude,
+                      //         WinchRequestProvider.winchLocation.longitude);
+                      //
+                      //     PolyLineProvider.updateMarkerPos(context, latLng,
+                      //         WinchRequestProvider.startMapMarker, MapsProvider.pickUpLocation);
+                      //
+                      //     print("hi");
+                      //     i = i - 1;
+                      //   } else if (i == 4) {
+                      //     // lat = 31.206949;
+                      //     // lng = 29.928185;
+                      //     // latLng = LatLng(lat, lng);
+                      //
+                      //     latLng = LatLng(
+                      //         WinchRequestProvider.winchLocation.latitude,
+                      //         WinchRequestProvider.winchLocation.longitude);
+                      //
+                      //     PolyLineProvider.updateMarkerPos(context, latLng,
+                      //         WinchRequestProvider.startMapMarker, MapsProvider.pickUpLocation);
+                      //
+                      //     i = i - 1;
+                      //   } else if (i == 3) {
+                      //     //
+                      //     // lat = 31.210219;
+                      //     // lng = 29.936829;
+                      //     // latLng = LatLng(lat, lng);
+                      //
+                      //     latLng = LatLng(
+                      //         WinchRequestProvider.winchLocation.latitude,
+                      //         WinchRequestProvider.winchLocation.longitude);
+                      //     PolyLineProvider.updateMarkerPos(context, latLng,
+                      //         WinchRequestProvider.startMapMarker, MapsProvider.pickUpLocation);
+                      //
+                      //     i = i - 1;
+                      //   } else if (i == 2) {
+                      //     // lat = 31.217418;
+                      //     // lng = 29.946520;
+                      //     // latLng = LatLng(lat, lng);
+                      //
+                      //     latLng = LatLng(
+                      //         WinchRequestProvider.winchLocation.latitude,
+                      //         WinchRequestProvider.winchLocation.longitude);
+                      //
+                      //     PolyLineProvider.updateMarkerPos(context, latLng,
+                      //         WinchRequestProvider.startMapMarker, MapsProvider.pickUpLocation);
+                      //
+                      //     i = i - 1;
+                      //   } else if (i == 1) {
+                      //     lat = 31.224193;
+                      //     lng = 29.949566;
+                      //     latLng = LatLng(lat, lng);
+                      //
+                      //     PolyLineProvider.updateMarkerPos(context, latLng,
+                      //         WinchRequestProvider.startMapMarker, MapsProvider.pickUpLocation);
+                      //
+                      //     i = i - 1;
+                      //   } else if (i == 0) {
+                      //     PolyLineProvider.resetPolyLine();
+                      //     await PolyLineProvider.getPlaceDirection(
+                      //       destinationMapMarker: WinchRequestProvider.secondMapDestinationMarker,
+                      //       startMapMarker: WinchRequestProvider.secondMapStartMarker,
+                      //       context: context,
+                      //       finalPosition: MapsProvider.dropOffLocation,
+                      //       googleMapController:
+                      //           MapsProvider.googleMapController,
+                      //       initialPosition: WinchRequestProvider.winchLocation,
+                      //     );
+                      //
+                      //     timer.cancel();
+                      //   }
+                      // });
 
                       //PolyLineProvider.getPlaceDirection(context, MapsProvider.dropOffLocation, MapsProvider.pickUpLocation, MapsProvider.googleMapController);
                     }),
               ),
 
-              WinchRequestProvider.STATUS_STARTED == false
-                  ? AcceptedWinchServiceSheet()
-                  : StartedWinchServiceSheet(),
+              // WinchRequestProvider.STATUS_STARTED == false
+              //     ? AcceptedWinchServiceSheet()
+              //     :
+              StartedWinchServiceSheet(),
             ],
           ),
         ),

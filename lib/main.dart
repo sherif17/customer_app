@@ -4,6 +4,7 @@ import 'package:customer_app/local_db/mechanic_services_db/break_down_model.dart
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
+import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -126,6 +127,8 @@ class _MyAppState extends State<MyApp> {
               create: (_) => PolyLineProvider()),
           ChangeNotifierProvider<MechanicServiceProvider>(
               create: (_) => MechanicServiceProvider()),
+          ChangeNotifierProvider<MechanicServicesCartProvider>(
+              create: (_) => MechanicServicesCartProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

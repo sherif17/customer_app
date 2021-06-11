@@ -1,6 +1,9 @@
 import 'dart:ui';
 
+import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/components/circle_painter.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/view_selected_mechanic_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -47,188 +50,244 @@ class _BreakDownServicesState extends State<BreakDownServices>
     final Size size = MediaQuery.of(context).size;
     final double categoryHeight = size.height * 0.15;
     print("sherif");
-    return Scaffold(
-        body: Consumer2<CustomerCarProvider, MechanicServiceProvider>(
-      builder: (context, CustomerCarProvider, MechanicServiceProvider, child) =>
-          SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              height: size.height,
-              width: size.width,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.015,
-                        horizontal: size.width * 0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Break Downs",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white),
+    return Consumer3<CustomerCarProvider, MechanicServiceProvider,
+        MechanicServicesCartProvider>(
+      builder: (context, CustomerCarProvider, MechanicServiceProvider,
+              MechanicServicesCartProvider, child) =>
+          Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Container(
+                height: size.height,
+                width: size.width,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.015,
+                          horizontal: size.width * 0),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          "Break Downs",
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.01),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.directions_car_rounded,
-                          color: Colors.white,
-                          size: size.height * 0.035,
-                        ),
-                        SizedBox(
-                          width: size.width * 0.02,
-                        ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            dropdownColor: Colors.grey.withOpacity(0.5),
-                            style: TextStyle(color: Colors.black),
-                            iconEnabledColor: Colors.white,
-                            hint: Text(
-                                CustomerCarProvider.selectedItem ??
-                                    "Select One Of Your Cars",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                            value: CustomerCarProvider.selectedItem,
-                            onChanged: (String newValue) {
-                              CustomerCarProvider.setSelectedItem(newValue);
-                            },
-                            items: CustomerCarProvider.items
-                                .map<DropdownMenuItem<String>>(
-                                    (customerOwnedCarsDB value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id,
-                                child: Text(
-                                  value.CarBrand +
-                                      " " +
-                                      value.Model +
-                                      "-" +
-                                      value.Year,
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.01),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.directions_car_rounded,
+                            color: Colors.white,
+                            size: size.height * 0.035,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.02,
+                          ),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              dropdownColor: Colors.grey.withOpacity(0.5),
+                              style: TextStyle(color: Colors.black),
+                              iconEnabledColor: Colors.white,
+                              hint: Text(
+                                  CustomerCarProvider.selectedItem ??
+                                      "Select One Of Your Cars",
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
+                                      color: Colors.white, fontSize: 20)),
+                              value: CustomerCarProvider.selectedItem,
+                              onChanged: (String newValue) {
+                                CustomerCarProvider.setSelectedItem(newValue);
+                              },
+                              items: CustomerCarProvider.items
+                                  .map<DropdownMenuItem<String>>(
+                                      (customerOwnedCarsDB value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.id,
+                                  child: Text(
+                                    value.CarBrand +
+                                        " " +
+                                        value.Model +
+                                        "-" +
+                                        value.Year,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                decoration: new BoxDecoration(
+                  color: Colors.redAccent,
+                  image: new DecorationImage(
+                      alignment: Alignment.topCenter,
+                      colorFilter: new ColorFilter.mode(
+                          Colors.black.withOpacity(0.3), BlendMode.dstATop),
+                      image: AssetImage(
+                          "assets/images/Car Inspection, Online Used Car Inspection Services in India.png")),
+                ),
+              ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * 0.15,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        )),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.015,
+                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //       top: MediaQuery.of(context).size.height * 0.015),
+                        //   child: Container(
+                        //     height: 5,
+                        //     width: size.width * 0.5,
+                        //     decoration: BoxDecoration(
+                        //       color: Colors.grey.withOpacity(0.2),
+                        //       borderRadius: BorderRadius.circular(5),
+                        //     ),
+                        //   ),
+                        // ),
+                        TabBar(
+                          onTap: (index) {
+                            MechanicServiceProvider.selectedIndex = index;
+                            return MechanicServiceProvider.getCurrentTab(index);
+                          },
+                          controller: MechanicServiceProvider.tabController,
+                          isScrollable: true,
+
+                          indicatorColor:
+                              Colors.white, //Color.fromRGBO(0, 202, 157, 1),
+                          labelColor: Colors.white,
+                          labelStyle: TextStyle(fontSize: 17),
+                          unselectedLabelColor: Colors.black54,
+                          tabs: List<Widget>.generate(list_name.length,
+                              (int index) {
+                            return Tab(
+                              // text: list_name[index],
+                              child: Container(
+                                //height: size.height * 0.5,
+                                width: size.width * 0.2,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color: index ==
+                                          MechanicServiceProvider.selectedIndex
+                                      ? Colors.redAccent.withOpacity(0.8)
+                                      : Colors.grey.withOpacity(0.15),
                                 ),
-                              );
-                            }).toList(),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(""),
+                                    Text(
+                                      list_name[index],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        Container(
+                          height: size.height * 0.65,
+                          child: new Swiper(
+                            onIndexChanged: (index) {
+                              MechanicServiceProvider.getCurrentIndex(index);
+                              MechanicServiceProvider.tabController
+                                  .animateTo(index);
+                            },
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+                              return MechanicServiceProvider.selectedIndex == 4
+                                  ? helpme()
+                                  : problems();
+                            },
+                            itemCount: list_name.length,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              decoration: new BoxDecoration(
-                color: Colors.redAccent,
-                image: new DecorationImage(
-                    alignment: Alignment.topCenter,
-                    colorFilter: new ColorFilter.mode(
-                        Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                    image: AssetImage(
-                        "assets/images/Car Inspection, Online Used Car Inspection Services in India.png")),
-              ),
-            ),
-            Positioned(
-                top: MediaQuery.of(context).size.height * 0.15,
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      )),
-                  child: Column(
+                  ))
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: TextButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     children: [
                       SizedBox(
-                        height: size.height * 0.015,
+                        width: size.height * 0.05,
+                        height: size.height * 0.05,
+                        child: CustomPaint(
+                            painter:
+                                CirclePainter(), //fromRadius(size.height * 0.1),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                  MechanicServicesCartProvider.cartCounter
+                                      .toString(),
+                                  style: TextStyle(color: Colors.white)),
+                            )),
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(
-                      //       top: MediaQuery.of(context).size.height * 0.015),
-                      //   child: Container(
-                      //     height: 5,
-                      //     width: size.width * 0.5,
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.grey.withOpacity(0.2),
-                      //       borderRadius: BorderRadius.circular(5),
-                      //     ),
-                      //   ),
-                      // ),
-                      TabBar(
-                        onTap: (index) {
-                          MechanicServiceProvider.selectedIndex = index;
-                          return MechanicServiceProvider.getCurrentTab(index);
-                        },
-                        controller: MechanicServiceProvider.tabController,
-                        isScrollable: true,
-
-                        indicatorColor:
-                            Colors.white, //Color.fromRGBO(0, 202, 157, 1),
-                        labelColor: Colors.white,
-                        labelStyle: TextStyle(fontSize: 17),
-                        unselectedLabelColor: Colors.black54,
-                        tabs: List<Widget>.generate(list_name.length,
-                            (int index) {
-                          return Tab(
-                            // text: list_name[index],
-                            child: Container(
-                              //height: size.height * 0.5,
-                              width: size.width * 0.2,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                color: index ==
-                                        MechanicServiceProvider.selectedIndex
-                                    ? Colors.redAccent.withOpacity(0.8)
-                                    : Colors.grey.withOpacity(0.15),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(""),
-                                  Text(
-                                    list_name[index],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      Expanded(
-                        child: new Swiper(
-                          onIndexChanged: (index) {
-                            MechanicServiceProvider.getCurrentIndex(index);
-                            MechanicServiceProvider.tabController
-                                .animateTo(index);
-                          },
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return MechanicServiceProvider.selectedIndex == 4
-                                ? helpme()
-                                : problems();
-                          },
-                          itemCount: list_name.length,
-                        ),
-                      ),
+                      SizedBox(width: size.width * 0.02),
+                      Text("View Selected",
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors
+                                  .white) //Theme.of(context).textTheme.headline2,
+                          ),
                     ],
                   ),
-                ))
-          ],
+                  //SizedBox(width: size.width*0.02),
+                  Text("Total :${MechanicServicesCartProvider.totalPrice} EGP",
+                      style: TextStyle(fontSize: 16, color: Colors.white))
+                ],
+              ),
+              style: ButtonStyle(
+                  padding:
+                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.redAccent),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(width: 1.5, color: Colors.red)))),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(ViewSelectedMechanicServices.routeName);
+              }),
         ),
       ),
-    ));
+    );
   }
 }
 // @override

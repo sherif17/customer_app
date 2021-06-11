@@ -33,7 +33,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
   Completer<GoogleMapController> _completerGoogleMap = Completer();
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  DirectionDetails tripDirectionDetails;
+  //DirectionDetails tripDirectionDetails;
 
   Position currentPosition;
   var geoLocator = Geolocator();

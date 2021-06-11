@@ -6,6 +6,8 @@ import 'package:customer_app/models/winch_request/check_request_status_model.dar
 import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/rate_winch_driver_model.dart';
 import 'package:customer_app/services/winch_services/winch_request_services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 
@@ -85,6 +87,7 @@ class WinchRequestProvider with ChangeNotifier {
       winchLocation.longitude =
           double.parse(checkRequestStatusResponseModel.driverLocationLong);
       winchLocation.placeName = "Winch driver current Location";
+      setCustomMarker();
       print(
           "timePassedSinceRequestAcceptance: ${checkRequestStatusResponseModel.timePassedSinceRequestAcceptance}");
     }
@@ -101,6 +104,8 @@ class WinchRequestProvider with ChangeNotifier {
       print(
           "timePassedSinceServiceStart:${checkRequestStatusResponseModel.timePassedSinceServiceStart}");
       Provider.of<PolyLineProvider>(context, listen: false).getPlaceDirection(
+          startMapMarker: secondMapStartMarker,
+          destinationMapMarker: secondMapDestinationMarker,
           context: context,
           initialPosition:
               Provider.of<MapsProvider>(context, listen: false).pickUpLocation,
@@ -119,6 +124,11 @@ class WinchRequestProvider with ChangeNotifier {
 
   trackWinchDriver(context) async {
     if (STATUS_ACCEPTED == true) {
+      Provider.of<PolyLineProvider>(context, listen: false).updateMarkerPos(
+          context,
+          winchLocation,
+          startMapMarker,
+          Provider.of<MapsProvider>(context, listen: false).pickUpLocation);
       trackWinchDriverTimer =
           Timer.periodic(Duration(seconds: 5), (timer) async {
         print("Driver Tracking........");
@@ -131,7 +141,11 @@ class WinchRequestProvider with ChangeNotifier {
           winchLocation.longitude =
               double.parse(checkRequestStatusResponseModel.driverLocationLong);
           winchLocation.placeName = "Winch driver current Location";
-
+          Provider.of<PolyLineProvider>(context, listen: false).updateMarkerPos(
+              context,
+              winchLocation,
+              startMapMarker,
+              Provider.of<MapsProvider>(context, listen: false).pickUpLocation);
           print(
               "Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
           print(
@@ -184,6 +198,26 @@ class WinchRequestProvider with ChangeNotifier {
 
   void updateWinchLocationAddress(Address winchPosition) {
     winchLocation = winchPosition;
+    notifyListeners();
+  }
+
+  BitmapDescriptor startMapMarker;
+  BitmapDescriptor destinationMapMarker;
+  BitmapDescriptor secondMapStartMarker;
+  BitmapDescriptor secondMapDestinationMarker;
+
+  void setCustomMarker() async {
+    startMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/empty_winch.png');
+    destinationMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/Car.png');
+
+    secondMapDestinationMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
+    secondMapStartMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/winch_with_car.png');
     notifyListeners();
   }
 }

@@ -15,7 +15,7 @@ class PolyLineProvider extends ChangeNotifier {
   Set<Polyline> polylineSet = {};
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
-  Marker initialLocMarker;
+  Marker initialLocMarker = Marker();
   //BitmapDescriptor mapMarker;
 
   void resetPolyLine() {
@@ -154,10 +154,12 @@ class PolyLineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateMarkerPos(context, LatLng newLatLngPos,
+  Future<void> updateMarkerPos(context, Address newPosition,
       BitmapDescriptor updateMapMarker, Address finalPos) async {
     markersSet.remove(initialLocMarker);
+    print("removed");
     var finalLatLng = LatLng(finalPos.latitude, finalPos.longitude);
+    LatLng newLatLngPos = LatLng(newPosition.latitude, newPosition.longitude);
     var details = await MapsApiService.obtainPlaceDirectionDetails(
         newLatLngPos, finalLatLng);
 
