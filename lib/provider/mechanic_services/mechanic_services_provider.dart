@@ -28,7 +28,15 @@ class MechanicServiceProvider extends ChangeNotifier {
       id: "60a3695cb299754c4419c868",
       category: "Exterior",
       problem: "إطارات",
-      subproblem: "انفجار  في احد الإطارات  ويوجد استبن  سليم بالسيارة",
+      subproblem: "انفجار  في احد الإطارات  و يوجد استبن  سليم بالسيارة",
+      expectedFare: 0,
+      v: 0,
+    ),
+    LoadBreakDownModel(
+      id: "60a3695cb299754c4419c868",
+      category: "Exterior",
+      problem: "إطارات",
+      subproblem: "انفجار  في احد الإطارات  ولا يوجد استبن  سليم بالسيارة",
       expectedFare: 0,
       v: 0,
     ),
@@ -43,6 +51,10 @@ class MechanicServiceProvider extends ChangeNotifier {
   ];
   //List<LoadBreakDownModel> breakDownApiList = [];
   // Box<BreakDownDB> breakDownDB = Hive.box<BreakDownDB>("BreakDownDB");
+  Map<dynamic, List<dynamic>> mapOne = {};
+  Map<dynamic, List<dynamic>> mapTwo = {};
+
+  Map<dynamic, Map<dynamic, List<dynamic>>> mapThree = {};
   MechanicApiServices mechanicApiServices = new MechanicApiServices();
   bool loading;
 
@@ -68,6 +80,114 @@ class MechanicServiceProvider extends ChangeNotifier {
     loading = false;
     breakDownApiList.forEach((element) {
       print(element);
+    });
+  }
+
+  getItems() {
+    for (var j in breakDownApiList) {
+      if (mapOne.containsKey(j.category)) {
+        mapOne.putIfAbsent(j.category, () => null).add(
+            [j.id, j.category, j.problem, j.subproblem, j.expectedFare, j.v]);
+      } else
+        mapOne.addAll({
+          j.category: [
+            j.id,
+            j.category,
+            j.problem,
+            j.subproblem,
+            j.expectedFare,
+            j.v
+          ]
+        });
+    }
+    mapOne.forEach((key, value) {
+      print('$key: ${value}');
+    });
+  }
+
+  getBreakDownByCategory() {
+    for (var j in breakDownApiList) {
+      if (mapThree.containsKey(j.category)) {
+        if (mapThree.values.map((e) => e.containsKey(j.problem)).toString() ==
+            "(true)") {
+          mapThree
+              .putIfAbsent(j.category, () => null)
+              .putIfAbsent(j.problem, () => null)
+              .add([
+            j.id,
+            //j.category,
+            //j.problem,
+            j.subproblem,
+            j.expectedFare,
+            j.v
+          ]);
+        } else if (mapThree.values
+                .map((e) => e.containsKey(j.problem))
+                .toString() ==
+            "(false)") {
+          mapThree.putIfAbsent(j.category, () => null).addAll({
+            j.problem: [
+              j.id,
+              //j.category,
+              //j.problem,
+              j.subproblem,
+              j.expectedFare,
+              j.v
+            ]
+          });
+        }
+      } else {
+        mapThree.addAll({
+          j.category: {
+            j.problem: [
+              j.id,
+              // j.category,
+              //j.problem,
+              j.subproblem,
+              j.expectedFare,
+              j.v
+            ]
+          }
+        });
+      }
+    }
+    notifyListeners();
+    mapThree.forEach((key, value) {
+      print('${key}: ${value}');
+    });
+  }
+
+  getServicesByProblems() {
+    for (var j in breakDownApiList) {
+      if (mapThree.containsKey(j.problem)) {
+        mapThree
+            .putIfAbsent(j.problem, () => null)
+            .putIfAbsent(j.category, () => null)
+            .add([
+          j.id,
+          //j.category,
+          //j.problem,
+          j.subproblem,
+          j.expectedFare,
+          j.v
+        ]);
+      } else
+        mapThree.addAll({
+          j.problem: {
+            j.category: [
+              j.id,
+              // j.category,
+              //j.problem,
+              j.subproblem,
+              j.expectedFare,
+              j.v
+            ]
+          }
+        });
+    }
+    notifyListeners();
+    mapThree.forEach((key, value) {
+      print('$key: ${value}');
     });
   }
 }
