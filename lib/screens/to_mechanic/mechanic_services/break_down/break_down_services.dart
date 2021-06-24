@@ -25,17 +25,21 @@ class BreakDownServices extends StatefulWidget {
 
 class _BreakDownServicesState extends State<BreakDownServices>
     with SingleTickerProviderStateMixin {
-  List list_name = ["Exterior", "Interior", "Engine", "Chasis", "Help me"];
+  //["Exterior", "Interior", "Engine", "Chasis", "Help me"];
   @override
   void initState() {
     super.initState();
     final mechanicServiceProviderObj =
         Provider.of<MechanicServiceProvider>(context, listen: false);
-    mechanicServiceProviderObj.getBreakDownListFromBackend();
+    //mechanicServiceProviderObj.getBreakDownListFromBackend();
+    // mechanicServiceProviderObj.getBreakDownByCategory();
+    // //mechanicServiceProviderObj.getItems();
+    // mechanicServiceProviderObj
+    //     .onTapList(mechanicServiceProviderObj.selectedIndex);
     mechanicServiceProviderObj.tabController = TabController(
       initialIndex: Provider.of<MechanicServiceProvider>(context, listen: false)
           .selectedIndex,
-      length: list_name.length,
+      length: mechanicServiceProviderObj.convertedListOfCategoryKeys.length,
       vsync: this,
     );
 
@@ -49,11 +53,12 @@ class _BreakDownServicesState extends State<BreakDownServices>
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double categoryHeight = size.height * 0.15;
-    print("sherif");
+    // List categoriesList =
+    //     Provider.of<MechanicServiceProvider>(context).mapOne.keys.toList();
     return Consumer3<CustomerCarProvider, MechanicServiceProvider,
         MechanicServicesCartProvider>(
-      builder: (context, CustomerCarProvider, MechanicServiceProvider,
-              MechanicServicesCartProvider, child) =>
+      builder: (context, CustomerCarProvider, mechanicServiceProvider,
+              mechanicServicesCartProvider, child) =>
           Scaffold(
         body: SafeArea(
           child: Stack(
@@ -170,10 +175,11 @@ class _BreakDownServicesState extends State<BreakDownServices>
                         // ),
                         TabBar(
                           onTap: (index) {
-                            MechanicServiceProvider.selectedIndex = index;
-                            return MechanicServiceProvider.getCurrentTab(index);
+                            mechanicServiceProvider.selectedIndex = index;
+                            mechanicServiceProvider.onTapList(index);
+                            return mechanicServiceProvider.getCurrentTab(index);
                           },
-                          controller: MechanicServiceProvider.tabController,
+                          controller: mechanicServiceProvider.tabController,
                           isScrollable: true,
 
                           indicatorColor:
@@ -181,8 +187,10 @@ class _BreakDownServicesState extends State<BreakDownServices>
                           labelColor: Colors.white,
                           labelStyle: TextStyle(fontSize: 17),
                           unselectedLabelColor: Colors.black54,
-                          tabs: List<Widget>.generate(list_name.length,
-                              (int index) {
+                          tabs: List<Widget>.generate(
+                              mechanicServiceProvider
+                                  .convertedListOfCategoryKeys
+                                  .length, (int index) {
                             return Tab(
                               // text: list_name[index],
                               child: Container(
@@ -192,7 +200,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)),
                                   color: index ==
-                                          MechanicServiceProvider.selectedIndex
+                                          mechanicServiceProvider.selectedIndex
                                       ? Colors.redAccent.withOpacity(0.8)
                                       : Colors.grey.withOpacity(0.15),
                                 ),
@@ -201,7 +209,8 @@ class _BreakDownServicesState extends State<BreakDownServices>
                                   children: [
                                     SvgPicture.asset(""),
                                     Text(
-                                      list_name[index],
+                                      mechanicServiceProvider
+                                          .convertedListOfCategoryKeys[index],
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -215,17 +224,19 @@ class _BreakDownServicesState extends State<BreakDownServices>
                           height: size.height * 0.65,
                           child: new Swiper(
                             onIndexChanged: (index) {
-                              MechanicServiceProvider.getCurrentIndex(index);
-                              MechanicServiceProvider.tabController
+                              mechanicServiceProvider.getCurrentIndex(index);
+                              mechanicServiceProvider.tabController
                                   .animateTo(index);
                             },
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (BuildContext context, int index) {
-                              return MechanicServiceProvider.selectedIndex == 4
-                                  ? helpme()
-                                  : problems();
+                              return problems();
+                              // mechanicServiceProvider.selectedIndex ==
+                              //       index
+                              //? helpme()
                             },
-                            itemCount: list_name.length,
+                            itemCount: mechanicServiceProvider
+                                .convertedListOfCategoryKeys.length,
                           ),
                         ),
                       ],
@@ -252,7 +263,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                  MechanicServicesCartProvider.cartCounter
+                                  mechanicServicesCartProvider.cartCounter
                                       .toString(),
                                   style: TextStyle(color: Colors.white)),
                             )),
@@ -267,7 +278,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
                     ],
                   ),
                   //SizedBox(width: size.width*0.02),
-                  Text("Total :${MechanicServicesCartProvider.totalPrice} EGP",
+                  Text("Total :${mechanicServicesCartProvider.totalPrice} EGP",
                       style: TextStyle(fontSize: 16, color: Colors.white))
                 ],
               ),

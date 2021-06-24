@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
 import 'package:customer_app/screens/to_mechanic/mechanic_services/break_down/break_down_services.dart';
 import 'package:customer_app/screens/to_mechanic/mechanic_services/routine_maintenance/routine_maintenance_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,12 @@ class ChoosingMechanicServicesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final mechanicServiceProviderObj =
+        Provider.of<MechanicServiceProvider>(context, listen: false);
+    //mechanicServiceProviderObj.getBreakDownListFromBackend();
+    // mechanicServiceProviderObj.getBreakDownByCategory();
+    mechanicServiceProviderObj.getItems();
+    mechanicServiceProviderObj.getBreakDownByCategory();
     ScrollController controller = ScrollController();
     return Consumer<CustomerCarProvider>(
       builder: (context, CustomerCarProvider, child) => SafeArea(
