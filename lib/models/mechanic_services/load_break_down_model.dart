@@ -19,6 +19,7 @@ class LoadBreakDownModel {
     this.subproblem,
     this.expectedFare,
     this.v,
+    this.isChecked = false,
   });
 
   String id;
@@ -27,6 +28,7 @@ class LoadBreakDownModel {
   String subproblem;
   int expectedFare;
   int v;
+  bool isChecked;
 
   factory LoadBreakDownModel.fromJson(Map<String, dynamic> json) =>
       LoadBreakDownModel(

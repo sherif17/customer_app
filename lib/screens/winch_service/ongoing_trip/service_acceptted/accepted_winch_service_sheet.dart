@@ -406,12 +406,12 @@ class _AcceptedWinchServiceSheetState extends State<AcceptedWinchServiceSheet> {
                                   Text(
                                     selectedCar
                                             .get(CustomerCarProvider
-                                                .selectedItem)
+                                                .selectedCar)
                                             .CarBrand +
                                         " " +
                                         selectedCar
                                             .get(CustomerCarProvider
-                                                .selectedItem)
+                                                .selectedCar)
                                             .Model,
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
@@ -423,7 +423,7 @@ class _AcceptedWinchServiceSheetState extends State<AcceptedWinchServiceSheet> {
                               flex: 4,
                               child: Text(
                                 selectedCar
-                                    .get(CustomerCarProvider.selectedItem)
+                                    .get(CustomerCarProvider.selectedCar)
                                     .Plates,
                                 style: TextStyle(
                                     color: Colors.blue,

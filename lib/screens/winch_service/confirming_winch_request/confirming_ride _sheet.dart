@@ -260,7 +260,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                                 style: TextStyle(
                                                     color: Colors.black54, fontSize: 15),
                                               ),
-                                              value: CustomerCarProvider.selectedItem,
+                                              value: CustomerCarProvider.selectedCar,
                                               onChanged: (String newValue) {
                                                 CustomerCarProvider.setSelectedItem(newValue);
                                               },
@@ -686,9 +686,9 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                         width:  MediaQuery.of(context).size.width * 0.01,
                                       ),
                                       Text(
-                                        selectedCar.get(CustomerCarProvider.selectedItem).CarBrand +
+                                        selectedCar.get(CustomerCarProvider.selectedCar).CarBrand +
                                             " " +
-                                            selectedCar.get(CustomerCarProvider.selectedItem).Model,
+                                            selectedCar.get(CustomerCarProvider.selectedCar).Model,
                                         style:
                                         Theme.of(context).textTheme.headline5,
                                       ),
@@ -698,7 +698,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                 Expanded(
                                   flex: 4,
                                   child: Text(
-                                    selectedCar.get(CustomerCarProvider.selectedItem).Plates,
+                                    selectedCar.get(CustomerCarProvider.selectedCar).Plates,
                                     style: TextStyle(color: Colors.blue,fontWeight:FontWeight.normal),
                                   ),
                                 )

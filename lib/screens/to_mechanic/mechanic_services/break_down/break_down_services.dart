@@ -102,11 +102,11 @@ class _BreakDownServicesState extends State<BreakDownServices>
                               style: TextStyle(color: Colors.black),
                               iconEnabledColor: Colors.white,
                               hint: Text(
-                                  CustomerCarProvider.selectedItem ??
+                                  CustomerCarProvider.selectedCar ??
                                       "Select One Of Your Cars",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20)),
-                              value: CustomerCarProvider.selectedItem,
+                              value: CustomerCarProvider.selectedCar,
                               onChanged: (String newValue) {
                                 CustomerCarProvider.setSelectedItem(newValue);
                               },
@@ -278,23 +278,35 @@ class _BreakDownServicesState extends State<BreakDownServices>
                     ],
                   ),
                   //SizedBox(width: size.width*0.02),
-                  Text("Total :${mechanicServicesCartProvider.totalPrice} EGP",
+                  Text(
+                      "Visit Fare : ${mechanicServicesCartProvider.visitFare} EGP",
                       style: TextStyle(fontSize: 16, color: Colors.white))
                 ],
               ),
               style: ButtonStyle(
                   padding:
                       MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                  backgroundColor:
+                  foregroundColor:
                       MaterialStateProperty.all<Color>(Colors.redAccent),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.redAccent.withOpacity(0.9)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(width: 1.5, color: Colors.red)))),
+                          side: BorderSide(width: 1.5, color: Colors.white)))),
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(ViewSelectedMechanicServices.routeName);
+                if (CustomerCarProvider.selectedCar != null &&
+                    mechanicServicesCartProvider.cartCounter > 0) {
+                  Navigator.of(context)
+                      .pushNamed(ViewSelectedMechanicServices.routeName);
+                } else {
+                  if (CustomerCarProvider.selectedCar == null)
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Please choose one of your cars !')));
+                  if (mechanicServicesCartProvider.cartCounter == 0)
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('You should select one problem !')));
+                }
               }),
         ),
       ),

@@ -45,7 +45,7 @@ class WinchRequestProvider with ChangeNotifier {
 
   confirmWinchService(context) async {
     confirmWinchServiceRequestModel.carId =
-        Provider.of<CustomerCarProvider>(context, listen: false).selectedItem;
+        Provider.of<CustomerCarProvider>(context, listen: false).selectedCar;
     print(confirmWinchServiceRequestModel.toJson());
     isLoading = true;
     confirmWinchServiceResponseModel = await api.findWinchDriver(

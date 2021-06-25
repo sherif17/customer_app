@@ -2,38 +2,40 @@ import 'package:customer_app/models/mechanic_services/load_break_down_model.dart
 import 'package:flutter/cupertino.dart';
 
 class MechanicServicesCartProvider extends ChangeNotifier {
-  List<LoadBreakDownModel> breakDownList = [];
+  List<LoadBreakDownModel> breakDownSelectedList = [];
   double totalPrice = 0.0;
-  double visitFare = 50.0;
+  double subTotal = 0.0;
+  double visitFare = 0.0;
 
   addToBreakDownCart(LoadBreakDownModel loadBreakDownModel) {
-    if (breakDownList.contains(loadBreakDownModel) == false) {
-      breakDownList.add(loadBreakDownModel);
-      if (breakDownList.length == 1)
-        totalPrice += loadBreakDownModel.expectedFare.toDouble() + visitFare;
-      else
-        totalPrice += loadBreakDownModel.expectedFare.toDouble();
-      print("added successfully");
+    if (breakDownSelectedList.contains(loadBreakDownModel) == false) {
+      breakDownSelectedList.add(loadBreakDownModel);
+      if (breakDownSelectedList.length == 1) visitFare = 50.0;
+      print(
+          "${loadBreakDownModel.subproblem ?? loadBreakDownModel.problem} added successfully");
     } else
-      print("print Item already added");
+      print(
+          "${loadBreakDownModel.subproblem ?? loadBreakDownModel.problem}Item already added");
     notifyListeners();
   }
 
-  removeFromBreakList(LoadBreakDownModel loadBreakDownModel) {
-    totalPrice -= loadBreakDownModel.expectedFare.toDouble();
-    breakDownList.remove(loadBreakDownModel);
+  removeFromBreakDownCart(LoadBreakDownModel loadBreakDownModel) {
+    breakDownSelectedList.remove(loadBreakDownModel);
+    if (breakDownSelectedList.length == 0) visitFare = 0.0;
+    print(
+        "${loadBreakDownModel.subproblem ?? loadBreakDownModel.problem} removed");
     notifyListeners();
   }
 
   int get cartCounter {
-    return breakDownList.length;
+    return breakDownSelectedList.length;
   }
 
   double get finalFare {
-    return totalPrice;
+    return totalPrice = subTotal + visitFare;
   }
 
   List<LoadBreakDownModel> get breakDownListSelectedItems {
-    return breakDownList;
+    return breakDownSelectedList;
   }
 }

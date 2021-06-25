@@ -1,10 +1,12 @@
 import 'package:customer_app/local_db/mechanic_services_db/break_down_model.dart';
 import 'package:customer_app/models/mechanic_services/load_break_down_model.dart';
+import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/services/mechanic_services/mechanic_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 
 class MechanicServiceProvider extends ChangeNotifier {
   List<LoadBreakDownModel> breakDownApiList = [
@@ -46,6 +48,13 @@ class MechanicServiceProvider extends ChangeNotifier {
       problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
       v: 0,
     ),
+    // LoadBreakDownModel(
+    //   id: "60a369f7fad68b17c41f6759",
+    //   category: "Engine",
+    //   problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
+    //   subproblem: "طارة",
+    //   v: 0,
+    // ),
     LoadBreakDownModel(
       id: "60a369984d78ab4b98dc983b",
       category: "Engine",
@@ -107,9 +116,49 @@ class MechanicServiceProvider extends ChangeNotifier {
   bool loading;
   List<List<LoadBreakDownModel>> onItemTapList;
   int selectedIndex = 0;
+  bool isSelectedSubProblem;
 
   SwiperController scrollController = new SwiperController();
   TabController tabController;
+
+  getSubProblemSelectionState({problemIndex, subProblemIndex}) {
+    return convertedListOfCategoryValues[selectedIndex]
+        .values
+        .elementAt(problemIndex)[subProblemIndex]
+        .isChecked;
+  }
+
+  onChangeSubProblemSelectionState(
+      {bool val, problemIndex, subProblemIndex, context}) {
+    convertedListOfCategoryValues[selectedIndex]
+        .values
+        .elementAt(problemIndex)[subProblemIndex]
+        .isChecked = val;
+    if (val == true) {
+      Provider.of<MechanicServicesCartProvider>(context, listen: false)
+          .addToBreakDownCart(convertedListOfCategoryValues[selectedIndex]
+              .values
+              .elementAt(problemIndex)[subProblemIndex]);
+    } else {
+      Provider.of<MechanicServicesCartProvider>(context, listen: false)
+          .removeFromBreakDownCart(convertedListOfCategoryValues[selectedIndex]
+              .values
+              .elementAt(problemIndex)[subProblemIndex]);
+    }
+    notifyListeners();
+  }
+
+  checkIfProblemHaveSubProblemOrNot({problemIndex}) {
+    if (convertedListOfCategoryValues[selectedIndex]
+            .values
+            .elementAt(problemIndex)
+            .where((element) => element.subproblem != null)
+            .length >
+        0)
+      return true;
+    else
+      return false;
+  }
 
   getCurrentIndex(index) {
     selectedIndex = index;

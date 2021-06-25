@@ -65,14 +65,14 @@ class CustomerCarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String selectedItem;
+  String selectedCar;
 
   List<customerOwnedCarsDB> get items => customerOwnedCars.values.toList();
-  String get selected => selectedItem;
+  String get selected => selectedCar;
 
   void setSelectedItem(String s) {
-    selectedItem = s;
-    print("selected car Id $selectedItem");
+    selectedCar = s;
+    print("selected car Id $selectedCar");
     notifyListeners();
   }
 }

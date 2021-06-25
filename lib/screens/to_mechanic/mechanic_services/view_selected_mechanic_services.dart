@@ -22,11 +22,11 @@ class ViewSelectedMechanicServices extends StatelessWidget {
     final carProviderObj = Provider.of<CustomerCarProvider>(context);
     Box<customerOwnedCarsDB> selectedCar = carProviderObj.customerOwnedCars;
     String selectedCarInfo =
-        selectedCar.get(carProviderObj.selectedItem).CarBrand +
+        selectedCar.get(carProviderObj.selectedCar).CarBrand +
             " " +
-            selectedCar.get(carProviderObj.selectedItem).Model +
+            selectedCar.get(carProviderObj.selectedCar).Model +
             " - " +
-            selectedCar.get(carProviderObj.selectedItem).Year;
+            selectedCar.get(carProviderObj.selectedCar).Year;
     return Consumer2<MechanicServiceProvider, MechanicServicesCartProvider>(
       builder: (context, mechanicServiceProvider, mechanicServicesCartProvider,
               child) =>
@@ -87,7 +87,7 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                        color: Colors.black54,
+                        color: Colors.grey.withOpacity(0.4),
                         blurRadius: 15.0,
                         offset: Offset(0.0, 0.75))
                   ],
@@ -97,8 +97,8 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextButton(
-                          child: Text("Select Services".toUpperCase(),
-                              style: TextStyle(fontSize: 17.5)),
+                          child: Text("Add More Services".toUpperCase(),
+                              style: TextStyle(fontSize: 17)),
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(15)),
@@ -190,14 +190,17 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 alignment: loadCurrentLangFromDB() == "en"
                     ? Alignment.topRight
                     : Alignment.topLeft,
-                child: Text(
-                  '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem}',
-                  style: Theme.of(context).textTheme.bodyText1,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem}',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
               ),
               leading: GestureDetector(
                 onTap: () {
-                  mechanicServicesCartProvider.removeFromBreakList(
+                  mechanicServicesCartProvider.removeFromBreakDownCart(
                       mechanicServicesCartProvider
                           .breakDownListSelectedItems[index]);
                 },
@@ -256,23 +259,29 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 alignment: loadCurrentLangFromDB() == "en"
                     ? Alignment.topRight
                     : Alignment.topLeft,
-                child: Text(
-                  '${mechanicServicesCartProvider.breakDownListSelectedItems[index].problem}',
-                  style: Theme.of(context).textTheme.bodyText2,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem ?? "لم يتم تحديد مشكله فرعيه"}',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
                 ),
               ),
               subtitle: Align(
                 alignment: loadCurrentLangFromDB() == "en"
                     ? Alignment.topRight
                     : Alignment.topLeft,
-                child: Text(
-                  '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem}',
-                  style: Theme.of(context).textTheme.bodyText1,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    '${mechanicServicesCartProvider.breakDownListSelectedItems[index].problem}',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
               ),
               leading: GestureDetector(
                 onTap: () {
-                  mechanicServicesCartProvider.removeFromBreakList(
+                  mechanicServicesCartProvider.removeFromBreakDownCart(
                       mechanicServicesCartProvider
                           .breakDownListSelectedItems[index]);
                 },
@@ -319,7 +328,7 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               Text(
-                "${mechanicServicesCartProvider.totalPrice} EGP",
+                "${mechanicServicesCartProvider.subTotal} EGP",
                 style: Theme.of(context).textTheme.bodyText1,
               )
             ],

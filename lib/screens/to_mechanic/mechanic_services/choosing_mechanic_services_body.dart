@@ -88,7 +88,7 @@ class ChoosingMechanicServicesBody extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 20),
                             ),
-                            value: CustomerCarProvider.selectedItem,
+                            value: CustomerCarProvider.selectedCar,
                             onChanged: (String newValue) {
                               CustomerCarProvider.setSelectedItem(newValue);
                             },
@@ -147,7 +147,7 @@ class ChoosingMechanicServicesBody extends StatelessWidget {
                         ListView.separated(
                           shrinkWrap: true,
                           itemCount: 10,
-                          physics: const AlwaysScrollableScrollPhysics(),
+                          // physics: AlwaysScrollableScrollPhysics(),
                           controller: controller,
                           itemBuilder: (context, index) {
                             return ListTile(
