@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import '../../../local_db/customer_db/cutomer_owned_cars_model.dart';
-import '../../../provider/customer_cars/customer_car_provider.dart';
-import '../../dash_board/chatbot/chat.dart';
+import '../../../../local_db/customer_db/cutomer_owned_cars_model.dart';
+import '../../../../provider/customer_cars/customer_car_provider.dart';
+import '../../../dash_board/chatbot/chat.dart';
 
 class ChoosingMechanicServicesBody extends StatelessWidget {
   const ChoosingMechanicServicesBody({Key key}) : super(key: key);

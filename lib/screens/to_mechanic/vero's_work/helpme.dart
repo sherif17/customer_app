@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'data.dart';
+
 
 class helpme extends StatefulWidget {
   @override

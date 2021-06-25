@@ -2,8 +2,9 @@ import 'dart:ui';
 
 import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/break_down/problems.dart';
 import 'package:customer_app/screens/to_mechanic/mechanic_services/components/circle_painter.dart';
-import 'package:customer_app/screens/to_mechanic/mechanic_services/view_selected_mechanic_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/cart_summary/view_selected_mechanic_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -14,8 +15,6 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import '../../../../local_db/customer_db/cutomer_owned_cars_model.dart';
 import '../../../../provider/customer_cars/customer_car_provider.dart';
 import '../../../../provider/customer_cars/customer_car_provider.dart';
-import '../../helpme.dart';
-import '../../problems.dart';
 
 class BreakDownServices extends StatefulWidget {
   static String routeName = '/BreakDownServices';

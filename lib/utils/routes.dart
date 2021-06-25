@@ -6,9 +6,9 @@ import 'package:customer_app/screens/login_screens/user_register/register_new_us
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_map.dart';
 import 'package:customer_app/screens/to_mechanic/mechanic_services/break_down/break_down_services.dart';
-import 'package:customer_app/screens/to_mechanic/mechanic_services/choosing_mechanic_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/Choosing_mechanic_services/choosing_mechanic_services.dart';
 import 'package:customer_app/screens/to_mechanic/mechanic_services/routine_maintenance/routine_maintenance_services.dart';
-import 'package:customer_app/screens/to_mechanic/mechanic_services/view_selected_mechanic_services.dart';
+import 'package:customer_app/screens/to_mechanic/mechanic_services/cart_summary/view_selected_mechanic_services.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/service_acceptted/accepted_winch_service_sheet.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/accepted_winch_trip_map.dart';
 import 'package:customer_app/screens/winch_service/to_winch_map.dart';
