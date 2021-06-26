@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:customer_app/models/mechanic_request/confirm_mechanic_service_model.dart';
+import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/mechanic_request/mechnic_request_provider.dart';
+import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,8 +39,10 @@ class _ConfirmingMechanicServiceMapState
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Consumer2<MapsProvider, MechanicRequestProvider>(
-      builder: (context, mapsProvider, mechanicRequestProvider, child) =>
+    return Consumer4<MapsProvider, MechanicRequestProvider, CustomerCarProvider,
+        MechanicServicesCartProvider>(
+      builder: (context, mapsProvider, mechanicRequestProvider,
+              customerCarProvider, mechanicServicesCartProvider, child) =>
           Scaffold(
         key: scaffoldKey,
         body: SafeArea(
@@ -55,11 +60,41 @@ class _ConfirmingMechanicServiceMapState
                   //polylines: polylineSet,
                   //markers: markersSet,
                   //circles: circlesSet,
-                  onMapCreated: (GoogleMapController controller) {
+                  onMapCreated: (GoogleMapController controller) async {
                     _completerGoogleMap.complete(controller);
                     mechanicRequestProvider.isConfirmingMechanicMapReady = true;
                     mapsProvider.googleMapController = controller;
-                    mapsProvider.locatePosition(context);
+                    await mapsProvider.locatePosition(context);
+                    mechanicRequestProvider.confirmMechanicServiceRequestModel
+                        .carId = customerCarProvider.selectedCar;
+                    mechanicRequestProvider.confirmMechanicServiceRequestModel
+                            .intialDiagnosis =
+                        mechanicServicesCartProvider.breakDownListSelectedItems
+                            .elementAt(0)
+                            .id;
+                    mechanicRequestProvider.confirmMechanicServiceRequestModel
+                            .pickupLocationLat =
+                        mapsProvider.pickUpLocation.latitude.toString();
+                    mechanicRequestProvider.confirmMechanicServiceRequestModel
+                            .pickupLocationLong =
+                        mapsProvider.pickUpLocation.longitude.toString();
+                    mechanicRequestProvider.confirmMechanicServiceRequestModel
+                        .Estimated_Time = "2";
+                    mechanicRequestProvider
+                            .confirmMechanicServiceRequestModel.Estimated_Fare =
+                        mechanicServicesCartProvider.finalFare.toString();
+
+                    //     ConfirmMechanicServiceRequestModel(
+                    //   carId: customerCarProvider.selectedCar,
+                    //   pickupLocationLat:
+                    //       mapsProvider.pickUpLocation.latitude.toString(),
+                    //   pickupLocationLong:
+                    //       mapsProvider.pickUpLocation.longitude.toString(),
+                    //   intialDiagnosis: mechanicServicesCartProvider
+                    //       .breakDownListSelectedItems
+                    //       .elementAt(0)
+                    //       .id,
+                    // );
                     // Provider.of<WinchRequestProvider>(context, listen: false)
                     //     .resetAllFlags();
                     // print(
@@ -122,25 +157,25 @@ class _ConfirmingMechanicServiceMapState
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: size.height * 0.9,
-                  width: MediaQuery.of(context).size.width * 1,
-                  decoration: new BoxDecoration(
-                    gradient: new LinearGradient(
-                      end: Alignment.center,
-                      begin: Alignment.bottomCenter,
-                      colors: <Color>[
-                        Colors.white,
-                        Colors.white.withOpacity(0.0)
-                      ],
-                    ),
-                    borderRadius:
-                        BorderRadiusDirectional.all(Radius.circular(10)),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: Container(
+              //     height: size.height * 0.9,
+              //     width: MediaQuery.of(context).size.width * 1,
+              //     decoration: new BoxDecoration(
+              //       gradient: new LinearGradient(
+              //         end: Alignment.center,
+              //         begin: Alignment.bottomCenter,
+              //         colors: <Color>[
+              //           Colors.white,
+              //           Colors.white.withOpacity(0.0)
+              //         ],
+              //       ),
+              //       borderRadius:
+              //           BorderRadiusDirectional.all(Radius.circular(10)),
+              //     ),
+              //   ),
+              // ),
               ConfirmingMechanicServiceSheet(),
             ],
           ),
