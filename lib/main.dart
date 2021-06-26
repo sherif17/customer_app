@@ -4,11 +4,14 @@ import 'package:customer_app/local_db/mechanic_services_db/break_down_model.dart
 import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
+import 'package:customer_app/provider/mechanic_request/mechnic_request_provider.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_provider.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
+import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_map.dart';
+import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_sheet.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -129,13 +132,15 @@ class _MyAppState extends State<MyApp> {
               create: (_) => MechanicServiceProvider()),
           ChangeNotifierProvider<MechanicServicesCartProvider>(
               create: (_) => MechanicServicesCartProvider()),
+          ChangeNotifierProvider<MechanicRequestProvider>(
+              create: (_) => MechanicRequestProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
           initialRoute:
-              //ChoosingMechanicServices.routeName, //RegisterNewUser.routeName,
+              // ConfirmingMechanicServiceMap.routeName, //RegisterNewUser.routeName,
               TOKEN == "" || BACKEND_ID == ""
                   ? Intro.routeName
                   : DashBoard.routeName,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
+import 'package:customer_app/provider/mechanic_request/mechnic_request_provider.dart';
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,8 +36,9 @@ class _ConfirmingMechanicServiceMapState
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Consumer<MapsProvider>(
-      builder: (context, val, child) => Scaffold(
+    return Consumer2<MapsProvider, MechanicRequestProvider>(
+      builder: (context, mapsProvider, mechanicRequestProvider, child) =>
+          Scaffold(
         key: scaffoldKey,
         body: SafeArea(
           child: Stack(
@@ -55,8 +57,9 @@ class _ConfirmingMechanicServiceMapState
                   //circles: circlesSet,
                   onMapCreated: (GoogleMapController controller) {
                     _completerGoogleMap.complete(controller);
-                    val.googleMapController = controller;
-                    val.locatePosition(context);
+                    mechanicRequestProvider.isConfirmingMechanicMapReady = true;
+                    mapsProvider.googleMapController = controller;
+                    mapsProvider.locatePosition(context);
                     // Provider.of<WinchRequestProvider>(context, listen: false)
                     //     .resetAllFlags();
                     // print(

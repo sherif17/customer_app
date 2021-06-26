@@ -75,4 +75,12 @@ class CustomerCarProvider extends ChangeNotifier {
     print("selected car Id $selectedCar");
     notifyListeners();
   }
+
+  get selectedCarInfo {
+    return customerOwnedCars.get(selectedCar).CarBrand +
+        " " +
+        customerOwnedCars.get(selectedCar).Model +
+        " - " +
+        customerOwnedCars.get(selectedCar).Year;
+  }
 }
