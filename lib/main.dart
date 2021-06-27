@@ -10,8 +10,11 @@ import 'package:customer_app/provider/mechanic_services/mechanic_services_provid
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/screens/onboarding_screens/intro_screens/intro.dart';
+import 'package:customer_app/screens/to_mechanic/acceptted_mechanic_service/acceppted_mechanic_service_map.dart';
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_map.dart';
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_sheet.dart';
+import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/car_checking.dart';
+import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/cheking_componants/ripple_animation.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -139,11 +142,10 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
-          initialRoute:
-              // ConfirmingMechanicServiceMap.routeName, //RegisterNewUser.routeName,
-              TOKEN == "" || BACKEND_ID == ""
-                  ? Intro.routeName
-                  : DashBoard.routeName,
+          initialRoute: //CarChecking.routeName, //RegisterNewUser.routeName,
+          TOKEN == "" || BACKEND_ID == ""
+              ? Intro.routeName
+              : DashBoard.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

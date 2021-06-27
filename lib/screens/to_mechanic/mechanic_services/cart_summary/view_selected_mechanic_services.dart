@@ -20,16 +20,10 @@ class ViewSelectedMechanicServices extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     ScrollController controller = ScrollController();
     final carProviderObj = Provider.of<CustomerCarProvider>(context);
-    Box<customerOwnedCarsDB> selectedCar = carProviderObj.customerOwnedCars;
-    String selectedCarInfo =
-        selectedCar.get(carProviderObj.selectedCar).CarBrand +
-            " " +
-            selectedCar.get(carProviderObj.selectedCar).Model +
-            " - " +
-            selectedCar.get(carProviderObj.selectedCar).Year;
-    return Consumer2<MechanicServiceProvider, MechanicServicesCartProvider>(
+    return Consumer3<MechanicServiceProvider, MechanicServicesCartProvider,
+        CustomerCarProvider>(
       builder: (context, mechanicServiceProvider, mechanicServicesCartProvider,
-              child) =>
+              customerCarProvider, child) =>
           Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -43,7 +37,7 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                selectedCarInfo,
+                customerCarProvider.selectedCarInfo,
                 style: TextStyle(color: Colors.red),
               )
             ],
