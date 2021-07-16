@@ -8,6 +8,7 @@ import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/con
 import 'package:customer_app/widgets/divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
@@ -64,11 +65,29 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    buildBreakDownSummery(context, size,
-                        mechanicServicesCartProvider, controller),
-                    buildRoutineMaintenanceSummary(context, size,
-                        mechanicServicesCartProvider, controller),
-                    buildPaymentSummery(context, mechanicServicesCartProvider),
+                    mechanicServicesCartProvider
+                                .breakDownListSelectedItems.length >
+                            0
+                        ? buildBreakDownSummery(context, size,
+                            mechanicServicesCartProvider, controller)
+                        : Container(),
+                    mechanicServicesCartProvider
+                                .mechanicServicesSelectedList.length >
+                            0
+                        ? buildRoutineMaintenanceSummary(context, size,
+                            mechanicServicesCartProvider, controller)
+                        : Container(),
+                    mechanicServicesCartProvider.cartCounter > 0
+                        ? buildPaymentSummery(
+                            context, mechanicServicesCartProvider)
+                        : Container(
+                            child: Column(
+                              children: [
+                                SvgPicture.asset('undraw_empty_xct9.svg'),
+                                Text("Your cart is empty !!"),
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -124,10 +143,17 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(color: Colors.green)))),
                         onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              ConfirmingMechanicServiceMap.routeName,
-                              (route) => false);
+                          if (mechanicServicesCartProvider.cartCounter > 0) {
+                            mechanicServicesCartProvider
+                                .combineTwoCartsWithEachOther();
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                ConfirmingMechanicServiceMap.routeName,
+                                (route) => false);
+                          } else
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'You should select at least one problem or service first !!')));
                         },
                       ),
                     ]),
@@ -159,7 +185,7 @@ class ViewSelectedMechanicServices extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(8),
           itemCount:
-              mechanicServicesCartProvider.breakDownListSelectedItems.length,
+              mechanicServicesCartProvider.mechanicServicesSelectedList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               // onTap: () {
@@ -176,7 +202,7 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                     ? Alignment.topRight
                     : Alignment.topLeft,
                 child: Text(
-                  '${mechanicServicesCartProvider.breakDownListSelectedItems[index].problem}',
+                  '${mechanicServicesCartProvider.mechanicServicesSelectedList[index].serviceDesc}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
@@ -184,19 +210,31 @@ class ViewSelectedMechanicServices extends StatelessWidget {
                 alignment: loadCurrentLangFromDB() == "en"
                     ? Alignment.topRight
                     : Alignment.topLeft,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Text(
-                    '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem}',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        '${mechanicServicesCartProvider.mechanicServicesSelectedList[index].expectedFare} EGP',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fill,
+                      child: Text(
+                        '${mechanicServicesCartProvider.mechanicServicesSelectedList[index].category}',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    )
+                  ],
                 ),
               ),
               leading: GestureDetector(
                 onTap: () {
-                  mechanicServicesCartProvider.removeFromBreakDownCart(
+                  mechanicServicesCartProvider.removeFromMechanicServicesCart(
                       mechanicServicesCartProvider
-                          .breakDownListSelectedItems[index]);
+                          .mechanicServicesSelectedList[index]);
                 },
                 child: Icon(
                   Icons.remove_circle_outline_rounded,

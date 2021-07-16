@@ -1,5 +1,6 @@
 import 'package:customer_app/local_db/mechanic_services_db/break_down_model.dart';
 import 'package:customer_app/models/mechanic_services/load_break_down_model.dart';
+import 'package:customer_app/models/mechanic_services/load_routine_maintanence_model.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/services/mechanic_services/mechanic_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,97 +10,101 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 
 class MechanicServiceProvider extends ChangeNotifier {
-  List<LoadBreakDownModel> breakDownApiList = [
-    LoadBreakDownModel(
-      id: "60a369134262f5368455aa54",
-      category: "Exterior",
-      problem: "عدم الاستجابة  لتوجية",
-      subproblem: "صعوبة وتقل في الدركسيون",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3691e4262f5368455aa55",
-      category: "Exterior",
-      problem: "عدم الاستجابة  لتوجية",
-      subproblem: "طارة الدركسيون بتلف علي الفاضي",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3695cb299754c4419c868",
-      category: "Exterior",
-      problem: "إطارات",
-      subproblem: "انفجار  في احد الإطارات  و يوجد استبن  سليم بالسيارة",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3695cb299754c4419c868",
-      category: "Exterior",
-      problem: "إطارات",
-      subproblem: "انفجار  في احد الإطارات  ولا يوجد استبن  سليم بالسيارة",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a369f7fad68b17c41f6759",
-      category: "Engine",
-      problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
-      v: 0,
-    ),
-    // LoadBreakDownModel(
-    //   id: "60a369f7fad68b17c41f6759",
-    //   category: "Engine",
-    //   problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
-    //   subproblem: "طارة",
-    //   v: 0,
-    // ),
-    LoadBreakDownModel(
-      id: "60a369984d78ab4b98dc983b",
-      category: "Engine",
-      problem: "توقف فجائي لمحرك السيارة",
-      subproblem: "نفاذ الوقود",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3691e4262f5368455aa66",
-      category: "Exterior",
-      problem: "اضائة لمبة البطارية",
-      subproblem: "تم استبدال البطارية خلال عام",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3691e4262f5368455aa68",
-      category: "chassis",
-      problem: "حادث",
-      subproblem: "مطلوب اصلاح مؤقت لتتمكن السيارة من استكمال الرحلة",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3691e4262f5368455aa67",
-      category: "Interior",
-      problem: "الفرامل",
-      subproblem: "لايوجد فرامل في السيارة",
-      expectedFare: 0,
-      v: 0,
-    ),
-    LoadBreakDownModel(
-      id: "60a3691e4262f5368455aa67",
-      category: "Interior",
-      problem: "الفرامل",
-      subproblem: "وجود صوت في احد العجلات عند الضغط علي بدال الفرامل",
-      expectedFare: 0,
-      v: 0,
-    ),
-  ];
-  //List<LoadBreakDownModel> breakDownApiList = [];
+  // List<LoadBreakDownModel> breakDownApiList = [
+  //   LoadBreakDownModel(
+  //     id: "60a369134262f5368455aa54",
+  //     category: "Exterior",
+  //     problem: "عدم الاستجابة  لتوجية",
+  //     subproblem: "صعوبة وتقل في الدركسيون",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3691e4262f5368455aa55",
+  //     category: "Exterior",
+  //     problem: "عدم الاستجابة  لتوجية",
+  //     subproblem: "طارة الدركسيون بتلف علي الفاضي",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3695cb299754c4419c868",
+  //     category: "Exterior",
+  //     problem: "إطارات",
+  //     subproblem: "انفجار  في احد الإطارات  و يوجد استبن  سليم بالسيارة",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3695cb299754c4419c868",
+  //     category: "Exterior",
+  //     problem: "إطارات",
+  //     subproblem: "انفجار  في احد الإطارات  ولا يوجد استبن  سليم بالسيارة",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a369f7fad68b17c41f6759",
+  //     category: "Engine",
+  //     problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
+  //     v: 0,
+  //   ),
+  //   // LoadBreakDownModel(
+  //   //   id: "60a369f7fad68b17c41f6759",
+  //   //   category: "Engine",
+  //   //   problem: "محرك السيارة لا يستجيب  لمحاولة إعادة الدوارة",
+  //   //   subproblem: "طارة",
+  //   //   v: 0,
+  //   // ),
+  //   LoadBreakDownModel(
+  //     id: "60a369984d78ab4b98dc983b",
+  //     category: "Engine",
+  //     problem: "توقف فجائي لمحرك السيارة",
+  //     subproblem: "نفاذ الوقود",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3691e4262f5368455aa66",
+  //     category: "Exterior",
+  //     problem: "اضائة لمبة البطارية",
+  //     subproblem: "تم استبدال البطارية خلال عام",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3691e4262f5368455aa68",
+  //     category: "chassis",
+  //     problem: "حادث",
+  //     subproblem: "مطلوب اصلاح مؤقت لتتمكن السيارة من استكمال الرحلة",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3691e4262f5368455aa67",
+  //     category: "Interior",
+  //     problem: "الفرامل",
+  //     subproblem: "لايوجد فرامل في السيارة",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  //   LoadBreakDownModel(
+  //     id: "60a3691e4262f5368455aa67",
+  //     category: "Interior",
+  //     problem: "الفرامل",
+  //     subproblem: "وجود صوت في احد العجلات عند الضغط علي بدال الفرامل",
+  //     expectedFare: 0,
+  //     v: 0,
+  //   ),
+  // ];
+  List<LoadBreakDownModel> breakDownApiList = [];
   // Box<BreakDownDB> breakDownDB = Hive.box<BreakDownDB>("BreakDownDB");
+
+  List<LoadRoutineMaintenanceModel> mechanicServicesApiList = [];
+  Map<dynamic, List<LoadRoutineMaintenanceModel>> mechanicServicesMap = {};
+
   Map<dynamic, List<LoadBreakDownModel>> mapOne = {};
-  Map<dynamic, List<dynamic>> mapTwo = {};
+  // Map<dynamic, List<dynamic>> mapTwo = {};
 
   Map<dynamic, Map<dynamic, List<LoadBreakDownModel>>> breakDownsByCategoryMap =
       {};
@@ -179,6 +184,63 @@ class MechanicServiceProvider extends ChangeNotifier {
     breakDownApiList.forEach((element) {
       print(element);
     });
+    getBreakDownByCategory();
+  }
+
+  getRoutineMaintenanceFromBackend() async {
+    loading = true;
+    mechanicServicesApiList =
+        await mechanicApiServices.loadRoutineMaintenance();
+    loading = false;
+    for (var j in mechanicServicesApiList) {
+      if (mechanicServicesMap.containsKey(j.category.trim())) {
+        mechanicServicesMap.putIfAbsent(j.category.trim(), () => null).add(
+            LoadRoutineMaintenanceModel(
+                id: j.id,
+                category: j.category,
+                expectedFare: j.expectedFare,
+                serviceDesc: j.serviceDesc,
+                v: j.v));
+      } else if (mechanicServicesMap.containsKey(j.category.trim()) == false) {
+        mechanicServicesMap.addAll({
+          j.category.trim(): [
+            LoadRoutineMaintenanceModel(
+                id: j.id,
+                category: j.category,
+                expectedFare: j.expectedFare,
+                serviceDesc: j.serviceDesc,
+                v: j.v)
+          ]
+        });
+      } else
+        print("hi");
+    }
+    mechanicServicesMap.forEach((key, value) {
+      print('$key: ${value}');
+    });
+  }
+
+  getSubServicesSelectionState({serviceIndex, subServiceIndex}) {
+    return mechanicServicesMap.values
+        .elementAt(serviceIndex)[subServiceIndex]
+        .isChecked;
+  }
+
+  onChangeServiceSelectionState(
+      {bool val, serviceIndex, subServiceIndex, context}) {
+    mechanicServicesMap.values
+        .elementAt(serviceIndex)[subServiceIndex]
+        .isChecked = val;
+    if (val == true) {
+      Provider.of<MechanicServicesCartProvider>(context, listen: false)
+          .addToMechanicServicesCart(mechanicServicesMap.values
+              .elementAt(serviceIndex)[subServiceIndex]);
+    } else {
+      Provider.of<MechanicServicesCartProvider>(context, listen: false)
+          .removeFromMechanicServicesCart(mechanicServicesMap.values
+              .elementAt(serviceIndex)[subServiceIndex]);
+    }
+    notifyListeners();
   }
 
   onTapList(selectedIndex) {
@@ -187,34 +249,34 @@ class MechanicServiceProvider extends ChangeNotifier {
     // print(onItemTapList[selectedIndex].length);
     notifyListeners();
   }
-
-  getItems() {
-    for (var j in breakDownApiList) {
-      if (mapOne.containsKey(j.category)) {
-        mapOne.putIfAbsent(j.category, () => null).add(LoadBreakDownModel(
-            id: j.id,
-            category: j.category,
-            problem: j.problem,
-            subproblem: j.subproblem,
-            expectedFare: j.expectedFare,
-            v: j.v));
-      } else
-        mapOne.addAll({
-          j.category: [
-            LoadBreakDownModel(
-                id: j.id,
-                category: j.category,
-                problem: j.problem,
-                subproblem: j.subproblem,
-                expectedFare: j.expectedFare,
-                v: j.v)
-          ]
-        });
-    }
-    mapOne.forEach((key, value) {
-      print('$key: ${value}');
-    });
-  }
+  //
+  // getItems() {
+  //   for (var j in breakDownApiList) {
+  //     if (mapOne.containsKey(j.category)) {
+  //       mapOne.putIfAbsent(j.category, () => null).add(LoadBreakDownModel(
+  //           id: j.id,
+  //           category: j.category,
+  //           problem: j.problem,
+  //           subproblem: j.subproblem,
+  //           expectedFare: j.expectedFare,
+  //           v: j.v));
+  //     } else
+  //       mapOne.addAll({
+  //         j.category: [
+  //           LoadBreakDownModel(
+  //               id: j.id,
+  //               category: j.category,
+  //               problem: j.problem,
+  //               subproblem: j.subproblem,
+  //               expectedFare: j.expectedFare,
+  //               v: j.v)
+  //         ]
+  //       });
+  //   }
+  //   mapOne.forEach((key, value) {
+  //     print('$key: ${value}');
+  //   });
+  // }
 
   getBreakDownByCategory() {
     print(breakDownApiList.length);

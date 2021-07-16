@@ -12,6 +12,7 @@ import 'package:customer_app/screens/to_mechanic/mechanic_services/routine_maint
 import 'package:customer_app/screens/to_mechanic/mechanic_services/cart_summary/view_selected_mechanic_services.dart';
 import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/car_checking.dart';
 import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/cheking_componants/ripple_animation.dart';
+import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/starting_mechanic_service.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/service_acceptted/accepted_winch_service_sheet.dart';
 import 'package:customer_app/screens/winch_service/ongoing_trip/accepted_winch_trip_map.dart';
 import 'package:customer_app/screens/winch_service/to_winch_map.dart';
@@ -43,4 +44,5 @@ final Map<String, WidgetBuilder> routes = {
   AcceptedMechanicServiceMap.routeName: (context) =>
       AcceptedMechanicServiceMap(),
   CarChecking.routeName: (context) => CarChecking(),
+  StartingMechanicService.routeName: (context) => StartingMechanicService(),
 };

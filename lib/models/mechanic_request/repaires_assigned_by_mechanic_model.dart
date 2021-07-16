@@ -15,20 +15,24 @@ String repairsAssignedByMechanicResponseModelToJson(
 class RepairsAssignedByMechanicResponseModel {
   RepairsAssignedByMechanicResponseModel({
     this.repairsToBeMade,
+    this.error,
   });
 
   List<RepairsToBeMade> repairsToBeMade;
+  String error;
 
   factory RepairsAssignedByMechanicResponseModel.fromJson(
           Map<String, dynamic> json) =>
       RepairsAssignedByMechanicResponseModel(
         repairsToBeMade: List<RepairsToBeMade>.from(
             json["Repairs to be made"].map((x) => RepairsToBeMade.fromJson(x))),
+        error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
         "Repairs to be made":
             List<dynamic>.from(repairsToBeMade.map((x) => x.toJson())),
+        "error": error,
       };
 }
 

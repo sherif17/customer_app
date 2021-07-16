@@ -8,6 +8,7 @@ import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/mechanic_request/mechnic_request_provider.dart';
 import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/provider/winch_request/winch_request_provider.dart';
+import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/customer_needs.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,15 +119,19 @@ class ConfirmingMechanicServiceSheet extends StatelessWidget {
               ],
             ),
             TextButton(
-                child: mechanicRequestProvider.isLoading == false
-                    ? Text("Find Me A Mechanic".toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontWeight: FontWeight.w900,
-                            fontSize:
-                                20) //Theme.of(context).textTheme.headline2,
-                        )
-                    : CircularProgressIndicator(),
+                child:
+                    mechanicRequestProvider.confirmMechanicRequestIsLoading ==
+                            false
+                        ? Text("Find Me A Mechanic".toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.w900,
+                                fontSize:
+                                    20) //Theme.of(context).textTheme.headline2,
+                            )
+                        : CircularProgressIndicator(
+                            color: Colors.red,
+                          ),
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
                         EdgeInsets.all(15)),
@@ -140,8 +145,7 @@ class ConfirmingMechanicServiceSheet extends StatelessWidget {
                             side:
                                 BorderSide(width: 1.5, color: Colors.white)))),
                 onPressed: () async {
-                  // Navigator.pop(context);
-                  await mechanicRequestProvider.confirmMechanicRequest();
+                  await mechanicRequestProvider.confirmMechanicRequest(context);
                 }),
           ],
         ),
@@ -350,7 +354,8 @@ searchForNearestMechanicSheet(context) {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                Text("Scope",
+                                                Text(
+                                                    "${mechanicRequestProvider.checkMechanicRequestStatusResponseModel.scope != null ? mechanicRequestProvider.checkMechanicRequestStatusResponseModel.scope ~/ 1000 : 5000 ~/ 1000} KM",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .button),
@@ -457,38 +462,45 @@ searchForNearestMechanicSheet(context) {
                               ),
                             ),
                             DividerWidget(),
-                            GestureDetector(
-                              onTap: () async {
-                                await mechanicRequestProvider
-                                    .cancelMechanicRequest();
-                                //Navigator.pop(context);
-                                // if(WinchRequestProvider.CANCLING_RIDE==true)
-                                // {
-                                //   print("Searching Cancelled");
-                                //   resetApp();
-                                //   timer.cancel();
-                                // }
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Cancel",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
+                            mechanicRequestProvider
+                                        .cancelMechanicRequestIsLoading ==
+                                    false
+                                ? GestureDetector(
+                                    onTap: () async {
+                                      await mechanicRequestProvider
+                                          .cancelMechanicRequest(context);
+                                      //Navigator.pop(context);
+                                      // if(WinchRequestProvider.CANCLING_RIDE==true)
+                                      // {
+                                      //   print("Searching Cancelled");
+                                      //   resetApp();
+                                      //   timer.cancel();
+                                      // }
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Cancel",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
+                                    ),
+                                  )
+                                : CircularProgressIndicator(
+                                    color: Colors.red,
                                   ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -500,84 +512,7 @@ searchForNearestMechanicSheet(context) {
                         // height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
                         color: Colors.white,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Selected Problems & services",
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  )),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.withOpacity(0.7),
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  controller:
-                                      myController, // assign controller here
-                                  itemCount: mechanicServicesCartProvider
-                                      .breakDownListSelectedItems.length,
-                                  itemBuilder: (_, index) => ListTile(
-                                      title: Align(
-                                        alignment:
-                                            loadCurrentLangFromDB() == "en"
-                                                ? Alignment.topRight
-                                                : Alignment.topLeft,
-                                        child: FittedBox(
-                                          fit: BoxFit.fill,
-                                          child: Text(
-                                            '${mechanicServicesCartProvider.breakDownListSelectedItems[index].subproblem ?? "لم يتم تحديد مشكله فرعيه"}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Align(
-                                        alignment:
-                                            loadCurrentLangFromDB() == "en"
-                                                ? Alignment.topRight
-                                                : Alignment.topLeft,
-                                        child: FittedBox(
-                                          fit: BoxFit.fill,
-                                          child: Text(
-                                            '${mechanicServicesCartProvider.breakDownListSelectedItems[index].problem}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                        ),
-                                      )),
-
-                                  separatorBuilder: (context, index) {
-                                    return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.02),
-                                        child: Divider(
-                                          thickness: 1.5,
-                                        ));
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: CustomerNeeds(),
                       ),
                     ],
                   ),

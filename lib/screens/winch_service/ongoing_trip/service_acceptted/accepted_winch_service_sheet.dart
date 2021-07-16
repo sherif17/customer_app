@@ -405,13 +405,13 @@ class _AcceptedWinchServiceSheetState extends State<AcceptedWinchServiceSheet> {
                                   ),
                                   Text(
                                     selectedCar
-                                            .get(CustomerCarProvider
-                                                .selectedCar)
+                                            .get(
+                                                CustomerCarProvider.selectedCar)
                                             .CarBrand +
                                         " " +
                                         selectedCar
-                                            .get(CustomerCarProvider
-                                                .selectedCar)
+                                            .get(
+                                                CustomerCarProvider.selectedCar)
                                             .Model,
                                     style:
                                         Theme.of(context).textTheme.bodyText2,

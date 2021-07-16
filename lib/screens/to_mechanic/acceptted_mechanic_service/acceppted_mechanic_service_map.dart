@@ -26,6 +26,19 @@ GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 class _AcceptedMechanicServiceMapState
     extends State<AcceptedMechanicServiceMap> {
   @override
+  void initState() {
+    mechanicTracking(context);
+    super.initState();
+  }
+
+  mechanicTracking(context) async {
+    Provider.of<MechanicRequestProvider>(context, listen: false)
+        .isNavigatedToAcceptedMap = true;
+    await Provider.of<MechanicRequestProvider>(context, listen: false)
+        .trackMechanic(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var initialPos =
@@ -33,15 +46,13 @@ class _AcceptedMechanicServiceMapState
     // Provider.of<WinchRequestProvider>(context, listen: false)
     //     .updateWinchLocationAddress(winchPosition);
     final CameraPosition _initialPosition = CameraPosition(
-      target: LatLng(
-          /*initialPos.latitude ??*/ 33.33,
-          /*initialPos.longitude ??*/ 29.1),
+      target: LatLng(initialPos.latitude, initialPos.longitude),
       zoom: 15.4746,
     );
     return Scaffold(
       body: Consumer4<MapsProvider, MechanicRequestProvider,
           CustomerCarProvider, PolyLineProvider>(
-        builder: (context, mapsProvider, winchRequestProvider,
+        builder: (context, mapsProvider, mechanicRequestProvider,
                 customerCarProvider, polyLineProvider, child) =>
             SafeArea(
           //bottom: true,
@@ -65,17 +76,22 @@ class _AcceptedMechanicServiceMapState
                       //     "lord ${WinchRequestProvider.winchLocation.longitude}");
                       _completerGoogleMap.complete(controller);
                       mapsProvider.googleMapController = controller;
-                      // await polyLineProvider.getPlaceDirection(
-                      //   destinationMapMarker: WinchRequestProvider.destinationMapMarker,
-                      //   startMapMarker: WinchRequestProvider.startMapMarker,
-                      //   context: context,
-                      //   finalPosition: mapsProvider.pickUpLocation,
-                      //   googleMapController: mapsProvider.googleMapController,
-                      //   initialPosition: WinchRequestProvider.winchLocation,
-                      // );
+                      await polyLineProvider.getPlaceDirection(
+                        destinationMapMarker:
+                            mechanicRequestProvider.destinationMapMarker,
+                        startMapMarker: mechanicRequestProvider.startMapMarker,
+                        context: context,
+                        finalPosition: mapsProvider.pickUpLocation,
+                        googleMapController: mapsProvider.googleMapController,
+                        initialPosition:
+                            mechanicRequestProvider.mechanicLocation,
+                      );
+                      mechanicRequestProvider.isUpcomingRequestDataReady = true;
                     }),
               ),
-              AcceptedMechanicServiceSheet()
+              mechanicRequestProvider.isUpcomingRequestDataReady == true
+                  ? AcceptedMechanicServiceSheet()
+                  : Container(),
             ],
           ),
         ),

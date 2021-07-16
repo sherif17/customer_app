@@ -1,6 +1,9 @@
 // To parse this JSON data, do
 //
 //     final confirmMechanicServiceRequestModel = confirmMechanicServiceRequestModelFromJson(jsonString);
+// To parse this JSON data, do
+//
+//     final confirmMechanicServiceRequestModel = confirmMechanicServiceRequestModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -17,38 +20,62 @@ class ConfirmMechanicServiceRequestModel {
     this.pickupLocationLat,
     this.pickupLocationLong,
     this.intialDiagnosis,
+    this.estimatedTime,
+    this.estimatedFare,
     this.carId,
-    this.Estimated_Time,
-    this.Estimated_Fare,
   });
 
   String pickupLocationLat;
   String pickupLocationLong;
-  String intialDiagnosis;
+  List<IntialDiagnosis> intialDiagnosis;
+  String estimatedTime;
+  String estimatedFare;
   String carId;
-  String Estimated_Time;
-  String Estimated_Fare;
 
   factory ConfirmMechanicServiceRequestModel.fromJson(
           Map<String, dynamic> json) =>
       ConfirmMechanicServiceRequestModel(
         pickupLocationLat: json["PickupLocation_Lat"],
         pickupLocationLong: json["PickupLocation_Long"],
-        intialDiagnosis: json["IntialDiagnosis"],
+        intialDiagnosis: List<IntialDiagnosis>.from(
+            json["IntialDiagnosis"].map((x) => IntialDiagnosis.fromJson(x))),
+        estimatedTime: json["Estimated_Time"],
+        estimatedFare: json["Estimated_Fare"],
         carId: json["Car_ID"],
-        Estimated_Time: json["Estimated_Time"],
-        Estimated_Fare: json["Estimated_Fare"],
       );
 
   Map<String, dynamic> toJson() => {
         "PickupLocation_Lat": pickupLocationLat,
         "PickupLocation_Long": pickupLocationLong,
-        "IntialDiagnosis": intialDiagnosis,
+        "IntialDiagnosis":
+            List<dynamic>.from(intialDiagnosis.map((x) => x.toJson())),
+        "Estimated_Time": estimatedTime,
+        "Estimated_Fare": estimatedFare,
         "Car_ID": carId,
-        "Estimated_Time": Estimated_Time,
-        "Estimated_Fare": Estimated_Fare
       };
 }
+
+class IntialDiagnosis {
+  IntialDiagnosis({
+    this.id,
+    this.category,
+  });
+
+  String id;
+  String category;
+
+  factory IntialDiagnosis.fromJson(Map<String, dynamic> json) =>
+      IntialDiagnosis(
+        id: json["id"],
+        category: json["category"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "category": category,
+      };
+}
+
 // To parse this JSON data, do
 //
 //     final confirmMechanicServiceResponseModel = confirmMechanicServiceResponseModelFromJson(jsonString);

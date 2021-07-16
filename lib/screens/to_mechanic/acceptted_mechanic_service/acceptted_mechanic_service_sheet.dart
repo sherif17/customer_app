@@ -3,6 +3,7 @@ import 'package:customer_app/provider/customer_cars/customer_car_provider.dart';
 import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/provider/maps_preparation/polyLineProvider.dart';
 import 'package:customer_app/provider/mechanic_request/mechnic_request_provider.dart';
+import 'package:customer_app/provider/mechanic_services/mechanic_services_cart.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/widgets/divider.dart';
 import 'package:flutter/material.dart';
@@ -31,15 +32,15 @@ class _AcceptedMechanicServiceSheetState
     //     Provider.of<CustomerCarProvider>(context, listen: false)
     //         .customerOwnedCars;
     driverFirstName =
-        // Provider.of<WinchRequestProvider>(context, listen: false)
-        // .checkRequestStatusResponseModel
-        // .firstName ??
-        "FName";
+        Provider.of<MechanicRequestProvider>(context, listen: false)
+                .checkMechanicRequestStatusResponseModel
+                .firstName ??
+            "FName";
     driverLastName =
-        // Provider.of<WinchRequestProvider>(context, listen: false)
-        // .checkRequestStatusResponseModel
-        // .lastName ??
-        "LName";
+        Provider.of<MechanicRequestProvider>(context, listen: false)
+                .checkMechanicRequestStatusResponseModel
+                .lastName ??
+            "LName";
     String carPlates =
         // Provider.of<WinchRequestProvider>(context, listen: false)
         // .checkRequestStatusResponseModel
@@ -61,16 +62,20 @@ class _AcceptedMechanicServiceSheetState
 
     String carType = "Chevrolet";
 
-    int estimatedFare =
-        Provider.of<MapsProvider>(context, listen: false).estimatedFare;
+    double estimatedFare =
+
+        /// Provider.of<MapsProvider>(context, listen: false).estimatedFare +
+        Provider.of<MechanicServicesCartProvider>(context, listen: false)
+            .finalFare;
+
     // String estimatedDuration = Provider.of<MapsProvider>(context, listen: false)
     //     .tripDirectionDetails
     //     .durationText;
 
-    // String dropOffLocationPlaceName =
-    //     Provider.of<MapsProvider>(context, listen: false)
-    //         .dropOffLocation
-    //         .placeName;
+    String dropOffLocationPlaceName =
+        Provider.of<MechanicRequestProvider>(context, listen: false)
+            .mechanicLocation
+            .placeName;
     // String pickUpLocationPlaceName =
     //     Provider.of<MapsProvider>(context, listen: false)
     //         .pickUpLocation
@@ -158,25 +163,32 @@ class _AcceptedMechanicServiceSheetState
                                               bottomRight: Radius.circular(2),
                                             ),
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "duration",
-                                                // PolyLineProvider
-                                                //     .tripDirectionDetails
-                                                //     .durationText,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                              Text("Away",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20)),
-                                            ],
-                                          ),
+                                          child: PolyLineProvider
+                                                      .tripDirectionDetails
+                                                      .durationText !=
+                                                  null
+                                              ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      //"duration",
+                                                      PolyLineProvider
+                                                          .tripDirectionDetails
+                                                          .durationText,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20),
+                                                    ),
+                                                    Text("Away",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20)),
+                                                  ],
+                                                )
+                                              : CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                ),
                                         ),
                                       ),
                                     ],
@@ -320,12 +332,17 @@ class _AcceptedMechanicServiceSheetState
                                   SizedBox(
                                     width: size.width * 0.01,
                                   ),
-                                  Text(
-                                    "dropOffLocationPlaceName",
-                                    //dropOffLocationPlaceName,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
+                                  dropOffLocationPlaceName != null
+                                      ? Text(
+                                          //"dropOffLocationPlaceName",
+                                          dropOffLocationPlaceName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: Colors.green,
+                                        ),
                                 ],
                               ),
                             ),
@@ -415,8 +432,8 @@ class _AcceptedMechanicServiceSheetState
                                     //         .get(
                                     //             CustomerCarProvider.selectedCar)
                                     //         .Model,
-                                    "car info",
-                                    // CustomerCarProvider.selectedCarInfo,
+
+                                    CustomerCarProvider.selectedCarInfo,
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
@@ -426,7 +443,7 @@ class _AcceptedMechanicServiceSheetState
                             Expanded(
                               flex: 4,
                               child: Text(
-                                " Plates",
+                                "مصع",
                                 // selectedCar
                                 //     .get(CustomerCarProvider.selectedCar)
                                 //     .Plates,
@@ -439,34 +456,31 @@ class _AcceptedMechanicServiceSheetState
                         ),
                       ),
                       DividerWidget(),
-                      GestureDetector(
-                        onTap: () async {
-                          await MechanicRequestProvider.cancelMechanicRequest();
-                          if (MechanicRequestProvider.isLoading == false &&
-                                  MechanicRequestProvider
-                                          .MECHANIC_CANCELING_ADDED_FINE ==
-                                      true ||
-                              MechanicRequestProvider
-                                      .MECHANIC_CANCELING_ADDED_FINE ==
-                                  false) {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, DashBoard.routeName, (route) => false);
-                          }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Cancel",
-                                style: Theme.of(context).textTheme.subtitle2,
+                      MechanicRequestProvider.cancelMechanicRequestIsLoading ==
+                              false
+                          ? GestureDetector(
+                              onTap: () async {
+                                await MechanicRequestProvider
+                                    .cancelMechanicRequest(context);
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Cancel",
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      )
+                            )
+                          : CircularProgressIndicator(
+                              color: Colors.red,
+                            )
                     ]),
                   ),
                 ],

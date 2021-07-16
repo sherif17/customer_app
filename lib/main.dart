@@ -15,6 +15,7 @@ import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/con
 import 'package:customer_app/screens/to_mechanic/confirming_mechanic_service/confirming_mechanic_service_sheet.dart';
 import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/car_checking.dart';
 import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/cheking_componants/ripple_animation.dart';
+import 'package:customer_app/screens/to_mechanic/starting_mechanic_service/starting_mechanic_service.dart';
 import 'package:customer_app/utils/routes.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -142,10 +143,10 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           builder: DevicePreview.appBuilder,
-          initialRoute: //CarChecking.routeName, //RegisterNewUser.routeName,
-          TOKEN == "" || BACKEND_ID == ""
-              ? Intro.routeName
-              : DashBoard.routeName,
+          initialRoute: // StartingMechanicService.routeName, //CarChecking.routeName, //RegisterNewUser.routeName,
+              TOKEN == "" || BACKEND_ID == ""
+                  ? Intro.routeName
+                  : DashBoard.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

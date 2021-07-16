@@ -270,7 +270,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
                       SizedBox(width: size.width * 0.02),
                       Text("View Selected",
                           style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 16,
                               color: Colors
                                   .white) //Theme.of(context).textTheme.headline2,
                           ),
@@ -278,7 +278,7 @@ class _BreakDownServicesState extends State<BreakDownServices>
                   ),
                   //SizedBox(width: size.width*0.02),
                   Text(
-                      "Visit Fare : ${mechanicServicesCartProvider.visitFare} EGP",
+                      "Subtotal Fare : ${mechanicServicesCartProvider.subTotal} EGP",
                       style: TextStyle(fontSize: 16, color: Colors.white))
                 ],
               ),

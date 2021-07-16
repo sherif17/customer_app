@@ -20,10 +20,8 @@ class ChoosingMechanicServicesBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final mechanicServiceProviderObj =
         Provider.of<MechanicServiceProvider>(context, listen: false);
-    //mechanicServiceProviderObj.getBreakDownListFromBackend();
-    // mechanicServiceProviderObj.getBreakDownByCategory();
-    mechanicServiceProviderObj.getItems();
-    mechanicServiceProviderObj.getBreakDownByCategory();
+    mechanicServiceProviderObj.getRoutineMaintenanceFromBackend();
+    mechanicServiceProviderObj.getBreakDownListFromBackend();
     ScrollController controller = ScrollController();
     return Consumer<CustomerCarProvider>(
       builder: (context, CustomerCarProvider, child) => SafeArea(

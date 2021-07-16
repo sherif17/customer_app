@@ -14,19 +14,20 @@ String loadRoutineMaintenanceModelToJson(
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class LoadRoutineMaintenanceModel {
-  LoadRoutineMaintenanceModel({
-    this.id,
-    this.category,
-    this.serviceDesc,
-    this.expectedFare,
-    this.v,
-  });
+  LoadRoutineMaintenanceModel(
+      {this.id,
+      this.category,
+      this.serviceDesc,
+      this.expectedFare,
+      this.v,
+      this.isChecked = false});
 
   String id;
   String category;
   String serviceDesc;
   int expectedFare;
   int v;
+  bool isChecked;
 
   factory LoadRoutineMaintenanceModel.fromJson(Map<String, dynamic> json) =>
       LoadRoutineMaintenanceModel(

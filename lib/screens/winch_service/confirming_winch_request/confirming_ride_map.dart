@@ -109,6 +109,7 @@ class _RequestScreenState extends State<RequestScreen> {
                     onMapCreated: (GoogleMapController controller) async {
                       _completerGoogleMap.complete(controller);
                       MapsProvider.googleMapController = controller;
+                      controller = MapsProvider.googleMapController;
                       await PolyLineProvider.getPlaceDirection(
                         context: context,
                         initialPosition: MapsProvider.pickUpLocation,

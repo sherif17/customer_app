@@ -54,8 +54,8 @@ class ViewingComingDiagnoses extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextButton(
-                          child: Text("Reject".toUpperCase(),
-                              style: TextStyle(fontSize: 18)),
+                          child: mechanicRequestProvider.rejectUpComingDiagnosisIsLoading==false? Text("Reject".toUpperCase(),
+                              style: TextStyle(fontSize: 18)):CircularProgressIndicator(color: Colors.white,),
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(15)),
@@ -68,12 +68,13 @@ class ViewingComingDiagnoses extends StatelessWidget {
                                       side: BorderSide(
                                           width: 0.7, color: Colors.red)))),
                           onPressed: () {
-                            mechanicRequestProvider.rejectUpComingDiagnosis();
+                            mechanicRequestProvider.rejectUpComingDiagnosis(context);
                           }),
                       SizedBox(width: size.width * 0.0),
                       TextButton(
-                        child: Text("Confirm".toUpperCase(),
-                            style: TextStyle(fontSize: 18)),
+                        child: mechanicRequestProvider.approveUpComingDiagnosisIsLoading==false?
+                        Text("Confirm".toUpperCase(),
+                            style: TextStyle(fontSize: 18)):CircularProgressIndicator(color: Colors.white,),
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
                                 EdgeInsets.all(15)),
@@ -87,7 +88,7 @@ class ViewingComingDiagnoses extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(color: Colors.green)))),
                         onPressed: () {
-                          mechanicRequestProvider.approveUpComingDiagnosis();
+                          mechanicRequestProvider.approveUpComingDiagnosis(context);
                         },
                       ),
                     ]),

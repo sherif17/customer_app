@@ -69,19 +69,17 @@ class _ConfirmingMechanicServiceMapState
                         .carId = customerCarProvider.selectedCar;
                     mechanicRequestProvider.confirmMechanicServiceRequestModel
                             .intialDiagnosis =
-                        mechanicServicesCartProvider.breakDownListSelectedItems
-                            .elementAt(0)
-                            .id;
+                        mechanicServicesCartProvider.combinedCart;
                     mechanicRequestProvider.confirmMechanicServiceRequestModel
                             .pickupLocationLat =
                         mapsProvider.pickUpLocation.latitude.toString();
                     mechanicRequestProvider.confirmMechanicServiceRequestModel
                             .pickupLocationLong =
                         mapsProvider.pickUpLocation.longitude.toString();
-                    mechanicRequestProvider.confirmMechanicServiceRequestModel
-                        .Estimated_Time = "2";
                     mechanicRequestProvider
-                            .confirmMechanicServiceRequestModel.Estimated_Fare =
+                        .confirmMechanicServiceRequestModel.estimatedTime = "2";
+                    mechanicRequestProvider
+                            .confirmMechanicServiceRequestModel.estimatedFare =
                         mechanicServicesCartProvider.finalFare.toString();
 
                     //     ConfirmMechanicServiceRequestModel(

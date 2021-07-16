@@ -381,7 +381,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                               print(
                                                   " hi bye ${WinchRequestProvider.confirmWinchServiceResponseModel.status}");
                                               timer = Timer.periodic(
-                                                  Duration(seconds: 14),
+                                                  Duration(seconds: 2),
                                                   (timer) async {
                                                 print("timer loop");
                                                 await WinchRequestProvider
@@ -581,7 +581,8 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                                       .textTheme
                                                       .button),
                                               Text(
-                                                " ${WinchRequestProvider.checkRequestStatusResponseModel.scope != null ? WinchRequestProvider.checkRequestStatusResponseModel.scope.toString() : "5"} Km",
+                                                "${WinchRequestProvider.checkRequestStatusResponseModel.scope != null ? WinchRequestProvider.checkRequestStatusResponseModel.scope ~/ 1000 : 5000 ~/ 1000} KM",
+                                               // " ${WinchRequestProvider.checkRequestStatusResponseModel.scope != null ? WinchRequestProvider.checkRequestStatusResponseModel.scope.toString() : "5"} Km",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .button,
@@ -597,7 +598,7 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                             ),
                           ),
                           LinearProgressIndicator(
-                              backgroundColor: Colors.redAccent),
+                              backgroundColor: Colors.redAccent,color: Colors.white,),
                           // SizedBox(
                           //     height: MediaQuery.of(context).size.height * 0.15),
                           Column(
