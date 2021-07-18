@@ -209,10 +209,9 @@ class _WinchToCustomerState extends State<WinchToCustomer> {
                     }),
               ),
 
-              // WinchRequestProvider.STATUS_STARTED == false
-              //     ? AcceptedWinchServiceSheet()
-              //     :
-              StartedWinchServiceSheet(),
+              WinchRequestProvider.STATUS_STARTED == false
+                  ? AcceptedWinchServiceSheet()
+                  : StartedWinchServiceSheet(),
             ],
           ),
         ),

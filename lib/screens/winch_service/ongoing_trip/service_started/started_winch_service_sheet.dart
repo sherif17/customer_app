@@ -343,9 +343,7 @@ class _StartedWinchServiceSheetState extends State<StartedWinchServiceSheet> {
                             onTap: () async {
                               await WinchRequestProvider
                                   .cancelWinchDriverRequest();
-                              if (WinchRequestProvider.isLoading == false &&
-                                  WinchRequestProvider.CANCELING_ADDED_FINE ==
-                                      true) {
+                              if (WinchRequestProvider.isLoading == false) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     ToWinchMap.routeName,
@@ -387,23 +385,28 @@ class _StartedWinchServiceSheetState extends State<StartedWinchServiceSheet> {
                         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           buildDriverInfo(size),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("${driverFirstName + " " + driverLastName}",
-                                  style: Theme.of(context).textTheme.headline2),
-                              TextButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.star_half,
-                                    color: Colors.yellowAccent,
-                                  ),
-                                  label: Text(
-                                    "4.9",
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "${driverFirstName + " " + driverLastName}",
                                     style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ))
-                            ],
+                                        Theme.of(context).textTheme.headline2),
+                                TextButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.star_half,
+                                      color: Colors.yellowAccent,
+                                    ),
+                                    label: Text(
+                                      "4.9",
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ))
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.1,

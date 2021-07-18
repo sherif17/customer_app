@@ -5,11 +5,15 @@ import 'package:customer_app/models/winch_request/cancel_winch_service_model.dar
 import 'package:customer_app/models/winch_request/check_request_status_model.dart';
 import 'package:customer_app/models/winch_request/confirm_winch_service_model.dart';
 import 'package:customer_app/models/winch_request/rate_winch_driver_model.dart';
+import 'package:customer_app/screens/dash_board/dash_board.dart';
 import 'package:customer_app/services/winch_services/winch_request_services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 import '../customer_cars/customer_car_provider.dart';
 import '../maps_preparation/mapsProvider.dart';
@@ -21,6 +25,9 @@ class WinchRequestProvider with ChangeNotifier {
       ConfirmWinchServiceResponseModel();
   CheckRequestStatusResponseModel checkRequestStatusResponseModel =
       CheckRequestStatusResponseModel();
+  RatingForWinchDriverRequestModel ratingForWinchDriverRequestModel =
+      RatingForWinchDriverRequestModel();
+
   RatingForWinchDriverResponseModel ratingForWinchDriverResponseModel =
       RatingForWinchDriverResponseModel();
   CancellingWinchServiceResponseModel cancellingWinchServiceResponseModel =
@@ -42,6 +49,7 @@ class WinchRequestProvider with ChangeNotifier {
   bool CANCLING_RIDE = false;
   bool STATUS_ARRIVED = false;
   bool STATUS_STARTED = false;
+  bool SERVICE_fINISHED = false;
 
   confirmWinchService(context) async {
     confirmWinchServiceRequestModel.carId =
@@ -119,6 +127,38 @@ class WinchRequestProvider with ChangeNotifier {
       STATUS_TERMINATED = true;
       STATUS_SEARCHING = false;
     }
+    if (checkRequestStatusResponseModel.status == "COMPLETED") {
+      SERVICE_fINISHED = true;
+      trackWinchDriverTimer.cancel();
+      final _dialog = RatingDialog(
+        // your app's name?
+        title: '${checkRequestStatusResponseModel.Fare.ceil()}EGP',
+        // encourage your user to leave a high rating?
+        message:
+            'Tap a star to set your rating For Winch Driver. Add more description here if you want.',
+        // your app's logo?
+        image: isLoading == false
+            ? SvgPicture.asset(
+                "assets/icons/cash.svg",
+                height: MediaQuery.of(context).size.height * 0.15,
+              )
+            : CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.green)),
+        submitButton: 'Submit Rating For Winch driver',
+        // onCancelled: () => print('cancelled'),
+        onSubmitted: (response) async {
+          ratingForWinchDriverRequestModel.stars = response.rating.toString();
+          await api.rateWinchDriver(
+              ratingForWinchDriverRequestModel, loadJwtTokenFromDB());
+          Navigator.pushNamedAndRemoveUntil(
+              context, DashBoard.routeName, (route) => false);
+        },
+      );
+      showDialog(
+        context: context,
+        builder: (context) => _dialog,
+      );
+    }
     notifyListeners();
   }
 
@@ -130,7 +170,7 @@ class WinchRequestProvider with ChangeNotifier {
           startMapMarker,
           Provider.of<MapsProvider>(context, listen: false).pickUpLocation);
       trackWinchDriverTimer =
-          Timer.periodic(Duration(seconds: 5), (timer) async {
+          Timer.periodic(Duration(seconds: 3), (timer) async {
         print("Driver Tracking........");
         await checkStatusForConfirmedWinchService(context);
         if (STATUS_ACCEPTED == true ||
@@ -150,7 +190,40 @@ class WinchRequestProvider with ChangeNotifier {
               "Driver Current Location Lat : ${checkRequestStatusResponseModel.driverLocationLat}");
           print(
               "Driver Current Location long : ${checkRequestStatusResponseModel.driverLocationLong}");
-        } else
+        }
+
+        // if (SERVICE_fINISHED == true) {
+        //   final _dialog = RatingDialog(
+        //     // your app's name?
+        //     title: '${checkRequestStatusResponseModel.Fare}EGP',
+        //     // encourage your user to leave a high rating?
+        //     message:
+        //         'Tap a star to set your rating For Winch Driver. Add more description here if you want.',
+        //     // your app's logo?
+        //     image: isLoading == false
+        //         ? SvgPicture.asset(
+        //             "assets/icons/cash.svg",
+        //             height: MediaQuery.of(context).size.height * 0.15,
+        //           )
+        //         : CircularProgressIndicator(
+        //             valueColor: AlwaysStoppedAnimation<Color>(Colors.green)),
+        //     submitButton: 'Submit',
+        //     // onCancelled: () => print('cancelled'),
+        //     onSubmitted: (response) async {
+        //       ratingForWinchDriverRequestModel.stars =
+        //           response.rating.toString();
+        //       await api.rateWinchDriver(
+        //           ratingForWinchDriverRequestModel, loadJwtTokenFromDB());
+        //       Navigator.pushNamedAndRemoveUntil(
+        //           context, DashBoard.routeName, (route) => false);
+        //     },
+        //   );
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) => _dialog,
+        //   );
+        // }
+        else
           print("Status now : ${checkRequestStatusResponseModel.status}");
         notifyListeners();
       });
@@ -168,6 +241,7 @@ class WinchRequestProvider with ChangeNotifier {
   }
 
   cancelWinchDriverRequest() async {
+    print("cancelled");
     isLoading = true;
     cancellingWinchServiceResponseModel =
         await api.cancelWinchRequest(loadJwtTokenFromDB());
@@ -183,6 +257,48 @@ class WinchRequestProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  // Timer waitingForEndingWinchServiceTimer;
+  // waitingForEndingWinchService(context) {
+  //   waitingForEndingWinchServiceTimer =
+  //       Timer.periodic(Duration(seconds: 2), (timer) async {
+  //     checkStatusForConfirmedMechanicService(context);
+  //     print(checkMechanicRequestStatusResponseModel.status);
+  //     if (MECHANIC_STATUS_COMPLETED == true) {
+  //       timer.cancel();
+  //       final _dialog = RatingDialog(
+  //         // your app's name?
+  //         title: '${checkMechanicRequestStatusResponseModel.fare.ceil()} EGP',
+  //         // encourage your user to leave a high rating?
+  //         message:
+  //             'Tap a star to set your rating for mechanic. Add comment here if you want.',
+  //         // your app's logo?
+  //         image: true
+  //             ? SvgPicture.asset(
+  //                 "assets/icons/cash.svg",
+  //                 height: MediaQuery.of(context).size.height * 0.15,
+  //               )
+  //             : CircularProgressIndicator(
+  //                 valueColor: AlwaysStoppedAnimation<Color>(Colors.green)),
+  //         submitButton: 'Submit Rating For Mechanic',
+  //         // onCancelled: () => print('cancelled'),
+  //         onSubmitted: (response) async {
+  //           print("amr diab submitted");
+  //           Navigator.pushNamedAndRemoveUntil(
+  //               context, DashBoard.routeName, (route) => false);
+  //           ratingForMechanicServiceRequestModel.stars =
+  //               response.rating.toString();
+  //           await mechanicApiRequest.rateMechanic(
+  //               ratingForMechanicServiceRequestModel, loadJwtTokenFromDB());
+  //         },
+  //       );
+  //       showDialog(
+  //         context: context,
+  //         builder: (context) => _dialog,
+  //       );
+  //     }
+  //   });
+  // }
 
   resetAllFlags() {
     isLoading = false;

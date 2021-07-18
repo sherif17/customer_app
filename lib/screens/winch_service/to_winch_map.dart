@@ -26,7 +26,13 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    cancelPastRides();
     // getCurrentPrefData();
+  }
+
+  cancelPastRides() async {
+    await Provider.of<WinchRequestProvider>(context, listen: false)
+        .cancelWinchDriverRequest();
   }
 
   @override
@@ -70,6 +76,7 @@ class _ToWinchState extends State<ToWinchMap> with TickerProviderStateMixin {
                     _completerGoogleMap.complete(controller);
                     val.googleMapController = controller;
                     val.locatePosition(context);
+                    // cancelPastRides();
                     Provider.of<WinchRequestProvider>(context, listen: false)
                         .resetAllFlags();
                     print(

@@ -39,7 +39,7 @@ class WinchRequestApi {
   Future<RatingForWinchDriverResponseModel> rateWinchDriver(
       RatingForWinchDriverRequestModel ratingForWinchDriverRequestModel,
       token) async {
-    var url = Uri.parse('http://161.97.155.244/api/requestwinch/createrequest');
+    var url = Uri.parse('http://161.97.155.244/api/requestwinch/Rate');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token"},
         body: ratingForWinchDriverRequestModel.toJson());

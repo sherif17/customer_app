@@ -27,6 +27,7 @@ class CheckRequestStatusResponseModel {
     this.reason,
     this.scope,
     this.error,
+    this.Fare,
   });
 
   String status;
@@ -42,6 +43,7 @@ class CheckRequestStatusResponseModel {
   String reason;
   int scope;
   String error;
+  double Fare;
 
   factory CheckRequestStatusResponseModel.fromJson(Map<String, dynamic> json) =>
       CheckRequestStatusResponseModel(
@@ -67,6 +69,7 @@ class CheckRequestStatusResponseModel {
         reason: json["Reason"],
         scope: json["Scope"],
         error: json["error"],
+        Fare: json["Fare"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -287,29 +287,32 @@ class _RideBottomSheetState extends State<RideBottomSheet> {
                                           SizedBox(
                                             height: size.width * 0.1,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 40),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.money,
-                                                  size: 18.0,
-                                                  color: Colors.black54,
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text("Cash"),
-                                                SizedBox(
-                                                  width: 6.0,
-                                                ),
-                                                Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  size: 16.0,
-                                                  color: Colors.black54,
-                                                ),
-                                              ],
+                                          FittedBox(
+                                            fit: BoxFit.fitWidth,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 40),
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.money,
+                                                    size: 18.0,
+                                                    color: Colors.black54,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text("Cash"),
+                                                  SizedBox(
+                                                    width: 6.0,
+                                                  ),
+                                                  // Icon(
+                                                  //   Icons.keyboard_arrow_down,
+                                                  //   size: .0,
+                                                  //   color: Colors.black54,
+                                                  // ),
+                                                ],
+                                              ),
                                             ),
                                           )
                                         ],
