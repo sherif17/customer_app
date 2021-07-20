@@ -1,8 +1,10 @@
 import 'package:customer_app/localization/localization_constants.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/screens/dash_board/chatbot/chat.dart';
 import 'package:customer_app/screens/dash_board/home/home.dart';
 import 'package:customer_app/screens/dash_board/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashBoard extends StatefulWidget {
   static String routeName = '/DashBoard';
@@ -25,6 +27,7 @@ class _DashBoard extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    //Provider.of<MapsProvider>(context).locatePosition(context);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: PageStorage(

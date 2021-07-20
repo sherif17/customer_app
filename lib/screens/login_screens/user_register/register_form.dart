@@ -1,4 +1,5 @@
 //import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/models/user_register/user_register_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -10,6 +11,7 @@ import 'package:customer_app/shared_prefrences/customer_user_model.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../widgets/form_error.dart';
@@ -72,6 +74,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
                 child: Column(
@@ -109,17 +112,23 @@ class _RegisterFormState extends State<RegisterForm> {
                 if (value.error == null) {
                   jwtToken = value.token;
                   setPrefJwtToken(jwtToken);
+                  saveJwtTokenInDB(jwtToken);
                   Map<String, dynamic> decodedToken =
                       JwtDecoder.decode(jwtToken);
                   responseID = decodedToken["_id"];
                   setPrefBackendID(decodedToken["_id"]);
+                  saveBackendIBInDB(decodedToken["_id"]);
                   // responseFName = decodedToken["firstName"];
                   //responseLName = decodedToken["lastName"];
                   responseIat = decodedToken["iat"];
                   setPrefIAT(decodedToken["iat"].toString());
+                  saveIATInDB(decodedToken["iat"].toString());
                   setPrefFirstName(userRegisterRequestModel.firstName);
+                  saveFirstNameInDB(userRegisterRequestModel.firstName);
                   setPrefLastName(userRegisterRequestModel.lastName);
+                  saveLastNameInDB(userRegisterRequestModel.lastName);
                   printAllUserCurrentData();
+                  printAllCustomerSavedInfoInDB();
                   // print(responseID);
                   // print(responseLName);
                   // print(responseFName);

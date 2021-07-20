@@ -1,37 +1,32 @@
-import 'package:customer_app/DataHandler/appData.dart';
 import 'package:customer_app/models/maps/address.dart';
 import 'package:customer_app/models/maps/direction_details.dart';
+import 'package:customer_app/provider/maps_preparation/mapsProvider.dart';
 import 'package:customer_app/services/maps_services/RequestAssistant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MapsApiService {
-
-  static Future<String> searchCoordinateAddress(
+  static Future<Address> searchCoordinateAddress(
       Position position, context) async {
     String mapKey = "AIzaSyAbT3_43qH7mG81Ufy4xS-GbqDjo9rrPAU";
-    String placeAddress = "";
+    String placeName = "";
+    Address placeAddress = new Address();
     String st1, st2, st3, st4;
-    //String url = 'https//maps.googleapis.com/maps/api/geocode/json?lating-${position.latitude},${position.longitude}&key-$mapKey';
     String url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$mapKey';
     var response = await RequestAssistant.getRequest(url);
     if (response != "failed") {
-      //placeAddress = response["results"][0]["formatted_address"];
+      //placeName = response["results"][0]["formatted_address"];
       st1 = response["results"][0]["address_components"][0]["long_name"];
       st2 = response["results"][0]["address_components"][1]["long_name"];
       st3 = response["results"][0]["address_components"][2]["long_name"];
       st4 = response["results"][0]["address_components"][3]["long_name"];
-      placeAddress = st1 + ", " + st2 + ", " + st3 + ", " + st4;
+      placeName = st1 + ", " + st2 + ", " + st3 + ", " + st4;
 
-      Address userPickupAddress = new Address();
-      userPickupAddress.longitude = position.longitude;
-      userPickupAddress.latitude = position.latitude;
-      userPickupAddress.placeName = placeAddress;
-
-      Provider.of<AppData>(context, listen: false)
-          .updatePickUpLocationAddress(userPickupAddress);
+      placeAddress.longitude = position.longitude;
+      placeAddress.latitude = position.latitude;
+      placeAddress.placeName = placeName;
     }
     return placeAddress;
   }
@@ -65,4 +60,48 @@ class MapsApiService {
   }
 
 
+  static String calculateArrivalTime(context)
+  {
+    int estimatedDurationInSec =
+        Provider.of<MapsProvider>(context, listen: false)
+            .tripDirectionDetails
+            .durationValue;
+
+    DateTime currentTime = new DateTime.now();
+    String estimatedArrivalTime;
+
+    int estimatedArrivalSec = estimatedDurationInSec +
+        currentTime.second +
+        currentTime.minute * 60 +
+        currentTime.hour * 3600;
+    double hoursDouble = estimatedArrivalSec / 3600;
+    int hours = hoursDouble.floor();
+    double minutesDouble = estimatedArrivalSec / 60 - (hours * 60);
+    int minutes = minutesDouble.floor();
+    if (hours > 23) {
+      hours = hours - 24;
+      estimatedArrivalTime =
+          "Tomorrow " + hours.toString() + ":" + minutes.toString();
+    } else {
+      estimatedArrivalTime = hours.toString() + ":" + minutes.toString();
+    }
+
+    return estimatedArrivalTime;
+  }
+
+  static int calculateFares(DirectionDetails directionDetails, context) {
+    //in terms USD
+    double timeTraveledFare = (directionDetails.durationValue / 60) * 0.20;
+    double distanceTraveledFare =
+        (directionDetails.distanceValue / 1000) * 0.20;
+    double totalFareAmount = timeTraveledFare + distanceTraveledFare;
+
+    //Local Currency
+    //1$ = 16 egp
+    double totalLocalAmount = totalFareAmount * 16;
+    int estimatedFare = totalLocalAmount.truncate();
+    //Provider.of<MapsProvider>(context, listen: false).updateEstimatedFare(estimatedFare);
+
+    return estimatedFare;
+  }
 }

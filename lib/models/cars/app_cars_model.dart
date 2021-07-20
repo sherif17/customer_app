@@ -46,6 +46,7 @@ class CarModel {
         "EndYear": endYear,
         "__v": v,
       };
+
   static List<CarModel> parseCars(String responseBody) {
     var list = json.decode(responseBody) as List<dynamic>;
     List<CarModel> carList =

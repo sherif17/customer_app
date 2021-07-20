@@ -9,14 +9,14 @@ class borderedRoundedButton extends StatelessWidget {
 
   const borderedRoundedButton({
     Key key,
-    @required this.size,
+    //@required this.size,
     this.iconSrc = "",
     this.press,
     this.text,
     this.CornerRadius,
   }) : super(key: key);
 
-  final Size size;
+  // final Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,8 @@ class borderedRoundedButton extends StatelessWidget {
             if (iconSrc != "")
               SvgPicture.asset(
                 iconSrc,
-                height: size.height * 0.03,
-                width: size.width * 0.03,
+                height: size.height * 0.04,
+                width: size.width * 0.04,
               ),
           ],
         ),

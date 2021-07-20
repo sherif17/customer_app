@@ -1,4 +1,5 @@
 //import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/models/user_register/user_register_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -12,6 +13,7 @@ import 'package:customer_app/widgets/form_error.dart';
 import 'package:customer_app/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -109,6 +111,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 SizedBox(
                     height: size.height * 0.1,
@@ -154,24 +157,31 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                           if (value.error == null) {
                             jwtToken = value.token;
                             setPrefJwtToken(jwtToken);
+                            saveJwtTokenInDB(jwtToken);
                             print(jwtToken);
                             Map<String, dynamic> decodedToken =
                                 JwtDecoder.decode(jwtToken);
                             responseID = decodedToken["_id"];
                             setPrefBackendID(responseID);
+                            saveBackendIBInDB(responseID);
                             //responseFName = decodedToken["firstName"];
                             setPrefFirstName(
                                 userRegisterRequestModel.firstName);
+                            saveFirstNameInDB(
+                                userRegisterRequestModel.firstName);
                             //responseLName = decodedToken["lastName"];
                             setPrefLastName(userRegisterRequestModel.lastName);
+                            saveLastNameInDB(userRegisterRequestModel.lastName);
                             responseIat = decodedToken["iat"];
                             setPrefIAT(responseIat.toString());
+                            saveIATInDB(responseIat.toString());
                             // print(responseID);
                             // print(responseLName);
                             // print(responseFName);
                             // print(responseIat);
                             // print(value.token);
                             printAllUserCurrentData();
+                            printAllCustomerSavedInfoInDB();
                             setState(() {
                               isApiCallProcess = false;
                             });

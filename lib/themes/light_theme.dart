@@ -13,7 +13,7 @@ ThemeData lightTheme() {
           fontSize: 25.0,
           fontWeight: FontWeight.bold,
           fontFamily: 'Lato',
-          color: Colors.black54),
+          color: Colors.black87),
       headline3: base.headline3.copyWith(
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -21,9 +21,9 @@ ThemeData lightTheme() {
         color: Colors.black,
       ),
       headline4: base.headline4.copyWith(
-        fontSize: 18.0,
+        fontSize: 17,
         fontFamily: 'Lato',
-        color: Color(0xFF42BDBD),
+        color: Colors.black,
       ),
       headline5: base.headline5.copyWith(
         fontSize: 17.0,
@@ -32,8 +32,10 @@ ThemeData lightTheme() {
         //buttons
       ),
       headline6: base.headline6.copyWith(
-        fontSize: 23.0,
+        fontSize: 21.0,
         fontFamily: 'Lato',
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
       bodyText1: base.bodyText1.copyWith(
         color: Colors.grey[800],
@@ -46,7 +48,7 @@ ThemeData lightTheme() {
         color: Colors.grey[900],
       ),
       button: base.button.copyWith(
-          fontSize: 20.0,
+          fontSize: 15.0,
           fontFamily: 'Lato',
           color: Colors.white,
           fontWeight: FontWeight.bold),
@@ -58,6 +60,12 @@ ThemeData lightTheme() {
         fontSize: 15.0,
         fontFamily: 'Lato',
         fontWeight: FontWeight.w900,
+        color: Color(0xFFBD4242),
+      ),
+      subtitle2: base.subtitle2.copyWith(
+        fontSize: 15.0,
+        fontFamily: 'Lato',
+        fontWeight: FontWeight.w700,
         color: Color(0xFFBD4242),
       ),
     );
@@ -74,7 +82,7 @@ ThemeData lightTheme() {
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
     backgroundColor: Colors.white,
-    dialogBackgroundColor: Colors.white30,
+    dialogBackgroundColor: Colors.white,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(
         color: Colors.white,

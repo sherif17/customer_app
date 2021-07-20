@@ -1,4 +1,5 @@
 //import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/models/user_register/user_register_model.dart';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/models/user_register/user_register_model.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/dash_board/dash_board.dart';
@@ -54,7 +55,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     registerRequestModel = new UserRegisterRequestModel();
-    getCurrentPrefData();
+    // getCurrentPrefData();
   }
 
   /* Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class _BodyState extends State<Body> {
     );
   }
 */
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
 
   void getCurrentPrefData() {
     getPrefCurrentLang().then((value) {
@@ -77,7 +78,6 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    Text("noooooooo");
     Size size = MediaQuery.of(context).size;
     //otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
@@ -134,12 +134,13 @@ class _BodyState extends State<Body> {
             text: getTranslated(context, 'Continue with Facebook'),
             iconSrc: 'assets/icons/facebook.svg',
             CornerRadius: 29,
+            //size:size.height*0.05 ,
             press: () async {
               String currentJwtToken = await getPrefJwtToken();
               final result = await facebookLogin.logIn(['email']);
               final token = result.accessToken.token;
-              final graphResponse = await http.get(
-                  'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+              final graphResponse = await http.get(Uri.parse(
+                  'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}'));
               final profile = JSON.jsonDecode(graphResponse.body);
               print(profile);
               userProfile = profile;
@@ -150,7 +151,6 @@ class _BodyState extends State<Body> {
               if (faceName != null && faceEmail != null && faceImage != null) {
                 FDecode = faceName.split(new RegExp('\\s+'));
                 print(FDecode);
-                setPrefFirstName(FDecode[0]);
                 registerRequestModel.firstName = FDecode[0];
                 registerRequestModel.lastName = FDecode[1];
                 print("Request body: ${registerRequestModel.toJson()}.");
@@ -165,24 +165,32 @@ class _BodyState extends State<Body> {
                   if (value.error == null) {
                     jwtToken = value.token;
                     setPrefJwtToken(jwtToken);
+                    saveJwtTokenInDB(jwtToken);
                     Map<String, dynamic> decodedToken =
                         JwtDecoder.decode(jwtToken);
                     //responseID = decodedToken["_id"];
                     setPrefBackendID(decodedToken["_id"]);
+                    saveBackendIBInDB(decodedToken["_id"]);
                     setPrefFirstName(FDecode[0]);
+                    saveFirstNameInDB(FDecode[0]);
                     setPrefLastName(FDecode[1]);
+                    saveLastNameInDB(FDecode[1]);
                     setPrefSocialEmail(faceEmail);
+                    saveSocialEmailInDB(faceEmail);
                     setPrefSocialImage(faceImage);
+                    saveSocialImageInDB(faceImage);
                     // responseFName = decodedToken["firstName"];
                     // responseLName = decodedToken["lastName"];
                     // responseIat = decodedToken["iat"];
                     setPrefIAT(decodedToken["iat"].toString());
+                    saveIATInDB(decodedToken["iat"].toString());
                     // print(jwtToken);
                     // print(responseID);
                     // print(responseLName);
                     // print(responseFName);
                     // print(responseIat);
                     printAllUserCurrentData();
+                    printAllCustomerSavedInfoInDB();
                     setState(() {
                       isApiCallProcess = false;
                     });
@@ -253,19 +261,27 @@ class _BodyState extends State<Body> {
                   if (value.error == null) {
                     jwtToken = value.token;
                     setPrefJwtToken(jwtToken);
+                    saveJwtTokenInDB(jwtToken);
                     Map<String, dynamic> decodedToken =
                         JwtDecoder.decode(jwtToken);
                     responseID = decodedToken["_id"];
                     setPrefBackendID(decodedToken["_id"]);
+                    saveBackendIBInDB(decodedToken["_id"]);
                     // responseFName = decodedToken["firstName"];
                     //responseLName = decodedToken["lastName"];
                     responseIat = decodedToken["iat"];
                     setPrefIAT(decodedToken["iat"].toString());
+                    saveIATInDB(decodedToken["iat"].toString());
                     setPrefFirstName(Gdecode[0]);
+                    saveFirstNameInDB(Gdecode[0]);
                     setPrefLastName(Gdecode[1]);
+                    saveLastNameInDB(Gdecode[1]);
                     setPrefSocialEmail(googleEmail);
+                    saveSocialEmailInDB(googleEmail);
                     setPrefSocialImage(googleImage);
+                    saveSocialImageInDB(googleImage);
                     printAllUserCurrentData();
+                    printAllCustomerSavedInfoInDB();
                     //print(jwtToken);
                     // print(responseID);
                     // print(responseLName);

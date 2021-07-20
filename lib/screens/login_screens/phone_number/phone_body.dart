@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:customer_app/local_db/customer_db/customer_info_db.dart';
 import 'package:customer_app/localization/localization_constants.dart';
 import 'package:customer_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:customer_app/screens/login_screens/phone_number/phone_form.dart';
@@ -17,12 +18,12 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   String phoneNumber = "";
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    //getCurrentPrefData();
   }
 
   void getCurrentPrefData() {

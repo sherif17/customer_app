@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class CarApiService {
   Future<List<CarModel>> loadCarsData() async {
     //Load All Car Blocks from Backend
-    String url = 'http://161.97.155.244/api/info/allcars';
+    Uri url = Uri.parse('http://161.97.155.244/api/info/allcars');
     final response = await http.get(url);
     if (response.statusCode == 200 || response.statusCode == 400) {
       print("response.body:${response.body}");
@@ -19,18 +19,20 @@ class CarApiService {
 
   Future<AddNewCarResponseModel> addUserNewCar(
       AddNewCarRequestModel addNewCarRequestModel, token) async {
-    String url = 'http://161.97.155.244/api/customer/me/car';
+    Uri url = Uri.parse('http://161.97.155.244/api/customer/me/car');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token"},
         body: addNewCarRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
-      return AddNewCarResponseModel.fromJson(json.decode(response.body));
+      AddNewCarResponseModel result =
+          AddNewCarResponseModel.fromJson(json.decode(response.body));
+      return result;
     }
   }
 
   Future<List<LoadUserCarsModel>> loadUserCars(token) async {
     //Load All Car Blocks from Backend
-    String url = 'http://161.97.155.244/api/customer/me/car';
+    Uri url = Uri.parse('http://161.97.155.244/api/customer/me/car');
     final response = await http.get(url, headers: {"x-auth-token": "$token"});
     if (response.statusCode == 200 || response.statusCode == 400) {
       print("response.body:${response.body}");
