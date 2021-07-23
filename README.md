@@ -2,9 +2,10 @@
 # Customer_App
 
 This is the main application on which the idea originated, through this app customers could use the provided services with a simple and fast registration process at first time using this app, that could be helpful in many critical situations when a customer has any issues related to his car.
-<img src="https://user-images.githubusercontent.com/43541909/126675827-f8aeea91-687e-4c72-a157-ddeaa3771a57.jpg" width="150" height="300" align = "right" />
 
 ## Table of Contents
+<img src="https://user-images.githubusercontent.com/43541909/126675827-f8aeea91-687e-4c72-a157-ddeaa3771a57.jpg" width="150" height="300" align = "right" />
+
 1. [Installation.](#Installation)
 2. [Techanologies Used.](#Techanologies_Used)
 3. [Learning OutComes.](#Learning_OutComes)
