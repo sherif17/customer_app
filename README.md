@@ -8,7 +8,7 @@ This is the main application on which the idea originated, through this app cust
 1. [Registration[LogIn / SignUp]](#Registration)  
 2. [Adding Cars](#Adding_cars)
 3. [Requesting_Winch_Service](#Requesting_Winch_Service)  
-4. [Requesting_Mechanic_Service](#emphasis)  
+4. [Requesting_Mechanic_Service](#Requesting_Mechanic_Service)  
 
 .
 <a name="Registration"/>
@@ -127,12 +127,98 @@ https://user-images.githubusercontent.com/43541909/126775232-9db7eeac-5496-4876-
   <img src="https://user-images.githubusercontent.com/43541909/126797742-9aa9404f-2fd2-403e-8ee6-7e0d657c3674.jpg" width="150" height="300" align = "center" />
   
   
-  
+## Records  
 
 https://user-images.githubusercontent.com/43541909/126798885-ad9e1875-e34b-4de8-a2b0-bf4b187274da.mp4
 
 
 
 https://user-images.githubusercontent.com/43541909/126799151-5ce81a12-2bd5-4cdf-8538-44b593cbf41c.mp4
+
+.
+<a name="Requesting_Mechanic_Service"/>
+## Requesting Mechanic Service
+
+* Selecting Services Needed
+
+  * Customer will be able to choose the type of service needed.
+     * If customer faces breakdowns.
+     * Or  needs routine maintainence service. 
+      
+  * He will be directed to lists of services that he can choose from.
+ 
+   <img src="https://user-images.githubusercontent.com/43541909/126808512-d5e1fdb2-ad49-4f9e-abf4-e7a9258c5511.png" width="150" height="300" align = "center" />
+   <img src="https://user-images.githubusercontent.com/43541909/126808604-bd573852-eff5-46ba-a82c-ccff16bd4264.png" width="150" height="300" align = "center" />
+   <img src="https://user-images.githubusercontent.com/43541909/126808686-cc43c5ad-14ca-4344-8f29-8b06422cb734.png" width="150" height="300" align = "center" />
+   
+* Adding To Mechanic Service Cart.
+
+  customer can  the service needed and add it to his cart.
+  
+   <img src="https://user-images.githubusercontent.com/43541909/126811026-d761200f-f6c6-4f4a-ac4c-82dd3b55c841.png" width="150" height="300" align = "center" />
+   <img src="https://user-images.githubusercontent.com/43541909/126811034-cc656941-1c84-4931-8d31-d40915e7e7af.png" width="150" height="300" align = "center" />
+   <img src="https://user-images.githubusercontent.com/43541909/126811051-5eb137d5-b753-4d65-bd03-17256f95c21a.png" width="150" height="300" align = "center" />
+
+* Choosing One Of Owned Cars.
+
+  Customer can choose the car that needs the service in any level of the requesting process.
+  
+   <img src="https://user-images.githubusercontent.com/43541909/126812117-1af0f567-ee00-43b6-b496-456e4a4ae717.png" width="150" height="300" align = "center" />
+   <img src="https://user-images.githubusercontent.com/43541909/126812127-a23cfce7-3a9a-49a7-a611-8a97fb09b1b4.png" width="150" height="300" align = "center" />
+   
+* Confirming Mechanic Request
+
+  * Before Confirming,Customer will view a summary of his selection. 
+  * If this summary is confirmed,customer will be directed to a Gmap To confirm the meeting point with the mechanic.
+  
+     <img src="https://user-images.githubusercontent.com/43541909/126813872-5032e324-b326-46e9-b45f-65bcf8b0cad8.png" width="150" height="300" align = "center" />
+     <img src="https://user-images.githubusercontent.com/43541909/126813882-6f583ee7-4118-4f0d-9817-b61fd68d6b15.png" width="150" height="300" align = "center" />
+
+* Searching For Mechanic
+
+ * Customer start searching for nearest mechanic 
+ * Mechanic receives customer request,vwhile searching for nearest client.
+ * Mechanic needs to respond to that request
+ 
+     <img src="https://user-images.githubusercontent.com/43541909/126815364-7c2afaa2-2674-45c6-b43a-8a41a20c4752.png" width="150" height="300" align = "center" />
+
+* Customer Start Tracking For arrival of Mechanic
+
+   Customer listened that mechanic approved his request & then he start tracking it's movmnet to arrive to customer location.
+  
+    <img src="https://user-images.githubusercontent.com/43541909/126816000-b2fbed79-5831-4e3b-bcb3-b0bd8b068f14.png" width="150" height="300" align = "center" />
+    <img src="https://user-images.githubusercontent.com/43541909/126816009-67b6a1ce-da9d-4cac-b0bf-4cc17fb10bb8.png" width="150" height="300" align = "center" />
+
+* Waiting For Repairs To Be Made
+
+  * Mechanic is checking customer car Now.
+  * Customer waiting for mechanic finish his diagnosis for the car.
+  * To receive list of repairs to  be made.
+  
+  <img src="https://user-images.githubusercontent.com/43541909/126816391-e3309e05-00a5-4c6c-a356-20d01f82827c.png" width="150" height="300" align = "center" />
+  
+* Receiving Mechanic Diagnosis
+
+   * Customer now, received repairs to be made. 
+   * customer could accept or reject those repairs.
+   * And mechanic now, is waiting for customer response. 
+   
+    <img src="https://user-images.githubusercontent.com/43541909/126816872-bb0b69b5-2005-4abc-9e7e-39c9beac3941.png" width="150" height="300" align = "center"/>
+    
+ * Ending Service & Submit Rating For Mechanic
+ 
+   When customer listen for finishing that service, final fare will be shown with an option for rating mechanic.
+  
+  <img src="https://user-images.githubusercontent.com/43541909/126819796-186a812a-cf9a-4ea5-89f6-af2dc74feefc.png " width="150" height="300" align = "center"/>
+  
+  ## Records
+  
+  
+
+https://user-images.githubusercontent.com/43541909/126820207-ff55a401-599b-4c4c-9eaa-39779265067b.mp4
+
+
+
+https://user-images.githubusercontent.com/43541909/126820473-34bf9a09-ae85-4829-8f52-29c467f9b3ef.mp4
 
 
