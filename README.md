@@ -1,3 +1,4 @@
+
 # Customer_App
 
 This is the main application on which the idea originated, through this app customers could use the provided services with a simple and fast registration process at first time using this app, that could be helpful in many critical situations when a customer has any issues related to his car.
@@ -6,7 +7,7 @@ This is the main application on which the idea originated, through this app cust
 ## Table of Contents  
 1. [Registration[LogIn / SignUp]](#Registration)  
 2. [Adding Cars](#Adding_cars)
-3. [Requesting_Winch_service](#emphasis)  
+3. [Requesting_Winch_Service](#Requesting_Winch_Service)  
 4. [Requesting_Mechanic_Service](#emphasis)  
 
 .
@@ -40,7 +41,7 @@ First time customers use the app the app only needs their mobile number for a ve
     
 * Home & Profile page.
 
- After registration, Customer will be able to use our app normally,choosing between winch & mechanic services, adding list of owned cars and viewing associated information to this account.
+  After registration, Customer will be able to use our app normally,choosing between winch & mechanic services, adding list of owned cars and viewing associated information to this account.
  
   <img src="https://user-images.githubusercontent.com/43541909/126762557-4b1dcf84-ae66-4d5a-8db7-b5d9f9bdce66.jpg" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126762827-b796583d-b0e5-48c5-b7e2-641b10482d72.jpg" width="150" height="300" align = "center" />
     
@@ -51,19 +52,23 @@ Before registered customer could be able to make requests for winch driver or in
 
 <img src="https://user-images.githubusercontent.com/43541909/126760365-468b10b1-d73d-45a7-9938-009f765417b5.png" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126760515-8a98934e-8637-4a78-8376-0e6d1c3f7a80.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760677-724ef73e-af2e-4bd3-bb7c-b5d081a5c34f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760978-07f43f5d-1634-47ad-a8a5-a5f0bdbbac9f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126761096-dceb496e-0539-432c-ad61-8261ff6de571.png" width="150" height="300" align = "center" />.
 
-Records
+## Records
 
-[lisa](https://user-images.githubusercontent.com/43541909/126764080-78503b0c-186b-4ecd-80cc-fe5d0201a928.mp4)
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+https://user-images.githubusercontent.com/43541909/126775136-c50cd634-ca99-4723-9eaf-4ffa3ddc5a4c.mp4
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+https://user-images.githubusercontent.com/43541909/126775028-5a11b558-056d-4bf5-bf12-030f04e707dc.mp4
+
+
+
+https://user-images.githubusercontent.com/43541909/126775232-9db7eeac-5496-4876-b210-f155f874a7d3.mp4
+
+
+
+.
+<a name="Requesting_Winch_Service"/>
+## Requesting Winch Service 
