@@ -4,15 +4,67 @@
 This is the main application on which the idea originated, through this app customers could use the provided services with a simple and fast registration process at first time using this app, that could be helpful in many critical situations when a customer has any issues related to his car.
 <img src="https://user-images.githubusercontent.com/43541909/126675827-f8aeea91-687e-4c72-a157-ddeaa3771a57.jpg" width="150" height="300" align = "right" />
 
-## Table of Contents  
-1. [Registration[LogIn / SignUp]](#Registration)  
-2. [Adding Cars](#Adding_cars)
-3. [Requesting_Winch_Service](#Requesting_Winch_Service)  
-4. [Requesting_Mechanic_Service](#Requesting_Mechanic_Service)  
+## Table of Contents
+1. [Installation.](#Installation)
+2. [Techanologies Used.](#Techanologies_Used)
+3. [Learning OutComes.](#Learning_OutComes)
+4. [Documentaion For Project.](#Documentaion_For_Project)
+
+   4.1 [Registration[LogIn / SignUp]](#Registration)  
+   
+   4.2 [Adding Cars](#Adding_cars)
+   
+   4.3 [Requesting_Winch_Service](#Requesting_Winch_Service)  
+   
+   4.4 [Requesting_Mechanic_Service](#Requesting_Mechanic_Service)  
+   
+5. [Project Status.](#Project_Status)
+
+
+.
+<a name="Installation"/>
+## Installation
+
+1. Install Android Studio / Visual Studio.
+
+2. Add Dart & Flutter Exstensions.
+
+3. Download Flutter SDK.
+
+4. Clone The Project.
+
+5. Open Emulator,Run The Project & Enjoy..
+
+#### Note : You may can't proceed in using app normally, this is due to server in off state.
+.
+<a name="Techanologies_Used"/>
+## Techanologies Used :
+
+* Dart / Flutter.
+* Firbase Phone Authuntication [Baas].
+* Working with Networking [HTTP Requests] 
+* Working with Google cloud services [GMaps - GeoCoding API - Directions API - Places API -Distance Matrix API]
+* Hive [No Sql] Local DB. 
+
+.
+<a name="Learning_OutComes"/>
+## Learning Out-Comes :
+
+* Designing somehow beautiful UI screens.
+* Using provider as state a mangmnet solution.
+* Working with google maps services.
+* Creating somehow e-commerce system.
+* Impleminting local BB to save user info & app data.
+* Supporting Localization [AR - EN]
+
+
+.
+<a name="Documentaion_For_Project"/>
+## Documentaion For Project.
 
 .
 <a name="Registration"/>
-## Registration[LogIn / SignUp]
+### Registration[LogIn / SignUp]
 First time customers use the app the app only needs their mobile number for a verification step on this mobile number and to determine if this customer already has an account associated with this mobile number, to let him login to this account or if there is no associated account with this mobile number, to let this customer complete his registration process by entering his first and last name or login with his social accounts.
 
 * Entering customer phone Number.
@@ -47,12 +99,12 @@ First time customers use the app the app only needs their mobile number for a ve
     
 .
 <a name="Adding_cars"/>
-## Adding Cars 
+### Adding Cars 
 Before registered customer could be able to make requests for winch driver or individual mechanic,customer should add information of atleast one of his car,so he could select from them while requesting services.
 
 <img src="https://user-images.githubusercontent.com/43541909/126760365-468b10b1-d73d-45a7-9938-009f765417b5.png" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126760515-8a98934e-8637-4a78-8376-0e6d1c3f7a80.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760677-724ef73e-af2e-4bd3-bb7c-b5d081a5c34f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760978-07f43f5d-1634-47ad-a8a5-a5f0bdbbac9f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126761096-dceb496e-0539-432c-ad61-8261ff6de571.png" width="150" height="300" align = "center" />.
 
-## Records
+### Records
 
 
 
@@ -71,7 +123,7 @@ https://user-images.githubusercontent.com/43541909/126775232-9db7eeac-5496-4876-
 
 .
 <a name="Requesting_Winch_Service"/>
-## Requesting Winch Service 
+### Requesting Winch Service 
 
 * Getting Customer Current Location
 
@@ -127,7 +179,7 @@ https://user-images.githubusercontent.com/43541909/126775232-9db7eeac-5496-4876-
   <img src="https://user-images.githubusercontent.com/43541909/126797742-9aa9404f-2fd2-403e-8ee6-7e0d657c3674.jpg" width="150" height="300" align = "center" />
   
   
-## Records  
+### Records  
 
 https://user-images.githubusercontent.com/43541909/126798885-ad9e1875-e34b-4de8-a2b0-bf4b187274da.mp4
 
@@ -137,7 +189,7 @@ https://user-images.githubusercontent.com/43541909/126799151-5ce81a12-2bd5-4cdf-
 
 .
 <a name="Requesting_Mechanic_Service"/>
-## Requesting Mechanic Service
+### Requesting Mechanic Service
 
 * Selecting Services Needed
 
@@ -211,7 +263,7 @@ https://user-images.githubusercontent.com/43541909/126799151-5ce81a12-2bd5-4cdf-
   
   <img src="https://user-images.githubusercontent.com/43541909/126819796-186a812a-cf9a-4ea5-89f6-af2dc74feefc.png " width="150" height="300" align = "center"/>
   
-  ## Records
+  ### Records
   
   
 
@@ -221,4 +273,8 @@ https://user-images.githubusercontent.com/43541909/126820207-ff55a401-599b-4c4c-
 
 https://user-images.githubusercontent.com/43541909/126820473-34bf9a09-ae85-4829-8f52-29c467f9b3ef.mp4
 
+.
+<a name="Project_Status"/>
+## Project Status.
 
+#### Project Has Been closed For Now, Wait For Further notice 
