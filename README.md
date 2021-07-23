@@ -5,7 +5,7 @@ This is the main application on which the idea originated, through this app cust
 
 ## Table of Contents  
 1. [Registration[LogIn / SignUp]](#Registration)  
-2. [Adding Cars](#emphasis)
+2. [Adding Cars](#Adding_cars)
 3. [Requesting_Winch_service](#emphasis)  
 4. [Requesting_Mechanic_Service](#emphasis)  
 
@@ -29,9 +29,31 @@ First time customers use the app the app only needs their mobile number for a ve
   * if customer exists on server DB:
   
       We make a check step to see if the customer wants to proceed in the app with his/her information or want to edit one of them. 
+      
+      <img src="https://user-images.githubusercontent.com/43541909/126752722-ea9f16fa-8b6e-4b9b-b619-c9889815304e.jpg" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126752779-374699fd-f7c2-4244-a835-efdd44c047f3.jpg" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126752893-41892d69-ba4e-40ed-a02a-86bcd35057ee.jpg" width="150" height="300" align = "center" /> 
 
   * if customer doesn't exists on server DB:
-    Customer will be asked to enter his first name and last name or can continue with social accounts to get his/her first and last name from it
+  
+    Customer will be asked to enter his first name and last name or can continue with social accounts to get his/her first and last name from it.
+    
+    <img src="https://user-images.githubusercontent.com/43541909/126753550-5a746dbe-8da4-463d-9975-a9ac10327bb6.jpg" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126755312-d8d6182d-21c0-4b59-9924-fb6215d5ee31.jpg" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126754766-cb72bb2c-8d4c-4dcd-bbea-b8a26dda376c.jpg" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126755365-251de62c-2c9a-42a0-859f-8405c91778a8.jpg" width="150" height="300" align = "center" />
+    
+* Home & Profile page.
+
+ After registration, Customer will be able to use our app normally,choosing between winch & mechanic services, adding list of owned cars and viewing associated information to this account.
+ 
+  <img src="https://user-images.githubusercontent.com/43541909/126762557-4b1dcf84-ae66-4d5a-8db7-b5d9f9bdce66.jpg" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126762827-b796583d-b0e5-48c5-b7e2-641b10482d72.jpg" width="150" height="300" align = "center" />
+    
+.
+<a name="Adding_cars"/>
+## Adding Cars 
+Before registered customer could be able to make requests for winch driver or individual mechanic,customer should add information of atleast one of his car,so he could select from them while requesting services.
+
+<img src="https://user-images.githubusercontent.com/43541909/126760365-468b10b1-d73d-45a7-9938-009f765417b5.png" width="150" height="300" align = "center"  />  <img src="https://user-images.githubusercontent.com/43541909/126760515-8a98934e-8637-4a78-8376-0e6d1c3f7a80.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760677-724ef73e-af2e-4bd3-bb7c-b5d081a5c34f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126760978-07f43f5d-1634-47ad-a8a5-a5f0bdbbac9f.png" width="150" height="300" align = "center" /> <img src="https://user-images.githubusercontent.com/43541909/126761096-dceb496e-0539-432c-ad61-8261ff6de571.png" width="150" height="300" align = "center" />.
+
+Records
+
+[lisa](https://user-images.githubusercontent.com/43541909/126764080-78503b0c-186b-4ecd-80cc-fe5d0201a928.mp4)
 
 ## Getting Started
 
